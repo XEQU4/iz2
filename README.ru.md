@@ -85,6 +85,6 @@ docker compose --env-file .env.docker ps -a
 
 ## Лицензия и автор
 
-Собственный код и документация: [MIT](LICENSE), © 2026 [Barakhat Mukhtar Batyruly](mailto:b.m.04.11reg@gmail.com).
+Собственный код и документация: [MIT](LICENSE), © 2026 [XEQU4](mailto:b.m.04.11reg@gmail.com).
 
 Сторонние компоненты и шрифты сохраняют свои условия, включая **MIT + Commons Clause** для адаптаций React Bits. См. [сторонние лицензии](THIRD_PARTY_NOTICES.md). Лицензия кода не предоставляет права на данные внешних источников.
