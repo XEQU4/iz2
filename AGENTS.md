@@ -70,7 +70,7 @@ and [current audit](docs/FINAL_AUDIT.md) before work. Operations belong in
 
 ## Interface and verification
 
-- Current direction is restrained graphite/black/white with semantic graph/status
+- Current direction is cool graphite/black/white with blue action accents and semantic graph/status
   colours, reduced-motion support and EN/RU website controls. API docs stay English.
   Source identifiers/names and stored text do not translate with the interface.
   Business dates use Asia/Qyzylorda.

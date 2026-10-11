@@ -1,3 +1,5 @@
+@import "../../../../static/css/cosmic-background.css";
+
 .app-shell {
   isolation: isolate;
 }
@@ -54,74 +56,26 @@
   }
 }
 
-/* The small moon occupies the outer gutter, behind every content surface. */
-.iz2-moon {
+.iz2-cosmic-host {
   position: absolute;
-  width: 64px;
-  height: 64px;
-  top: 100px;
-  right: 1px;
-  opacity: 0.64;
-  transform: rotate(-16deg);
-  filter: drop-shadow(0 0 7px #efefdf14);
-  animation: iz2-moon-libration 32s ease-in-out infinite alternate;
-  animation-play-state: paused;
+  inset: 0;
 }
-
-.iz2-moon__halo {
-  transform-origin: 50px 50px;
-  animation: iz2-moon-halo 18s ease-in-out infinite alternate;
-  animation-play-state: paused;
-}
-
-.iz2-particles[data-active="true"] :is(.iz2-moon, .iz2-moon__halo) {
-  animation-play-state: running;
-}
-
-@keyframes iz2-moon-libration {
-  from {
-    transform: translateY(0) rotate(-16deg);
-  }
-  to {
-    transform: translateY(3px) rotate(-12deg);
-  }
-}
-
-@keyframes iz2-moon-halo {
-  from {
-    opacity: 0.5;
-    transform: scale(0.94);
-  }
-  to {
-    opacity: 0.85;
-    transform: scale(1.04);
-  }
-}
-
 :root[data-motion="off"] .iz2-particles-fallback > i {
   animation: none;
 }
-
-:root[data-motion="off"] :is(.iz2-moon, .iz2-moon__halo) {
+.iz2-particles-fallback > i:not(:nth-child(3n)) {
   animation: none;
 }
-
 @media (max-width: 767px) {
-  .iz2-moon {
+  .iz2-particles-fallback > i:nth-child(2n) {
     display: none;
   }
 }
-
 @media (prefers-reduced-motion: reduce) {
   .iz2-particles-fallback > i {
     animation: none;
   }
-  .iz2-moon,
-  .iz2-moon__halo {
-    animation: none;
-  }
 }
-
 @media (forced-colors: active) {
   .iz2-particles {
     display: none;

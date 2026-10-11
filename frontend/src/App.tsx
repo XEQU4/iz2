@@ -86,12 +86,9 @@ function SideNav({ close }: { close?: () => void }) {
       <div className="sidebar-brand">
         <Brand />
       </div>
-      <div className="nav-label">
-        {t("WORKSPACE")}{" "}
-        <span>01 / {String(navigation.length).padStart(2, "0")}</span>
-      </div>
+      <div className="nav-label">{t("WORKSPACE")}</div>
       <nav className="primary-nav" aria-label={t("Main navigation")}>
-        {navigation.map(({ path, name, icon: Icon }, i) => (
+        {navigation.map(({ path, name, icon: Icon }) => (
           <NavLink
             key={path}
             to={path}
@@ -127,7 +124,6 @@ function SideNav({ close }: { close?: () => void }) {
                 )}
                 <Icon aria-hidden="true" />
                 <span className="nav-name">{t(name)}</span>
-                <small>0{i + 1}</small>
               </>
             )}
           </NavLink>
@@ -163,7 +159,7 @@ function SideNav({ close }: { close?: () => void }) {
 }
 function Layout() {
   const { language } = useI18n();
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [mobile, setMobile] = useState(false);
@@ -173,8 +169,14 @@ function Layout() {
   const { enabled, toggle, reduced } = useMotionPreferences();
   useEffect(() => {
     setMobile(false);
+    if (hash) {
+      const frame = requestAnimationFrame(() => {
+        document.getElementById(hash.slice(1))?.scrollIntoView();
+      });
+      return () => cancelAnimationFrame(frame);
+    }
     window.scrollTo({ top: 0, behavior: "instant" });
-  }, [pathname]);
+  }, [pathname, hash]);
   useEffect(() => {
     const title =
       navigation.find((item) =>

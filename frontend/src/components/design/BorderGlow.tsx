@@ -12,6 +12,7 @@ import {
   type RefObject,
 } from "react";
 import { useDecorationActive } from "../motion/useDecorationActive";
+import { proximityToRect, usePointerProximity } from "./usePointerProximity";
 import "./BorderGlow.css";
 
 const DEFAULT_COLORS = ["#a6a6a2", "#eeeeea", "#737370"] as const;
@@ -86,6 +87,7 @@ export function useBorderGlow<T extends HTMLElement = HTMLDivElement>(
     y: number;
     width: number;
     height: number;
+    strength: number;
   } | null>(null);
 
   const cancel = useCallback(() => {
@@ -100,7 +102,6 @@ export function useBorderGlow<T extends HTMLElement = HTMLDivElement>(
     if (!target) return;
     target.dataset.borderGlowHover = "false";
     target.style.setProperty("--border-glow-edge", "0");
-    target.style.setProperty("--border-glow-angle", "45deg");
   }, [cancel, ref]);
 
   useEffect(() => {
@@ -111,40 +112,57 @@ export function useBorderGlow<T extends HTMLElement = HTMLDivElement>(
     return reset;
   }, [active, reset]);
 
+  const moveAt = useCallback(
+    (target: T, clientX: number, clientY: number) => {
+      if (!active) return;
+      const box = target.getBoundingClientRect();
+      if (!box.width || !box.height) return;
+      const { x, y, strength } = proximityToRect(box, clientX, clientY);
+      if (!strength) {
+        reset();
+        return;
+      }
+      target.dataset.borderGlowHover = "true";
+      pending.current = {
+        element: target,
+        x,
+        y,
+        strength,
+        width: box.width,
+        height: box.height,
+      };
+      if (frame.current !== null) return;
+      frame.current = requestAnimationFrame(() => {
+        frame.current = null;
+        const next = pending.current;
+        pending.current = null;
+        if (!next?.element.isConnected || document.hidden) return;
+        const cx = next.width / 2;
+        const cy = next.height / 2;
+        const dx = next.x - cx;
+        const dy = next.y - cy;
+        const edge = Math.min(
+          Math.max(Math.abs(dx) / cx, Math.abs(dy) / cy),
+          1,
+        );
+        const degrees = ((Math.atan2(dy, dx) * 180) / Math.PI + 450) % 360;
+        next.element.style.setProperty(
+          "--border-glow-edge",
+          (edge * next.strength * 100).toFixed(3),
+        );
+        next.element.style.setProperty(
+          "--border-glow-angle",
+          `${degrees.toFixed(3)}deg`,
+        );
+      });
+    },
+    [active, reset],
+  );
+
+  usePointerProximity(ref, active, moveAt, reset);
   const move = (event: PointerEvent<T>) => {
-    if (!active || event.pointerType === "touch") return;
-    const target = event.currentTarget;
-    const box = target.getBoundingClientRect();
-    if (!box.width || !box.height) return;
-    target.dataset.borderGlowHover = "true";
-    pending.current = {
-      element: target,
-      x: Math.min(Math.max(event.clientX - box.left, 0), box.width),
-      y: Math.min(Math.max(event.clientY - box.top, 0), box.height),
-      width: box.width,
-      height: box.height,
-    };
-    if (frame.current !== null) return;
-    frame.current = requestAnimationFrame(() => {
-      frame.current = null;
-      const next = pending.current;
-      pending.current = null;
-      if (!next?.element.isConnected || document.hidden) return;
-      const cx = next.width / 2;
-      const cy = next.height / 2;
-      const dx = next.x - cx;
-      const dy = next.y - cy;
-      const edge = Math.min(Math.max(Math.abs(dx) / cx, Math.abs(dy) / cy), 1);
-      const degrees = ((Math.atan2(dy, dx) * 180) / Math.PI + 450) % 360;
-      next.element.style.setProperty(
-        "--border-glow-edge",
-        (edge * 100).toFixed(3),
-      );
-      next.element.style.setProperty(
-        "--border-glow-angle",
-        `${degrees.toFixed(3)}deg`,
-      );
-    });
+    if (event.pointerType !== "touch")
+      moveAt(event.currentTarget, event.clientX, event.clientY);
   };
 
   const blur = (event: FocusEvent<T>) => {

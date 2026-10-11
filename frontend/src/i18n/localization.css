@@ -5,12 +5,12 @@
   justify-content: center;
   gap: 4px;
   min-width: 76px;
-  min-height: 44px;
-  padding: 6px;
+  min-height: 40px;
+  padding: 4px;
   border: 1px solid var(--line, #353638);
-  border-radius: 12px;
+  border-radius: 8px;
   color: var(--muted, #adaeaf);
-  background: #18191b;
+  background: var(--surface-inset);
   font: 600 12px/1.2 var(--font-body, Manrope, sans-serif);
   cursor: pointer;
   flex: 0 0 auto;
@@ -19,8 +19,8 @@
     background 220ms ease;
 }
 .language-switch:hover {
-  background: #222326;
-  border-color: #66686b;
+  background: var(--surface-row-hover);
+  border-color: var(--accent);
 }
 .language-flag {
   position: relative;
@@ -48,8 +48,8 @@
 .language-flag.active {
   opacity: 1;
   filter: saturate(0.85);
-  border-color: #64666a;
-  background: #2c2d30;
+  border-color: #717986;
+  background: #353a42;
 }
 .language-switch:hover .language-flag {
   opacity: 0.8;
@@ -58,7 +58,7 @@
   opacity: 1;
 }
 .language-switch:focus-visible {
-  outline: 2px solid #d5d5d2;
+  outline: 2px solid var(--cyan);
   outline-offset: 3px;
 }
 html[lang="ru"] .topbar-location {

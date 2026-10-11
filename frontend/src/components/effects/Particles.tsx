@@ -3,13 +3,16 @@
 import { Camera, Geometry, Mesh, Program, Renderer } from "ogl";
 import {
   useEffect,
-  useId,
   useMemo,
   useRef,
   useState,
   type CSSProperties,
 } from "react";
 import { useDecorationActive } from "../motion/useDecorationActive";
+import {
+  mountCosmicScene,
+  type CosmicScene,
+} from "../../../../static/js/cosmic-scene.js";
 import "./Particles.css";
 
 const defaultColors = ["#eeeeea", "#cececa", "#a5a5a2"];
@@ -55,10 +58,10 @@ const fragment = /* glsl */ `
     float d = length(gl_PointCoord.xy - vec2(0.5));
     if (d > 0.5) discard;
     float circle = uAlphaParticles > 0.5 ? 1.0 - smoothstep(0.12, 0.5, d) : 1.0;
-    float period = 3.0 + vRandom.z * 4.0;
+    float period = 6.0 + vRandom.z * 9.0;
     float wave = 0.5 + 0.5 * sin(uTwinkleTime * 6.283185 / period + vRandom.y * 6.283185);
-    float twinkle = 0.14 + 0.86 * pow(wave, 1.6);
-    float opacity = (0.64 + vRandom.w * 0.3) * twinkle;
+    float twinkle = vRandom.x < 0.36 ? 0.32 + 0.68 * pow(wave, 1.6) : 0.72;
+    float opacity = (0.38 + vRandom.w * 0.5) * twinkle;
     gl_FragColor = vec4(vColor, circle * opacity);
   }
 `;
@@ -149,14 +152,32 @@ export function Particles({
       ) ?? []
     ).join(",") || defaultColors.join(",");
   const points = useMemo(
-    () => createPoints(count, paletteKey.split(",")),
+    () =>
+      createPoints(count, paletteKey.split(",")).sort(
+        (a, b) => a.random[0] - b.random[0],
+      ),
     [count, paletteKey],
   );
   const { ref, active } = useDecorationActive<HTMLDivElement>(enabled);
-  const moonId = useId();
+  const cosmicHost = useRef<HTMLDivElement>(null);
+  const cosmic = useRef<CosmicScene | null>(null);
   const runtime = useRef<Runtime | null>(null);
   const activeRef = useRef(false);
   const [mode, setMode] = useState<"pending" | "webgl" | "fallback">("pending");
+
+  useEffect(() => {
+    if (!cosmicHost.current) return;
+    const scene = mountCosmicScene(cosmicHost.current);
+    cosmic.current = scene;
+    return () => {
+      scene.destroy();
+      cosmic.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    cosmic.current?.setActive(active);
+  }, [active]);
 
   useEffect(() => {
     const container = ref.current;
@@ -312,6 +333,10 @@ export function Particles({
             bounded(pixelRatio, 0.5, 1.5, 1.25),
             window.devicePixelRatio || 1,
           );
+          geometry!.setDrawRange(
+            0,
+            width < 768 ? Math.ceil(count * 0.55) : count,
+          );
           renderer!.setSize(width, height);
           camera.perspective({ aspect: width / height });
           const halfHeight = Math.tan((21 * Math.PI) / 180) * distance;
@@ -430,69 +455,7 @@ export function Particles({
           />
         ))}
       </div>
-      <svg className="iz2-moon" viewBox="0 0 100 100" focusable="false">
-        <defs>
-          <radialGradient id={`${moonId}-light`} cx="72%" cy="28%" r="80%">
-            <stop offset="0" stopColor="#edede7" />
-            <stop offset="0.55" stopColor="#bdbdb6" />
-            <stop offset="1" stopColor="#777773" />
-          </radialGradient>
-          <radialGradient id={`${moonId}-halo`}>
-            <stop offset="0.55" stopColor="#dadad3" stopOpacity="0.09" />
-            <stop offset="1" stopColor="#dadad3" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id={`${moonId}-crater`} cx="38%" cy="35%" r="65%">
-            <stop offset="0" stopColor="#51514e" stopOpacity="0.3" />
-            <stop offset="0.75" stopColor="#777772" stopOpacity="0.16" />
-            <stop offset="1" stopColor="#ecece4" stopOpacity="0.3" />
-          </radialGradient>
-          <mask id={`${moonId}-crescent`}>
-            <circle cx="50" cy="50" r="37" fill="white" />
-            <circle cx="29" cy="38" r="38" fill="black" />
-          </mask>
-        </defs>
-        <circle
-          className="iz2-moon__halo"
-          cx="50"
-          cy="50"
-          r="49"
-          fill={`url(#${moonId}-halo)`}
-        />
-        <circle cx="50" cy="50" r="37" fill="#d7d7d0" opacity="0.035" />
-        <g className="iz2-moon__surface" mask={`url(#${moonId}-crescent)`}>
-          <circle cx="50" cy="50" r="37" fill={`url(#${moonId}-light)`} />
-          <g fill="#666661" opacity="0.14">
-            <ellipse
-              cx="70"
-              cy="45"
-              rx="11"
-              ry="16"
-              transform="rotate(-24 70 45)"
-            />
-            <ellipse cx="61" cy="72" rx="12" ry="8" />
-            <ellipse cx="65" cy="25" rx="7" ry="5" />
-          </g>
-          <g fill={`url(#${moonId}-crater)`}>
-            <circle cx="76" cy="45" r="5.5" />
-            <circle cx="67" cy="70" r="7.5" />
-            <circle cx="79" cy="61" r="3.4" />
-            <circle cx="46" cy="82" r="3.2" />
-            <circle cx="67" cy="27" r="3.5" />
-            <circle cx="59" cy="62" r="2.3" />
-            <circle cx="78" cy="36" r="1.8" />
-            <circle cx="57" cy="77" r="1.6" />
-          </g>
-          <circle
-            cx="50"
-            cy="50"
-            r="36.8"
-            fill="none"
-            stroke="#fafaf2"
-            strokeOpacity="0.24"
-            strokeWidth="0.45"
-          />
-        </g>
-      </svg>
+      <div className="iz2-cosmic-host" ref={cosmicHost} />
     </div>
   );
 }

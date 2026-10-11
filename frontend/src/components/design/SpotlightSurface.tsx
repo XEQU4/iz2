@@ -7,7 +7,8 @@ import {
   type HTMLAttributes,
   type PointerEvent,
 } from "react";
-import { useMotionPreferences } from "../MotionPreferences";
+import { useDecorationActive } from "../motion/useDecorationActive";
+import { proximityToRect, usePointerProximity } from "./usePointerProximity";
 import { cx } from "../../lib/utils";
 import "./SpotlightSurface.css";
 
@@ -15,12 +16,16 @@ import "./SpotlightSurface.css";
 export function useSpotlight<T extends HTMLElement = HTMLDivElement>({
   disabled = false,
 }: { disabled?: boolean } = {}) {
-  const { enabled } = useMotionPreferences();
-  const followsPointer = enabled && !disabled;
+  const { ref, active: followsPointer } = useDecorationActive<T>(!disabled);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const frame = useRef<number | null>(null);
-  const pending = useRef<{ element: T; x: number; y: number } | null>(null);
+  const pending = useRef<{
+    element: T;
+    x: number;
+    y: number;
+    strength: number;
+  } | null>(null);
 
   const cancel = useCallback(() => {
     if (frame.current !== null) cancelAnimationFrame(frame.current);
@@ -28,34 +33,53 @@ export function useSpotlight<T extends HTMLElement = HTMLDivElement>({
     pending.current = null;
   }, []);
 
-  useEffect(() => {
-    if (!followsPointer) cancel();
-    return cancel;
-  }, [cancel, followsPointer]);
-
-  const move = (event: PointerEvent<T>) => {
-    if (!followsPointer || event.pointerType === "touch") return;
-    const element = event.currentTarget;
-    const bounds = element.getBoundingClientRect();
-    pending.current = {
-      element,
-      x: Math.min(Math.max(event.clientX - bounds.left, 0), bounds.width),
-      y: Math.min(Math.max(event.clientY - bounds.top, 0), bounds.height),
-    };
-    if (frame.current !== null) return;
-    frame.current = requestAnimationFrame(() => {
-      frame.current = null;
-      const next = pending.current;
-      pending.current = null;
-      if (!next?.element.isConnected) return;
-      next.element.style.setProperty("--spotlight-x", `${next.x}px`);
-      next.element.style.setProperty("--spotlight-y", `${next.y}px`);
-    });
-  };
-
-  const leave = () => {
+  const leave = useCallback(() => {
     setHovered(false);
     cancel();
+    if (ref.current) ref.current.dataset.spotlightNear = "false";
+  }, [cancel, ref]);
+
+  useEffect(() => {
+    if (!followsPointer) leave();
+    return cancel;
+  }, [cancel, followsPointer, leave]);
+
+  const moveAt = useCallback(
+    (element: T, clientX: number, clientY: number) => {
+      if (!followsPointer) return;
+      const bounds = element.getBoundingClientRect();
+      const { x, y, strength } = proximityToRect(bounds, clientX, clientY);
+      if (!strength) {
+        leave();
+        return;
+      }
+      pending.current = {
+        element,
+        x,
+        y,
+        strength,
+      };
+      if (frame.current !== null) return;
+      frame.current = requestAnimationFrame(() => {
+        frame.current = null;
+        const next = pending.current;
+        pending.current = null;
+        if (!next?.element.isConnected || document.hidden) return;
+        next.element.dataset.spotlightNear = "true";
+        next.element.style.setProperty("--spotlight-x", `${next.x}px`);
+        next.element.style.setProperty("--spotlight-y", `${next.y}px`);
+        next.element.style.setProperty(
+          "--spotlight-strength",
+          String(next.strength),
+        );
+      });
+    },
+    [followsPointer, leave],
+  );
+  usePointerProximity(ref, followsPointer, moveAt, leave);
+  const move = (event: PointerEvent<T>) => {
+    if (event.pointerType !== "touch")
+      moveAt(event.currentTarget, event.clientX, event.clientY);
   };
 
   const blur = (event: FocusEvent<T>) => {
@@ -71,6 +95,7 @@ export function useSpotlight<T extends HTMLElement = HTMLDivElement>({
   return {
     active: hovered || focused,
     surfaceProps: {
+      ref,
       className: "iz2-spotlight",
       "data-spotlight-motion": followsPointer ? "on" : "off",
       onPointerEnter: (event: PointerEvent<T>) => {

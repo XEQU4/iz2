@@ -1,8 +1,8 @@
 .app-shell .about-page {
   display: flex;
   flex-direction: column;
-  gap: 48px;
   min-width: 0;
+  gap: 32px;
 }
 .about-page-header {
   display: flex;
@@ -32,13 +32,13 @@
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.9fr);
   align-items: center;
-  gap: 42px;
   border: 1px solid #474747;
-  border-radius: 20px;
-  padding: clamp(24px, 3.4vw, 48px);
+  padding: 28px;
+  gap: 28px;
+  border-radius: 12px;
   background:
-    radial-gradient(ellipse at 88% 16%, #3f3f3f55, transparent 58%),
-    linear-gradient(130deg, #1d1d1d, #0b0b0b 65%);
+    radial-gradient(ellipse at 88% 16%, #a4afbe12, transparent 58%),
+    var(--panel);
 }
 .about-hero-copy,
 .about-purpose-detail,
@@ -56,18 +56,18 @@
   overflow-wrap: anywhere;
 }
 .app-shell .about-hero h1 {
-  margin: 17px 0 22px;
-  font-size: clamp(29px, 3.9vw, 52px);
   font-weight: 600;
   line-height: 1.13;
   letter-spacing: -0.04em;
   color: #fff;
+  font-size: clamp(28px, 3vw, 40px);
+  margin: 14px 0 18px;
 }
 .about-hero-copy > p {
   max-width: 540px;
-  font-size: 15px;
-  line-height: 1.85;
   color: #d9d9d9;
+  font-size: 14px;
+  line-height: 1.75;
 }
 .about-hero-copy > .about-hero-detail {
   margin-top: 14px;
@@ -78,18 +78,19 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 28px;
+  margin-top: 20px;
 }
 .about-actions .button {
   min-height: 44px;
 }
 .about-evidence-flow {
   min-width: 0;
-  border: 1px solid #59595980;
-  border-radius: 16px;
-  padding: 24px;
-  background: linear-gradient(165deg, #29292985, #0d0d0d95);
-  box-shadow: 0 20px 60px #00000026;
+  padding: 16px 0 16px 24px;
+  border: 0;
+  border-left: 1px solid var(--border);
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
 }
 .about-flow-heading {
   display: flex;
@@ -475,7 +476,6 @@
 }
 @media (max-width: 1280px) {
   .about-hero {
-    gap: 28px;
     grid-template-columns: minmax(0, 1.1fr) minmax(265px, 0.9fr);
   }
   .about-steps {
@@ -517,29 +517,21 @@
 }
 @media (max-width: 680px) {
   .app-shell .about-page {
-    gap: 36px;
   }
   .about-hero {
-    padding: 23px 20px;
-    border-radius: 16px;
-    gap: 28px;
   }
   .app-shell .about-hero h1 {
-    font-size: clamp(26px, 6.5vw, 38px);
   }
   .about-hero-copy > p {
-    font-size: 13px;
   }
   .about-actions {
     gap: 10px;
-    margin-top: 24px;
   }
   .about-actions .button {
     font-size: 11px;
     padding: 11px 12px;
   }
   .about-evidence-flow {
-    padding: 20px 16px;
   }
   .about-flow-stages {
     display: block;
@@ -601,12 +593,21 @@
     font-size: 8px;
   }
   .about-hero {
-    padding: 23px 17px;
   }
   .about-step {
     padding: 23px;
   }
   .about-flow-caption {
     font-size: 10px;
+  }
+}
+@media (max-width: 700px) {
+  .about-evidence-flow {
+    border-left: 0;
+    border-top: 1px solid var(--border);
+    padding: 20px 0 0;
+  }
+  .about-hero {
+    padding: 22px;
   }
 }

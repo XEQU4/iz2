@@ -1,0 +1,178 @@
+/* Shared by React and standalone API docs. Clip decoration, never surfaces. */
+:root {
+  --iz2-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --iz2-motion-hover: 240ms;
+  --iz2-motion-reveal: 650ms;
+}
+.iz2-cosmos {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  contain: strict;
+}
+.iz2-cosmos__stars,
+.iz2-cosmos__constellations {
+  position: absolute;
+  inset: 0;
+}
+.iz2-cosmos__stars {
+  animation: iz2-cosmic-drift 160s ease-in-out infinite alternate;
+}
+.iz2-cosmos__star {
+  position: absolute;
+  border-radius: 50%;
+  background: #e1e5e9;
+  opacity: var(--star-alpha);
+}
+.iz2-cosmos__star:nth-child(3n) {
+  animation: iz2-cosmic-twinkle var(--star-period) ease-in-out var(--star-delay)
+    infinite;
+}
+.iz2-cosmos__star--bright {
+  box-shadow: 0 0 7px #dbe3ed60;
+}
+.iz2-cosmos__star--bright::after {
+  content: "";
+  position: absolute;
+  inset: -3px 0;
+  background: linear-gradient(transparent, #e2e6eb80, transparent);
+}
+.iz2-moon {
+  position: absolute;
+  width: clamp(200px, 16vw, 250px);
+  height: auto;
+  top: 68px;
+  right: -37px;
+  opacity: 0.78;
+  animation: iz2-moon-drift 74s ease-in-out infinite alternate;
+}
+.iz2-moon__halo {
+  animation: iz2-moon-light 31s ease-in-out infinite alternate;
+}
+.iz2-moon__shade {
+  animation: iz2-moon-light 53s ease-in-out -13s infinite alternate;
+}
+.iz2-constellation {
+  position: absolute;
+  width: 190px;
+  fill: #c5cdd5;
+  opacity: 0.32;
+}
+.iz2-constellation path {
+  fill: none;
+  stroke: #b5c1cc;
+  stroke-width: 0.45;
+  opacity: 0.5;
+}
+.iz2-constellation--one {
+  left: 17%;
+  top: 66%;
+  transform: rotate(-12deg);
+}
+.iz2-constellation--two {
+  right: -60px;
+  top: 44%;
+  transform: rotate(24deg);
+}
+.iz2-cosmos__meteor {
+  position: absolute;
+  width: 100px;
+  height: 1px;
+  transform-origin: left center;
+  background: linear-gradient(90deg, #edf0f3, #c4cbd766 18%, transparent);
+  box-shadow: 0 0 3px #d3deeb22;
+}
+.iz2-cosmos__asteroid {
+  position: absolute;
+  width: 12px;
+  height: 9px;
+  border-radius: 42% 58% 64% 36% / 47% 33% 67% 53%;
+  background:
+    radial-gradient(circle at 64% 68%, #161a20 0 14%, transparent 18%),
+    radial-gradient(ellipse at 28% 22%, #899097, #454b53 37%, #1c2229 76%);
+  box-shadow:
+    inset 1px 1px 1px #ced4db30,
+    1px 2px 3px #0008;
+}
+.iz2-cosmos[data-active="false"]
+  :is(
+    .iz2-cosmos__stars,
+    .iz2-cosmos__star,
+    .iz2-moon,
+    .iz2-moon__halo,
+    .iz2-moon__shade
+  ) {
+  animation-play-state: paused;
+}
+.iz2-cosmos[data-active="false"]
+  :is(.iz2-cosmos__meteor, .iz2-cosmos__asteroid) {
+  visibility: hidden;
+}
+@keyframes iz2-cosmic-drift {
+  to {
+    transform: translate3d(8px, -9px, 0);
+  }
+}
+@keyframes iz2-cosmic-twinkle {
+  50% {
+    opacity: calc(var(--star-alpha) * 0.32);
+  }
+}
+@keyframes iz2-moon-drift {
+  from {
+    transform: translate3d(0, 0, 0) rotate(-12deg);
+  }
+  to {
+    transform: translate3d(-7px, 6px, 0) rotate(-10deg);
+  }
+}
+@keyframes iz2-moon-light {
+  from {
+    opacity: 0.88;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (max-width: 767px) {
+  .api-docs-atmosphere .iz2-moon {
+    top: 145px;
+  }
+  .iz2-moon {
+    width: 160px;
+    top: 65px;
+    right: -53px;
+    opacity: 0.56;
+  }
+  .iz2-cosmos__star:nth-child(2n),
+  .iz2-constellation--one {
+    display: none;
+  }
+  .iz2-constellation--two {
+    width: 140px;
+    opacity: 0.22;
+  }
+  .iz2-cosmos__meteor {
+    width: 65px;
+  }
+  .iz2-cosmos__asteroid {
+    width: 8px;
+    height: 6px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .iz2-cosmos * {
+    animation: none !important;
+  }
+  .iz2-cosmos__meteor,
+  .iz2-cosmos__asteroid {
+    display: none;
+  }
+}
+@media (forced-colors: active) {
+  .iz2-cosmos {
+    display: none;
+  }
+}

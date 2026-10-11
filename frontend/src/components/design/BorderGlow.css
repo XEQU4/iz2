@@ -4,6 +4,11 @@
   overflow: visible;
 }
 
+/* Surface styles load after this component; keep the external glow unclipped. */
+.iz2-border-glow:is(.panel, .home-group-card) {
+  overflow: visible;
+}
+
 .iz2-border-glow__decoration,
 .iz2-border-glow__border,
 .iz2-border-glow__mesh,
@@ -135,7 +140,7 @@
         (var(--border-glow-edge) - var(--border-glow-sensitivity) - 20) /
         (80 - var(--border-glow-sensitivity))
     ),
-    0.4
+    0.025
   );
 }
 

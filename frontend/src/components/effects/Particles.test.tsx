@@ -45,6 +45,7 @@ vi.mock("ogl", () => ({
     perspective = vi.fn();
   },
   Geometry: class {
+    setDrawRange = vi.fn();
     remove = vi.fn();
     constructor() {
       gpu.geometries.push(this);

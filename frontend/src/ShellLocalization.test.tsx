@@ -78,7 +78,7 @@ it("changes shell titles and navigation without resetting the search or scrollin
 it("translates About arrays and footer navigation while preserving authors and contacts", () => {
   act(() => setLanguage("ru"));
   render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={["/about"]}>
       <About />
       <WorkspaceFooter />
     </MemoryRouter>,
@@ -104,6 +104,24 @@ it("translates About arrays and footer navigation while preserving authors and c
     within(footer).getByRole("link", { name: "Компании" }),
   ).toHaveAttribute("href", "/companies");
   expect(within(footer).getByText("React + TypeScript")).toBeInTheDocument();
+});
+
+it("keeps project contacts and notices reachable from the compact workspace footer", () => {
+  render(
+    <MemoryRouter initialEntries={["/companies"]}>
+      <WorkspaceFooter />
+    </MemoryRouter>,
+  );
+  const footer = screen.getByRole("contentinfo");
+  expect(
+    within(footer).getByRole("link", { name: "Get in touch" }),
+  ).toHaveAttribute("href", "/about#contacts");
+  expect(
+    within(footer).getByRole("link", { name: "API documentation" }),
+  ).toHaveAttribute("href", "/api/v1/docs/");
+  expect(
+    within(footer).getByRole("link", { name: "Component credits" }),
+  ).toHaveAttribute("href", "/static/frontend/third-party-notices.txt");
 });
 
 it("localizes shared pagination as a full phrase and keeps actions intact", () => {

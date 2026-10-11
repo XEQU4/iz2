@@ -12,24 +12,13 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 84% 6%, #5f5f5f38, transparent 45%),
-    radial-gradient(ellipse at 74% 68%, #4c4c4c48, transparent 46%),
-    radial-gradient(ellipse at 40% 104%, #2a2a2a30, transparent 42%);
+    radial-gradient(ellipse at 84% 6%, #adb6c61a, transparent 50%),
+    radial-gradient(ellipse at 74% 68%, #9ba8ba0a, transparent 60%);
 }
 
 .aurora-atmosphere__veil {
   position: absolute;
   inset: -38% -22%;
-  background-image: repeating-linear-gradient(
-    104deg,
-    #49494900 0%,
-    #69696918 9%,
-    #69696965 13%,
-    #bababa3a 16%,
-    #4f4f4f35 20%,
-    #2f2f2f2a 24%,
-    #50505000 30%
-  );
   background-size: 190% 100%;
   mask-image: radial-gradient(
     ellipse at 74% 32%,
@@ -42,6 +31,15 @@
   opacity: 0.28;
   animation: iz2-aurora-far 34s ease-in-out infinite alternate;
   animation-play-state: paused;
+  background-image: repeating-linear-gradient(
+    104deg,
+    transparent 0%,
+    #b9c4d10a 9%,
+    #a4afbe24 13%,
+    #e2e7ef18 16%,
+    #8996a512 20%,
+    transparent 30%
+  );
 }
 
 .aurora-atmosphere__veil--near {

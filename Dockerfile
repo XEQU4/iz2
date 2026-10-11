@@ -4,6 +4,8 @@ WORKDIR /build/frontend
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci --include=dev --no-audit --no-fund
 COPY frontend/ ./
+COPY static/js/cosmic-scene.js static/js/cosmic-scene.d.ts /build/static/js/
+COPY static/css/cosmic-background.css static/css/surface-spotlight.css /build/static/css/
 RUN npm run build
 
 FROM python:3.13-slim-bookworm

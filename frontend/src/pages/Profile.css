@@ -14,9 +14,9 @@
 .profile-heading h1,
 .profile-signed-out h1 {
   margin: 13px 0;
-  font-size: clamp(31px, 4vw, 52px);
   line-height: 1.1;
   letter-spacing: -0.055em;
+  font-size: 32px;
 }
 .profile-heading p,
 .profile-signed-out p {
@@ -88,6 +88,7 @@
   background: linear-gradient(150deg, #242424cc, #121212df);
   border: 1px solid #424242;
   min-width: 0;
+  border-radius: 12px;
 }
 .profile-panel-heading {
   display: flex;

@@ -138,6 +138,12 @@ processes and account operations fail closed when that backend is unavailable.
 
 The accepted interface has EN/RU presentation, responsive directories, D3 graph
 interaction, saved layouts, evidence/history panels and controllable motion.
+The persistent workspace background retains its WebGL star field and shares
+`static/js/cosmic-scene.js` and `static/css/cosmic-background.css` with the
+standalone API reference. The shared layer owns the moon, constellations and
+sparse events; API stars use a lightweight DOM field. Both entry points gate
+motion by user preference, reduced motion and document visibility. API modules
+receive Django manifest URLs; the API shell does not mount the React workspace.
 Original identifiers, source labels and saved explanation language do not change.
 Django and Celery use Asia/Qyzylorda; timestamps remain UTC-aware and business
 dates follow that local calendar. Native and Linux boundary tests cover this.

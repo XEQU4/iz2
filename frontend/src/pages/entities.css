@@ -2,10 +2,12 @@
   min-width: 0;
 }
 .entity-page-head {
-  align-items: center;
+  align-items: start;
+  margin-bottom: 22px;
 }
 .entity-page-head h1 {
   max-width: 850px;
+  font-size: clamp(24px, 2.4vw, 32px);
 }
 .entity-head-mark {
   width: 92px;
@@ -38,7 +40,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: 26px 28px 20px;
+  padding: 18px 20px;
 }
 .entity-section-head h2 {
   margin: 0;
@@ -356,10 +358,10 @@
 .entity-detail-head {
   padding: clamp(22px, 3vw, 40px);
   border: 1px solid var(--border);
-  border-radius: 22px;
   background:
     radial-gradient(ellipse at 100% 0, #3b3b3b66, transparent 65%),
     linear-gradient(135deg, #1f1f1fd9, #0f0f0fe8);
+  border-radius: 12px;
 }
 .entity-section-nav {
   display: flex;
@@ -876,7 +878,6 @@
     display: none;
   }
   .entity-section-head {
-    padding: 20px;
     align-items: flex-start;
   }
   .entity-data-label {

@@ -8,12 +8,20 @@ let frames: Map<number, FrameRequestCallback>;
 let nextFrame: number;
 let hidden: boolean;
 
+class TestPointerEvent extends MouseEvent {
+  pointerType: string;
+  constructor(type: string, init: PointerEventInit = {}) {
+    super(type, init);
+    this.pointerType = init.pointerType ?? "mouse";
+  }
+}
+
 beforeEach(() => {
   frames = new Map();
   nextFrame = 1;
   hidden = false;
   vi.spyOn(document, "hidden", "get").mockImplementation(() => hidden);
-  vi.stubGlobal("PointerEvent", MouseEvent);
+  vi.stubGlobal("PointerEvent", TestPointerEvent);
   vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => {
     const id = nextFrame++;
     frames.set(id, callback);
@@ -64,6 +72,52 @@ function moveNearEdge(element: HTMLElement) {
 }
 
 describe("Border Glow native surfaces", () => {
+  it("tracks the nearest edge and outside corners, then fades at the last angle", () => {
+    render(
+      <MemoryRouter>
+        <Card />
+      </MemoryRouter>,
+    );
+    const link = screen.getByRole("link");
+    moveNearEdge(link);
+    const flush = () =>
+      act(() => {
+        const queued = [...frames.values()];
+        frames.clear();
+        queued.forEach((callback) => callback(16));
+      });
+    const move = (x: number, y: number) => {
+      fireEvent.pointerMove(window, { clientX: x, clientY: y });
+      flush();
+    };
+    move(110, 70);
+    expect(link.style.getPropertyValue("--border-glow-edge")).toBe("0.000");
+    move(210, 70);
+    expect(link.style.getPropertyValue("--border-glow-angle")).toBe(
+      "90.000deg",
+    );
+    expect(link.style.getPropertyValue("--border-glow-edge")).toBe("100.000");
+    move(218, 70);
+    expect(
+      Number(link.style.getPropertyValue("--border-glow-edge")),
+    ).toBeCloseTo(83.333, 2);
+    move(218, 12);
+    const cornerAngle = link.style.getPropertyValue("--border-glow-angle");
+    expect(parseFloat(cornerAngle)).toBeGreaterThan(0);
+    expect(parseFloat(cornerAngle)).toBeLessThan(90);
+    expect(link).toHaveAttribute("data-border-glow-hover", "true");
+    move(280, 12);
+    expect(link).toHaveAttribute("data-border-glow-hover", "false");
+    expect(link.style.getPropertyValue("--border-glow-angle")).toBe(
+      cornerAngle,
+    );
+    fireEvent.pointerMove(window, {
+      clientX: 209,
+      clientY: 70,
+      pointerType: "touch",
+    });
+    expect(frames.size).toBe(0);
+  });
   it("keeps link navigation, keyboard focus and decorative accessibility", () => {
     const { container } = render(
       <MemoryRouter>
@@ -120,6 +174,8 @@ describe("Border Glow native surfaces", () => {
     act(() => document.dispatchEvent(new Event("visibilitychange")));
     expect(frames.size).toBe(0);
     expect(link).toHaveAttribute("data-border-glow-active", "false");
+    fireEvent.pointerMove(window, { clientX: 215, clientY: 70 });
+    expect(frames.size).toBe(0);
     hidden = false;
     act(() => document.dispatchEvent(new Event("visibilitychange")));
     moveNearEdge(link);

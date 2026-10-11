@@ -90,12 +90,18 @@ class SwaggerManifestTests(SimpleTestCase):
             "drf_spectacular_sidecar/swagger-ui-dist/swagger-ui-bundle.js",
             "drf_spectacular_sidecar/swagger-ui-dist/swagger-ui-standalone-preset.js",
             "css/api-docs.css",
+            "css/cosmic-background.css",
+            "css/surface-spotlight.css",
             "js/api-docs.js",
+            "js/api-atmosphere.js",
             "images/iz2-favicon.svg",
         }
         expected_urls = {"/static/" + manifest["paths"][path] for path in expected_paths}
         self.assertEqual(set(assets.urls), expected_urls)
         self.assertEqual(len(assets.urls), len(expected_urls))
+        cosmic_url = "/static/" + manifest["paths"]["js/cosmic-scene.js"]
+        self.assertContains(response, f'data-cosmic-module="{cosmic_url}"')
+        assets.urls.append(cosmic_url)
         self.assertTemplateUsed(response, "api/docs.html")
         self.assertContains(response, "/static/" + manifest["paths"]["images/iz2-logo.png"])
         self.assertNotContains(response, "images/iz2.svg")

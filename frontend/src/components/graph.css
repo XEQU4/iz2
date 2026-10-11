@@ -1,3 +1,6 @@
+.cluster-back {
+  margin-bottom: 18px;
+}
 .clusters-tools {
   padding: 22px;
   margin-bottom: 28px;
@@ -198,6 +201,7 @@
 }
 .cluster-detail-page .page-head {
   align-items: start;
+  margin-bottom: 18px;
 }
 .cluster-version-select {
   min-width: 245px;
@@ -510,7 +514,7 @@
   --address: #fbbf24;
   --phone: #2dd4bf;
   --email: #f472b6;
-  padding: 25px;
+  padding: 18px;
 }
 .graph-workspace .graph-heading {
   display: flex;
@@ -518,7 +522,7 @@
   align-items: flex-start;
   flex-wrap: wrap;
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 14px;
 }
 .graph-workspace .graph-heading h2 {
   margin: 10px 0 0;
@@ -536,13 +540,13 @@
   align-items: center;
   gap: 4px;
   min-height: 38px;
-  padding: 9px 12px;
   border: 1px solid var(--border);
-  border-radius: 9px;
   color: var(--muted);
   font-size: 12px;
   line-height: 1.2;
   background: #23232366;
+  padding: 7px 10px;
+  border-radius: 6px;
 }
 .graph-workspace .graph-metrics strong {
   color: var(--text);
@@ -550,11 +554,12 @@
   margin-right: 0;
 }
 .graph-workspace .graph-toolbar {
-  --graph-control-height: 44px;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
   align-items: flex-end;
+  gap: 8px;
+  margin-bottom: 14px;
+  --graph-control-height: 40px;
 }
 .graph-workspace .graph-toolbar .button {
   height: var(--graph-control-height);
@@ -607,11 +612,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 7px;
-  margin: 23px 0 12px;
   padding: 0;
   border: 0;
   min-width: 0;
   align-items: center;
+  margin: 14px 0 10px;
 }
 .graph-workspace .graph-filters legend {
   margin-bottom: 11px;
@@ -684,18 +689,18 @@
 .graph-workspace .graph-panels {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 300px;
-  gap: 16px;
+  gap: 12px;
 }
 .graph-workspace .graph-canvas {
-  height: 660px;
   min-width: 0;
   border: 1px solid var(--border);
-  border-radius: 14px;
   overflow: hidden;
   position: relative;
   box-shadow: inset 0 0 80px #0f0f0f;
   background:
     radial-gradient(ellipse at 30% 35%, #2d2d2d66, transparent 70%), #121212;
+  border-radius: 10px;
+  height: clamp(480px, 56vh, 640px);
 }
 .graph-workspace .graph-canvas:focus-visible {
   outline: 2px solid var(--blue);
@@ -712,10 +717,10 @@
   max-height: 660px;
   overflow: auto;
   border: 1px solid var(--border);
-  padding: 20px;
-  border-radius: 14px;
   background: linear-gradient(155deg, #252525, #191919);
   overflow-wrap: anywhere;
+  padding: 18px;
+  border-radius: 10px;
 }
 .graph-workspace .graph-inspector h3 {
   color: #ececec;
@@ -922,9 +927,6 @@
   .graph-workspace .graph-panels {
     grid-template-columns: 1fr;
   }
-  .graph-workspace .graph-canvas {
-    height: 540px;
-  }
   .graph-workspace .graph-inspector {
     max-height: 320px;
   }
@@ -956,9 +958,6 @@
   }
   .cluster-filter-row {
     gap: 14px;
-  }
-  .graph-workspace .graph-canvas {
-    height: 440px;
   }
   .cluster-evidence-row {
     flex-wrap: wrap;

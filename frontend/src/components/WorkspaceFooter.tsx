@@ -1,6 +1,6 @@
 import { translate as t, useI18n } from "../i18n";
 import { BrandMark } from "./BrandMark";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   ArrowRightIcon,
   ArrowTopRightIcon,
@@ -22,6 +22,35 @@ const footerNavigation = [
 
 export function WorkspaceFooter() {
   useI18n();
+  const { pathname } = useLocation();
+  if (pathname !== "/about")
+    return (
+      <footer
+        className="workspace-footer-compact"
+        aria-label={t("Project information")}
+      >
+        <span>IZ2 · {t("Educational thesis prototype")}</span>
+        <nav aria-label={t("Footer navigation")}>
+          <Link to="/about">{t("About us")}</Link>
+          <Link to="/about#contacts">{t("Get in touch")}</Link>
+          <a href="/api/v1/docs/">{t("API documentation")}</a>
+          <a
+            href={projectInfo.repositoryUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+          <a
+            href="/static/frontend/third-party-notices.txt"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {t("Component credits")}
+          </a>
+        </nav>
+      </footer>
+    );
   return (
     <footer
       className="workspace-footer-full"
@@ -98,6 +127,7 @@ export function WorkspaceFooter() {
 
           <BorderGlow
             as="section"
+            id="contacts"
             className="footer-contact-panel"
             aria-labelledby="footer-contact-title"
             glowRadius={18}

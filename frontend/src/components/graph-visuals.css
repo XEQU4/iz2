@@ -1,3 +1,6 @@
+.graph-workspace .graph-inspector:has(.graph-inspector-category) {
+  border-color: var(--surface-border-hover);
+}
 /* Graph accents describe selection only; positions and evidence stay unchanged. */
 .graph-workspace {
   background: linear-gradient(135deg, #1f1f1fdb, #0f0f0fe8 58%, #1c1c1cdf);
@@ -11,7 +14,6 @@
   min-width: 0;
 }
 .graph-workspace .graph-canvas {
-  border-radius: 22px;
   border-color: #54545483;
   background:
     radial-gradient(ellipse at 32% 30%, #37373752, transparent 58%),
@@ -19,6 +21,7 @@
   box-shadow:
     inset 0 0 110px #00000076,
     0 14px 36px #0000001c;
+  border-radius: 10px;
 }
 .graph-workspace .graph-canvas > svg {
   background-image:
@@ -36,7 +39,7 @@
   display: flex;
   justify-content: space-between;
   gap: 14px;
-  color: #b2b2b2a8;
+  color: var(--muted);
   font-family: "IBM Plex Mono", monospace;
   font-size: 9px;
   letter-spacing: 0.1em;
@@ -60,6 +63,7 @@
   height: 24px;
   border-color: #bfbfbf94;
   pointer-events: none;
+  display: none;
 }
 .graph-workspace .corner-top {
   top: 10px;
@@ -78,8 +82,8 @@
 .graph-workspace .graph-metrics span {
   background: linear-gradient(135deg, #2f2f2f91, #111111bd);
   border-color: #5757574f;
-  border-radius: 12px;
-  padding: 11px 13px;
+  padding: 7px 10px;
+  border-radius: 6px;
 }
 .graph-workspace .graph-metrics strong {
   color: #f3f3f3;
@@ -97,7 +101,7 @@
   background: color-mix(in srgb, var(--relationship-colour) 9%, #131313);
 }
 .graph-workspace .graph-filters label:has(input:focus-visible) {
-  outline: 2px solid #c2c2c2;
+  outline: 2px solid var(--cyan);
   outline-offset: 3px;
 }
 .graph-workspace .graph-legend > span {
@@ -250,15 +254,16 @@
 .graph-workspace .graph-inspector {
   background: linear-gradient(150deg, #212121, #101010 65%);
   border-color: #52525270;
-  border-radius: 22px;
-  padding: 24px 22px;
   scrollbar-width: thin;
   scrollbar-color: #515151 #111111;
+  box-shadow: none;
+  border-radius: 10px;
+  padding: 18px;
 }
 .graph-workspace .graph-inspector h3 {
   font-size: 18px;
   line-height: 1.5;
-  margin: 15px 0 18px;
+  margin: 12px 0 16px;
 }
 .graph-workspace .graph-inspector-category {
   display: inline-flex;
@@ -393,9 +398,6 @@ html[data-motion="off"] .graph-workspace .graph-link-glint {
   .graph-workspace .graph-map-caption {
     inset: 16px 16px auto;
     font-size: 8px;
-  }
-  .graph-workspace .graph-inspector {
-    padding: 20px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
