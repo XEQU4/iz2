@@ -415,6 +415,7 @@ class NarrativeSerializer(serializers.Serializer):
 
 class DocumentSerializer(serializers.Serializer):
     version = serializers.CharField()
+    grounding_policy = serializers.CharField(required=False)
     summary = serializers.CharField()
     findings = DocumentFindingSerializer(many=True)
     additional_findings = serializers.IntegerField()

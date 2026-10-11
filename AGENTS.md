@@ -679,3 +679,68 @@ tasks without inference/download. Owned test containers/volumes/networks removed
 Docker Desktop was started for verification and remains available. Protected
 native environment/learning/dependency files unchanged. Shell entrypoints retain
 LF on Windows Git checkouts. No working database/collector or Git action ran.
+
+User-authorised AI grounding follow-up, 10 October 2026: the user chose model
+selection of prepared evidence-bound statements, superseding free-prose generation
+for new jobs. Prompt evidence-presentation-5.4, document readable-explanation-5.3,
+template explanation-template-5.3 and grounding_policy prepared-claims-1 are current;
+rules/analysis remain 5.0. The closed finding-ID/variant grammar admits no model
+prose. Server wording binds company/amount/date/uncertainty; role end dates are
+exclusive. Publication and cached-result reuse recheck exact rendered text and
+document; invalid output/cache saves an explicit readable fallback. Keep bounded
+local repair, no hosted retry, blinded experimental scores and latest-job fencing.
+GET reads old immutable texts without revalidation/regeneration; legacy provenance
+must not claim the new grounding policy. Safe section-only internal callers are
+compatible but do not claim narrative provenance. See docs/AI_GROUNDING.md.
+The old validator accepted 16/20 targeted unsupported cases; the new path rejects
+20/20, including job fallback. Nine real synthetic Qwen cases passed first attempt
+(about 4.8-8.3 seconds); this is not an independent usefulness/prediction benchmark.
+671 PostgreSQL tests (zero skips), 144 React tests, final ten cache/date tests,
+build/format/OpenAPI/migration-drift/collectstatic checks passed. All 51 working
+table/schema/49-sequence fingerprints and protected files matched. Synthetic model
+server was stopped; native collector workers/beat were already stopped and remain
+stopped. No working generation, collection, paid inference or Git ran. Dependency
+and other audit/publication findings remain separate tasks.
+Browser follow-up: 18 synthetic scenarios at 1440/390 px passed across four saved
+Qwen cases, EN/RU, evidence and grounded/legacy/fallback labels. Legacy/fallback
+variants used browser-only mocks. No page overflow, JS exceptions, failed assets
+after collectstatic or non-GET requests; language switching made no API calls.
+Desktop/mobile screenshots were inspected. Browser and owned preview stopped.
+
+User-authorised graphite refinement, 11 October 2026, supersedes the earlier blue
+palette preference. Website and English-only API use graphite surfaces, off-white
+text and restrained white highlights, including logo/favicon. Keep semantic graph
+node/link and status colours; UK/RU inline SVG flags preserve language controls.
+Headings reveal once, with persistent thin glyph outlines and 380 ms crossfades.
+Continuous logo glitch and button/search blur/scans are removed. White particles
+and an original textured crescent obey motion preferences; the moon hides on
+narrow screens. Preserve licences and existing graph storage keys/data semantics.
+Django now emits deduplicated Vite static-import CSS before entry CSS, with bounded
+cycle-safe/path-validated traversal; dynamic imports remain lazy. Do not rehash
+Vite URLs through storage.url. This fixes missing heading CSS on first page load.
+146 React tests, 10 frontend integration tests and two Swagger tests passed with
+build/format/collectstatic. Synthetic Chromium covered main/detail/account pages,
+EN/RU keyboard persistence, reduced/manual motion, graph selection/filtering,
+100-company rendering/mobile Fit and native Swagger GET 200; responsive checks
+covered 320-1920 px with no overflow. No browser errors/warnings or failed HTTP
+responses; only synthetic login used POST. Physical touch, other browsers and
+low-end GPU performance remain unverified. Preview/browser stopped. Reports are
+in ignored artifacts/graphite-ui/; see docs/PHASE7.md. Protected file hashes match;
+working data, parser/collector processes, saved AI texts and Git were untouched.
+User visual acceptance remains pending. No next phase is authorised by this task.
+
+README/public documentation follow-up, 11 October 2026: the user explicitly chose
+MIT for original IZ2 code. Root LICENSE names Barakhat Mukhtar Batyruly; third-party
+components keep their existing terms, including React Bits MIT + Commons Clause.
+THIRD_PARTY_NOTICES.md indexes retained texts; missing OGL Unlicense attribution
+is now included verbatim in frontend/licenses/ogl.txt and the distributed bundle.
+Do not imply that the entire dependency tree or collected data is licensed MIT.
+README now includes the product workflow, intended audience, four actual current
+UI screenshots, template-first Docker startup, collapsible native/test commands
+and author contacts. Images under docs/assets use a separate fictional six-company,
+three-person, 24-contract dataset; they contain no working records and are not an
+installed demo seed. Their capture scope is in docs/assets/README.md. Local links,
+images, formatting and light/dark desktop/mobile Markdown rendering were checked;
+frontend build/collectstatic updated distributed notices. This was a documentation
+task, not a new full runtime or licensing audit. Working data, credentials,
+dependency versions and Git remain untouched. Private reports: artifacts/readme/.

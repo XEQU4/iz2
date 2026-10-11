@@ -334,6 +334,7 @@ export interface AnalysisSnapshot {
 
 export interface ExplanationDocument {
   version: string;
+  grounding_policy?: string;
   summary: string;
   narrative?: {
     paragraphs: { text: string; finding_ids: string[] }[];

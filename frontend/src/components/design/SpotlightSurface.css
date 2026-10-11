@@ -2,7 +2,7 @@
   --spotlight-x: 50%;
   --spotlight-y: 50%;
   --spotlight-radius: 300px;
-  --spotlight-color: 76, 143, 255;
+  --spotlight-color: 210, 210, 205;
   position: relative;
   isolation: isolate;
 }
@@ -21,8 +21,8 @@
 .iz2-spotlight::before {
   background: radial-gradient(
     circle var(--spotlight-radius) at var(--spotlight-x) var(--spotlight-y),
-    rgba(var(--spotlight-color), 0.12),
-    rgba(var(--spotlight-color), 0.035) 44%,
+    rgba(var(--spotlight-color), 0.055),
+    rgba(var(--spotlight-color), 0.015) 44%,
     transparent 76%
   );
 }
@@ -32,13 +32,13 @@
   background: radial-gradient(
     circle calc(var(--spotlight-radius) * 0.75) at var(--spotlight-x)
       var(--spotlight-y),
-    #83c4ffcc,
-    #3982ff40 50%,
+    #bababacc,
+    #7c7c7c40 50%,
     transparent 85%
   );
   mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+    linear-gradient(#ffffff 0 0) content-box,
+    linear-gradient(#ffffff 0 0);
   mask-composite: exclude;
 }
 

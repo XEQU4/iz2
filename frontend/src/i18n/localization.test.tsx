@@ -7,6 +7,7 @@ import {
   waitFor,
 } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import userEvent from "@testing-library/user-event";
 import {
   LanguageProvider,
   LanguageSwitch,
@@ -35,13 +36,18 @@ afterEach(() => {
 });
 
 describe("Language preference", () => {
-  it("persists the choice, updates document language and follows another tab", () => {
+  it("persists the keyboard choice, updates document language and follows another tab", async () => {
+    const user = userEvent.setup();
     render(
       <LanguageProvider>
         <LanguageSwitch />
       </LanguageProvider>,
     );
-    fireEvent.click(screen.getByRole("button", { name: "Switch to Russian" }));
+    const switcher = screen.getByRole("button", { name: "Switch to Russian" });
+    expect(switcher).toHaveAttribute("title", "English / Русский");
+    await user.tab();
+    expect(switcher).toHaveFocus();
+    await user.keyboard("{Enter}");
     expect(localStorage.getItem(LANGUAGE_STORAGE_KEY)).toBe("ru");
     expect(document.documentElement.lang).toBe("ru");
     for (const unknown of ["constructor", "toString", "__proto__"])
@@ -61,6 +67,8 @@ describe("Language preference", () => {
     expect(
       screen.getByRole("button", { name: "Switch to Russian" }),
     ).toBeVisible();
+    await user.keyboard(" ");
+    expect(getLanguage()).toBe("ru");
   });
   it("keeps the switch usable when preference storage is unavailable", () => {
     vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {

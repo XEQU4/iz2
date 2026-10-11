@@ -6,7 +6,7 @@ Magic UI Border Beam: https://github.com/magicuidesign/magicui
 React Bits text motion, locally adapted for IZ2:
 Tech Text / TechHeading: semantic HTML/CSS glyph reveal and selection treatment.
 https://github.com/DavidHDev/react-bits/blob/main/src/ts-default/TextAnimations/TechText/TechText.tsx
-Glitch Text: bounded clipped duplicate-text episodes.
+Glitch Text: a soft monochrome hover/focus echo using clipped duplicate text.
 https://github.com/DavidHDev/react-bits/blob/main/src/ts-default/TextAnimations/GlitchText/GlitchText.tsx
 True Focus / FocusFrame: manual pointer/keyboard navigation corner frame.
 https://github.com/DavidHDev/react-bits/blob/main/src/ts-default/TextAnimations/TrueFocus/TrueFocus.tsx
@@ -2037,7 +2037,7 @@ https://github.com/DavidHDev/react-bits/blob/main/src/content/Backgrounds/Partic
 https://github.com/DavidHDev/react-bits/blob/main/LICENSE.md
 
 Adapted in frontend/src/components/effects/Particles.tsx and Particles.css.
-IZ2 changes: deterministic viewport-wide distribution, smaller soft white/blue
+IZ2 changes: deterministic viewport-wide distribution, smaller soft white/grey
 points, capped DPR/drawing frequency, global passive pointer input, shared motion
 and visibility gating, static fallback, context-loss and GPU cleanup.
 
@@ -2082,7 +2082,7 @@ Typed source: https://github.com/DavidHDev/react-bits/blob/main/src/ts-default/C
 Styles: https://github.com/DavidHDev/react-bits/blob/main/src/ts-default/Components/BorderGlow/BorderGlow.css
 
 Adaptations:
-- Blue/white palette and restrained fill on existing IZ2 cards.
+- Graphite surfaces and soft white highlights on existing IZ2 cards.
 - Hook retains native links, sections, focus behaviour and tab order.
 - One pending animation frame per pointer movement; no idle animation loop.
 - Cancellation/reset on pointer leave/cancel, disabled motion, hidden document,
@@ -2095,3 +2095,33 @@ Copyright (c) 2026 David Haz.
 MIT + Commons Clause License Condition v1.0.
 Full license retained in frontend/licenses/react-bits.txt and the distributed
 frontend/public/third-party-notices.txt.
+
+
+----- ogl 1.0.11 -----
+Source: https://github.com/oframe/ogl
+License: Unlicense
+
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to <https://unlicense.org>

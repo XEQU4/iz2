@@ -3,33 +3,62 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 4px;
   min-width: 76px;
   min-height: 44px;
-  padding: 9px 10px;
-  border: 1px solid var(--line, #314b69);
+  padding: 6px;
+  border: 1px solid var(--line, #353638);
   border-radius: 12px;
-  color: var(--muted, #93a7c0);
-  background: #102035;
+  color: var(--muted, #adaeaf);
+  background: #18191b;
   font: 600 12px/1.2 var(--font-body, Manrope, sans-serif);
   cursor: pointer;
   flex: 0 0 auto;
   transition:
-    border-color 160ms ease,
-    background 160ms ease;
+    border-color 220ms ease,
+    background 220ms ease;
 }
 .language-switch:hover {
-  background: #1c3552;
-  border-color: #779fce;
+  background: #222326;
+  border-color: #66686b;
 }
-.language-switch .active {
-  color: #ecf4ff;
+.language-flag {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  opacity: 0.5;
+  filter: saturate(0.55);
+  transition:
+    opacity 220ms ease,
+    filter 220ms ease,
+    border-color 220ms ease,
+    background 220ms ease;
 }
-.language-divider {
-  opacity: 0.45;
+.language-flag svg {
+  display: block;
+  width: 20px;
+  height: 14px;
+  overflow: hidden;
+  border-radius: 2px;
+}
+.language-flag.active {
+  opacity: 1;
+  filter: saturate(0.85);
+  border-color: #64666a;
+  background: #2c2d30;
+}
+.language-switch:hover .language-flag {
+  opacity: 0.8;
+}
+.language-switch:hover .language-flag.active {
+  opacity: 1;
 }
 .language-switch:focus-visible {
-  outline: 2px solid #85b2ef;
+  outline: 2px solid #d5d5d2;
   outline-offset: 3px;
 }
 html[lang="ru"] .topbar-location {
@@ -94,13 +123,18 @@ html[lang="ru"] .eyebrow {
     white-space: nowrap;
   }
   .language-switch {
-    min-width: 66px;
-    padding-inline: 7px;
-    gap: 4px;
+    min-width: 68px;
+    padding-inline: 4px;
+    gap: 2px;
   }
 }
+html[data-motion="off"] .language-switch,
+html[data-motion="off"] .language-flag {
+  transition: none;
+}
 @media (prefers-reduced-motion: reduce) {
-  .language-switch {
+  .language-switch,
+  .language-flag {
     transition: none;
   }
 }

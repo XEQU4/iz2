@@ -103,7 +103,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 }
 
 export function LanguageSwitch() {
-  const { language: selected, t } = useI18n();
+  const { language: selected } = useI18n();
   return (
     <button
       type="button"
@@ -112,17 +112,32 @@ export function LanguageSwitch() {
       aria-label={
         selected === "en" ? "Switch to Russian" : "Переключить на английский"
       }
-      title={t("Interface language")}
+      title="English / Русский"
       data-language={selected}
     >
-      <span lang="en" className={selected === "en" ? "active" : ""}>
-        EN
+      <span
+        className={`language-flag${selected === "en" ? " active" : ""}`}
+        title="English"
+        aria-hidden="true"
+      >
+        <svg viewBox="0 0 60 40" focusable="false">
+          <path fill="#334261" d="M0 0h60v40H0z" />
+          <path stroke="#f4f3ef" strokeWidth="9" d="m0 0 60 40m0-40L0 40" />
+          <path stroke="#b7535a" strokeWidth="3" d="m0 0 60 40m0-40L0 40" />
+          <path stroke="#f4f3ef" strokeWidth="13" d="M30 0v40M0 20h60" />
+          <path stroke="#b7535a" strokeWidth="7" d="M30 0v40M0 20h60" />
+        </svg>
       </span>
-      <span aria-hidden="true" className="language-divider">
-        /
-      </span>
-      <span lang="ru" className={selected === "ru" ? "active" : ""}>
-        RU
+      <span
+        className={`language-flag${selected === "ru" ? " active" : ""}`}
+        title="Русский"
+        aria-hidden="true"
+      >
+        <svg viewBox="0 0 60 40" focusable="false">
+          <path fill="#f4f3ef" d="M0 0h60v14H0z" />
+          <path fill="#51699c" d="M0 14h60v13H0z" />
+          <path fill="#b7535a" d="M0 27h60v13H0z" />
+        </svg>
       </span>
     </button>
   );

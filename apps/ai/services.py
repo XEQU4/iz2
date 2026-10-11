@@ -16,8 +16,9 @@ from apps.ingestion.parsers.kgd import DEBT_SOURCE, AMOUNT_FIELDS, validate_fact
 from .models import AnalysisSnapshot, AnalysisState, AnalysisTarget, Explanation
 from .rules import evaluate, RULES_VERSION
 from .presentation import build_document, document_text
+from .grounding import GroundingValidationError
 
-TEMPLATE_VERSION = 'explanation-template-5.2'
+TEMPLATE_VERSION = 'explanation-template-5.3'
 
 
 def plain(value):
@@ -79,6 +80,44 @@ def explanation_content(analysis, plan=None):
     return {'text': document_text(document), 'presentation': {**(plan or {}), 'document': document}}
 
 
+def validate_saved_explanation(analysis, explanation, *, expected_prompt=None):
+    """Check current saved content before reuse/publication; never rewrite history.
+
+    Re-rendering is an explicit-job/publication check, not a GET-time operation.
+    Older immutable formats remain readable under their original provenance.
+    """
+    from .providers import PROMPT_VERSION
+
+    if explanation.analysis_id != analysis.pk:
+        raise GroundingValidationError('output_saved_analysis_mismatch')
+    if expected_prompt is not None and explanation.prompt_version != expected_prompt:
+        raise GroundingValidationError('output_saved_version_mismatch')
+    if explanation.prompt_version not in {PROMPT_VERSION, TEMPLATE_VERSION}:
+        return explanation
+    presentation = explanation.presentation
+    if (not isinstance(presentation, dict) or 'document' not in presentation
+            or explanation.status not in {'ready', 'fallback'}):
+        raise GroundingValidationError('output_saved_document_invalid')
+    plan = {key: value for key, value in presentation.items() if key != 'document'}
+    if explanation.status == 'fallback' or explanation.provider == 'template':
+        if plan or explanation.experimental_score is not None or explanation.experimental_evidence:
+            raise GroundingValidationError('output_saved_template_invalid')
+    elif not plan:
+        raise GroundingValidationError('output_saved_plan_missing')
+    try:
+        expected = explanation_content(analysis, plan or None)
+    except GroundingValidationError:
+        raise
+    except (KeyError, TypeError, IndexError, ValueError):
+        raise GroundingValidationError('output_saved_document_invalid') from None
+    if explanation.text != expected['text'] or presentation != expected['presentation']:
+        raise GroundingValidationError('output_saved_content_mismatch')
+    if (plan and (explanation.experimental_score != plan.get('risk_estimate')
+                  or explanation.experimental_evidence != plan.get('risk_evidence', []))):
+        raise GroundingValidationError('output_saved_estimate_mismatch')
+    return explanation
+
+
 def template_for(analysis):
     key = digest({'analysis': analysis.pk, 'hash': analysis.analysis_hash, 'language': 'en',
                   'template': TEMPLATE_VERSION, 'provider': 'template'})
@@ -124,6 +163,7 @@ def prepare_analysis(cluster_id, *, as_of=None, expected_graph_id=None, expected
 def publish_explanation(analysis, explanation, expected_job_id=None):
     if explanation.analysis_id != analysis.pk:
         raise ValueError('explanation_analysis_mismatch')
+    validate_saved_explanation(analysis, explanation)
     cluster = RiskCluster.objects.select_for_update(of=('self',)).select_related('current_snapshot').get(pk=analysis.cluster_id)
     if cluster.current_snapshot_id != analysis.graph_snapshot_id:
         return False

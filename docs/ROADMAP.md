@@ -397,3 +397,27 @@ recorded in REPOSITORY_AUDIT.md. One docker-compose.yml with environment-selecte
 AI/HTTPS profiles replaces the earlier overlays; DEPLOY.md is the current command
 reference. This does not close outstanding model/dependency/publication findings
 or start source integrations, data cleanup, public release or a new phase.
+
+## Constrained AI explanations, 10 October 2026
+
+The user selected AUD-002 follow-up and explicitly chose model selection of
+prepared evidence-bound statements. Prompt 5.4/document-template 5.3 now enforce
+that policy for new jobs, with publication/reuse checks and readable fallback.
+Twenty adversarial cases are rejected; nine real synthetic Qwen cases passed.
+All 671 isolated PostgreSQL and 144 React tests passed; final native database
+fingerprints remained equal. Details and limits are in AI_GROUNDING.md. Existing
+saved prose is preserved and has not been retroactively revalidated or rewritten.
+This completes the scoped explanation task, not a new phase or public-release
+approval. Dependency advisories and publication policy remain separate work.
+
+## Graphite interface refinement, 11 October 2026
+
+The user authorised a calm monochrome website and API reference. Shared graphite
+surfaces, white text/lighting, smoother glyph hover, flag language controls and a
+restrained textured moon are implemented. Graph semantics retain colour; the API
+remains English. Initial Vite static-dependency CSS loading was corrected after
+browser inspection. All 146 React and 12 scoped Django tests passed, with build,
+formatting, collectstatic and synthetic Chromium checks at 320-1920 px.
+See PHASE7.md for scope and limits. User visual acceptance is pending. Working
+data, source collection and saved AI results were not changed; outstanding audit
+and release gates remain separate tasks.

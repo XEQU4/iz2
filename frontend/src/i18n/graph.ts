@@ -171,19 +171,30 @@ export const graphMessages: Record<string, string> = {
   "BASED ON SAVED EVIDENCE": "ПО СОХРАНЁННЫМ СВЕДЕНИЯМ",
   "Saved summary": "Сохранённое резюме",
   "AI explanation": "Объяснение ИИ",
+  "AI-assisted explanation": "Объяснение с участием ИИ",
+  "Saved AI explanation": "Сохранённое объяснение ИИ",
+  "AI selected and ordered prepared statements. Their wording comes from saved facts and fixed rules.":
+    "ИИ выбрал и упорядочил подготовленные утверждения. Их формулировки основаны на сохранённых фактах и фиксированных правилах.",
+  "This saved AI text uses an earlier generation method. It has not been rechecked under the current prepared-statement policy.":
+    "Этот текст ИИ сохранён по прежнему методу генерации. Он не проходил повторную проверку по текущим правилам подготовленных утверждений.",
   "What to check next": "Что проверить дальше",
   "Data coverage and missing checks": "Полнота данных и отсутствующие проверки",
   Saved: "Сохранено",
   "Saved model-assisted summary": "Сохранённое резюме с участием модели",
   "Prepared from saved facts": "Подготовлено по сохранённым фактам",
   "AI-written from saved facts": "Написано ИИ по сохранённым фактам",
+  "AI-selected prepared statements": "Подготовленные утверждения, выбранные ИИ",
+  "Saved AI text · earlier method": "Сохранённый текст ИИ · прежний метод",
   "Saved template fallback": "Сохранённый резервный шаблон",
   "Model generation did not produce an accepted answer. This explanation uses the saved template.":
     "Ответ модели не прошёл проверку. Здесь используется сохранённое шаблонное объяснение.",
+  "No AI result was accepted. This explanation uses the saved factual summary. Remaining gaps are listed under Data coverage and missing checks.":
+    "Принятый результат ИИ отсутствует. Показано сохранённое резюме по фактам. Пробелы перечислены в разделе «Полнота данных и отсутствующие проверки».",
   "Explanation metadata": "Метаданные объяснения",
   Provider: "Провайдер",
   Status: "Статус",
   "Prompt version": "Версия промпта",
+  "Wording policy": "Правила формулировок",
   "SAVED RULE RESULTS": "СОХРАНЁННЫЕ РЕЗУЛЬТАТЫ ПРАВИЛ",
   "A guide to which connections deserve a closer look.":
     "Помогает определить, какие связи стоит проверить подробнее.",

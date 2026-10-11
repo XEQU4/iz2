@@ -1,4 +1,4 @@
-// React Bits Glitch Text clip technique, adapted to brief blue episodes.
+﻿// React Bits Glitch Text clip technique, adapted to a quiet monochrome hover echo.
 // Copyright (c) 2026 David Haz. MIT + Commons Clause; see licenses/react-bits.txt.
 import type { CSSProperties } from "react";
 import { useDecorationActive } from "./useDecorationActive";

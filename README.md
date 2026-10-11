@@ -1,106 +1,154 @@
-# IZ2
+<p align="center">
+  <img src="docs/assets/iz2-mark.svg" width="72" height="72" alt="IZ2 mark">
+</p>
 
-**Evidence-based analysis of relationships in Kazakhstan public procurement.**
+<h1 align="center">IZ2</h1>
 
-IZ2 brings saved company, contract and person records into an interactive graph.
-It shows why companies are connected, which sources support the links, what is
-missing, and what an analyst should check next. Graphs, analyses and explanations
-have immutable histories; opening a page never starts collection or generation.
+<p align="center">Explore the relationships behind Kazakhstan's public procurement.</p>
 
-This is an independently developed thesis prototype, with a possible later pilot.
-The product is IZ2, the repository/package is `iz2`, and the intended future domain
-is `iz2.kz`. No public host or domain has been selected for deployment.
+<p align="center">
+  <a href="#inside-the-workspace">Product tour</a> ·
+  <a href="#run-locally">Run locally</a> ·
+  <a href="docs/ARCHITECTURE.md">Architecture</a> ·
+  <a href="#license">License</a>
+</p>
 
-## What is implemented
+IZ2 brings company, person and contract records into an interactive graph.
+Start with a company or a relationship group, follow a shared director or contact,
+and inspect the source behind the connection. Saved explanations describe what
+the evidence supports and what still needs checking.
 
-- Searchable companies, people, contracts and relationship groups, with source
-  references, retrieval dates and separate current/historical role views.
-- Interactive D3 graphs, evidence inspection, filters and version history.
-  Accounts can save, restore and remove personal graph layouts across devices.
-- Registration, sign-in and profile settings: editable username, read-only email,
-  and current-password-protected password changes. Email verification and password
-  recovery are not yet implemented.
-- Resumable registry/Adata/KGD collection through bounded Celery stages, with
-  durable checkpoints, source pacing, retry delays and host cooldowns.
-- Deterministic review-priority rules, saved explanation templates and optional
-  local Qwen3:4b prose, with validation, version checks and template fallback.
-- An accepted React interface with an EN/RU switch and motion preferences.
-  The standalone API reference remains English. Original source values and saved
-  explanation prose retain their original language.
+I built IZ2 as an independent thesis project. It is intended for procurement
+reviewers choosing where to investigate, researchers examining company networks,
+and students working with public records. The current prototype supports a
+supervised demonstration; a public service is still in preparation.
 
-The stack is Django/DRF, React/TypeScript/Vite, PostgreSQL, Redis, Celery, D3 and
-optional Ollama. Django serves the workspace at `/app/`, the API at `/api/v1/`,
-and its reference at `/api/v1/docs/`. Existing `/legacy/` routes remain available.
+![IZ2 overview with a graphite interface, directory totals and relationship groups](docs/assets/overview.png)
 
-## Evidence and limits
+<sub>Actual IZ2 screens, captured with an isolated fictional dataset. All companies,
+people, identifiers, contracts and relationships shown are synthetic.</sub>
 
-Default company listings show source-checked profiles; default people listings
-show identifier-verified current records. Pending, unverified and historical
-records remain accessible through filters. A collected record is not necessarily
-complete, and equal names alone never merge people or establish a shared director.
+## Inside the workspace
 
-KGD taxpayer registration and tax arrears are separate checks. Registration does
-not prove absence of debt; failed or unavailable checks remain unknown. Debt
-access depends on company-specific entitlement, and entrepreneur debt coverage
-is not verified. Company debt is not assigned to directors or owners.
+| Start here               | What you can do                                                                                                                                |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Relationship groups**  | See the reason companies were grouped, their review priority and available evidence. Search by company name or BIN, then filter the results.   |
+| **Interactive graph**    | Select a company, person or shared contact; inspect its connections and sources; filter relationship types; open earlier saved versions.       |
+| **Companies and people** | Read source-backed fields and retrieval dates. Separate current roles from historical records, and verified identities from unconfirmed names. |
+| **Contracts**            | Browse saved procurement records and follow their supplier and customer links.                                                                 |
+| **Your account**         | Save, restore or remove graph layouts. Reopen positions, zoom and filters on another device; manage your username and password.                |
+| **API reference**        | Explore the versioned JSON API and try requests through locally bundled Swagger UI.                                                            |
 
-Available sources do not provide complete verified ownership history. Court,
-bankruptcy and restricted-participant integrations remain planned. Contracts
-alone do not establish coordinated bidding without bidders, bids, lots and
-outcomes. Review priority is a manual-review index, not a probability of wrongdoing.
+The workspace has English and Russian interfaces, keyboard navigation and a
+motion toggle. Source values and saved explanation text keep their original
+language. The API reference stays in English.
 
-The current system supports a supervised evidence demonstration. Public release
-still requires the outstanding model-prose, dependency and publication-policy
-checks in [the final audit](docs/FINAL_AUDIT.md). Model validation is not proof that
-every generated sentence is correct. Automatic model prose remains off in newly
-generated Docker environments.
+### Follow a connection back to its source
 
-## Start with Docker
+Here, three fictional companies share a verified director; two also share an
+address. The graph distinguishes those relationships and keeps the supporting
+evidence beside the selected node.
 
-Use Linux containers and Docker Compose 2.24.4 or newer. A single
-`docker-compose.yml` contains the stack; optional profiles select CPU/GPU Ollama
-and HTTPS. `Dockerfile` builds the shared backend/frontend image.
+![A saved graph connecting three fictional companies through a director and an address, with the evidence panel open](docs/assets/graph.png)
 
-For a **new, empty installation**, run from the repository root:
+<details>
+<summary>See company records and the API reference</summary>
+
+#### Company records
+
+Fields carry source and date information. Taxpayer registration and company tax
+arrears appear as separate checks, so a missing debt check remains visible.
+
+![A fictional company profile showing recorded fields and their provenance](docs/assets/company.png)
+
+#### API reference
+
+The reference uses the same visual language as the workspace. Resource navigation,
+filtering and native request controls sit alongside the documented schema.
+
+![The IZ2 API reference with a Companies endpoint expanded](docs/assets/api.png)
+
+</details>
+
+## How the evidence works
+
+Existing collectors read the public procurement registry, Adata and authorised
+KGD services. Celery processes bounded batches with checkpoints, source pacing
+and retry delays. Accepted changes update saved graphs and analyses; unchanged
+evidence reuses existing results. Opening a page reads saved state.
+
+Rules calculate review priority. For new explanations, optional local Qwen selects
+and orders prepared statements tied to those results; validation rejects unsupported output and saves
+a readable template when generation fails. The model does not decide identities,
+create graph links or set the public score. Earlier saved explanations retain
+their original generation method. See [the explanation design](docs/AI_GROUNDING.md).
+
+A few boundaries matter when reading the results:
+
+- Matching names alone do not establish that two records describe the same person.
+- Review priority is an index for manual review. A shared contact or a high score
+  does not establish collusion or a violation.
+- KGD registration and arrears are separate checks. Failed or unavailable checks
+  stay unknown, and a company's debt is not assigned to its director.
+- Source coverage varies. Complete ownership history, court, bankruptcy,
+  restricted-participant and tender-bid integrations remain future work.
+
+The [data-readiness notes](docs/DATA_READINESS.md) describe source limits;
+the [final audit](docs/FINAL_AUDIT.md) and dated follow-ups track release work.
+
+## Architecture
+
+| Layer                  | Implementation                                                        |
+| ---------------------- | --------------------------------------------------------------------- |
+| Workspace              | React, TypeScript, Vite and D3                                        |
+| Application and API    | Python, Django and Django REST Framework                              |
+| Evidence and histories | PostgreSQL                                                            |
+| Background work        | Celery, Celery beat and Redis                                         |
+| Optional local model   | Ollama with Qwen3:4b                                                  |
+| Deployment             | One Docker Compose file; optional NVIDIA GPU and Caddy HTTPS profiles |
+
+Django serves the built React workspace and API from one origin. Parsers fetch
+and normalise records; ingestion services persist them. Graphs, analyses and
+explanations have saved version histories. Accounts store personal views
+separately from shared evidence.
+
+## Run locally
+
+For a **new, empty installation**, use Docker with Linux containers, Compose
+2.24.4 or newer, and Python 3 for the environment helper. From the repository root:
 
 ```sh
-python scripts/prepare_deploy.py --project iz2 --output .env.docker --ai cpu
-docker compose --env-file .env.docker up --build -d
+python3 scripts/prepare_deploy.py --project iz2 --output .env.docker --ai template
+docker compose --env-file .env.docker config --quiet
+docker compose --env-file .env.docker up --build -d --wait
 docker compose --env-file .env.docker ps -a
 ```
 
-Open <http://127.0.0.1:8000/app/> and <http://127.0.0.1:8000/api/v1/docs/>.
-Readiness is available at `/health/ready/`. The first model startup downloads
-Qwen weights into a persistent volume. PostgreSQL, Redis, migrations, web,
-ingestion/AI workers and beat are managed by Compose.
+On Windows, use `python` or `.\.venv\Scripts\python.exe` in place of `python3`.
 
-The generator creates private credentials and refuses to overwrite an existing
-file. Preserve the generated file and project name on subsequent starts; changing
-the namespace selects different volumes. Existing installations retain the legacy
-Compose namespace unless explicitly configured otherwise. Native `.env` stays separate.
+- Workspace: <http://127.0.0.1:8000/app/>
+- API reference: <http://127.0.0.1:8000/api/v1/docs/>
+- Readiness: <http://127.0.0.1:8000/health/ready/>
 
-Use `--ai template` to omit Ollama, or `--ai gpu` on an NVIDIA host with the
-Container Toolkit. Add `--domain YOUR_DOMAIN --acme-email YOUR_EMAIL` when creating
-a new server environment to enable HTTPS and matching proxy/cookie settings.
-These options write the matching profiles into the private environment file;
-the same Compose startup command is used for every variant.
+The installation starts empty. The screenshot dataset is not installed, and
+collection and automatic model jobs are disabled by default. Source credentials
+and collection settings are described in [DEPLOY.md](DEPLOY.md).
 
-**To transfer the existing native database, restore into an empty Docker target
-before the first full `up`.** Do not let initial migrations populate that target
-first. Follow the backup/restore sequence in [DEPLOY.md](DEPLOY.md); the tools
-verify the target and never erase existing data. A native database is not copied
-automatically. Do not attach a PostgreSQL 16 volume directly to PostgreSQL 17.
+Template mode needs no model download. Choose `--ai cpu` when creating the
+environment to include local Qwen, or `--ai gpu` on a configured NVIDIA host.
+Keep the generated `.env.docker` and its project name; the helper refuses to
+overwrite them. Changing the project name selects different volumes.
 
-Collection, automatic model jobs and paid AI stay disabled in generated
-environments. Enable collection deliberately with appropriate source credentials;
-an empty installation does not populate itself. Operational settings, backups,
-updates and shutdown commands are in [DEPLOY.md](DEPLOY.md).
+**Moving an existing database?** Follow the [transfer procedure](DEPLOY.md#transfer-the-native-database-before-starting-the-application)
+before the first full startup. The native database is not copied automatically.
+The deployment guide also covers HTTPS, backups, updates and shutdown.
 
-## Native Windows development
+<details>
+<summary>Native Windows development</summary>
 
-Use Python 3.13+, Node 22.12+ and `uv`. Configure private local credentials in
-`.env` using `.env.example`; PostgreSQL must be available. Verify a current backup
-before applying migrations to an existing database. From the repository root:
+Use Python 3.13+, Node 22.12+, `uv` and a running PostgreSQL instance. Prepare a
+private `.env` from [`.env.example`](.env.example). Verify a current backup before
+applying migrations to an existing database.
 
 ```powershell
 uv sync --frozen
@@ -113,13 +161,13 @@ cd ..
 .\.venv\Scripts\python.exe manage.py runserver
 ```
 
-Restart Django after rebuilding and collecting assets. For hot reload, keep Django
-on port 8000 and run `npm.cmd run dev` from `frontend/`; open
-<http://127.0.0.1:5173/>. Its development proxy forwards `/api` to Django.
+For hot reload, keep Django on port 8000 and run `npm.cmd run dev` from
+`frontend/`; open <http://127.0.0.1:5173/>. Restart Django after rebuilding and
+collecting production assets.
 
-## Background collection on the laptop
-
-Start local PostgreSQL and Redis first. To restart or start the owned collector:
+Local background collection is controlled separately by `scripts/background.ps1`.
+Its Start command opts into source collection and local AI jobs; use it only
+after configuring the sources and starting local PostgreSQL and Redis:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/background.ps1 -Action Stop
@@ -127,31 +175,27 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/background.ps1 -Acti
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/background.ps1 -Action Status
 ```
 
-`Stop` safely handles already stopped owned processes and waits for active tasks.
-`Start` launches separate ingestion/AI workers, one beat and local Ollama/Qwen;
-it opts these processes into collection and local automatic model jobs without
-editing `.env`. Review generated prose while the model audit finding remains open.
-Do not run another collector against the same database. The terminal may be closed
-after startup; collection cannot continue while the laptop sleeps or is off.
-
-Use `Status` for process ownership and saved progress. Logs, PID records and the
-schedule are under ignored `artifacts/background/`. Stop collection using the
-same `-Action Stop` command. To also stop the helper-owned model server:
+Stop then Start avoids a second collector against the same database. The owned
+processes keep running after the terminal closes, but cannot collect while the
+laptop sleeps or is off. No Windows autostart task is installed. Use the same
+`-Action Stop` command to stop collection; to also stop the helper-owned model:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local_ai.ps1 -Stop
 ```
 
-Beat checks due work every minute. Default profile batches are ten companies with
-a two-minute minimum interval; KGD registration/debt stages use five-minute
-intervals. Pacing, budgets, retries and source availability determine throughput.
-Accepted evidence changes refresh saved graphs/templates; unchanged evidence
-reuses existing results. No Windows login/startup task is installed.
+</details>
 
-## Verification
+## Development and verification
 
-Run offline application/infrastructure tests with explicit labels so the personal
-learning file `test.py` is excluded:
+Small, focused contributions are welcome. Describe the behaviour you are changing,
+use synthetic fixtures, and include a reproducible check. Do not attach private
+source responses, credentials or database dumps to issues or pull requests.
+
+<details>
+<summary>Run the offline checks</summary>
+
+From the repository root on Windows, after installing the development dependencies:
 
 ```powershell
 .\.venv\Scripts\python.exe -B manage.py test apps tests --settings=config.test_settings
@@ -165,34 +209,41 @@ npm.cmd run format:check
 cd ..
 ```
 
-Offline settings do not load `.env` or contact working services. SQLite skips some
-PostgreSQL-specific cases; use a separate PostgreSQL test database for full
-database/concurrency verification. Real source checks and model inference are
-separate explicit operations, not part of this offline command sequence.
+These settings do not load `.env` or contact working services. SQLite skips some
+PostgreSQL-specific cases; database and concurrency checks need a separate
+PostgreSQL test database. Explicit `apps tests` labels exclude the personal
+learning file `test.py`. Live sources and model inference are separate checks.
 
-Linux Docker startup, data transfer/recovery, HTTPS, account/layout persistence
-and a synthetic CPU Qwen job were exercised locally; target-server and NVIDIA GPU
-execution still require verification. Dated results and limits are recorded in
-[DEPLOYMENT_CHECK.md](docs/DEPLOYMENT_CHECK.md). Earlier phase reports preserve
-historical results rather than declaring the current release certified.
+</details>
 
-## Repository map and documentation
+| Read more                                                          | Contents                                                    |
+| ------------------------------------------------------------------ | ----------------------------------------------------------- |
+| [Architecture](docs/ARCHITECTURE.md)                               | Module boundaries, evidence flow and versioning             |
+| [Frontend](frontend/README.md)                                     | Interface structure and local development                   |
+| [Deployment](DEPLOY.md) · [verification](docs/DEPLOYMENT_CHECK.md) | Single-Compose operations and the scope of completed checks |
+| [Data readiness](docs/DATA_READINESS.md)                           | Collection stages, identity rules and source coverage       |
+| [AI explanations](docs/AI_GROUNDING.md)                            | Prepared statements, validation and fallback                |
+| [Roadmap](docs/ROADMAP.md) · [audit](docs/FINAL_AUDIT.md)          | Decisions, remaining work and dated findings                |
 
-| Location | Responsibility |
-| --- | --- |
-| `apps/` | Django domains, API, ingestion and saved graph/analysis services |
-| `config/` | Django, Celery and test configuration |
-| [frontend/](frontend/README.md) | React routes, reusable components, styles and localisation |
-| `templates/`, `static/` | Django/API/legacy presentation; generated React output is ignored |
-| `scripts/`, `tests/` | Operational tools and infrastructure regression tests |
-| [DEPLOY.md](DEPLOY.md) | Current single-Compose startup, transfer and operations |
-| [Architecture](docs/ARCHITECTURE.md) | Module boundaries and evidence/versioning rules |
-| [Recovery](docs/RECOVERY.md) | Backup and verified restoration records |
-| [Roadmap](docs/ROADMAP.md), `docs/PHASE*.md` | Scope decisions and dated implementation history |
-| [Final audit](docs/FINAL_AUDIT.md), [repository audit](docs/REPOSITORY_AUDIT.md) | Findings, cleanup and remaining verification limits |
+## Authors and contact
 
-Secrets, database dumps, local reports and runtime/model caches belong outside
-Git and Docker images; ignored `artifacts/` contains private local material.
-Developer: Barakhat Mukhtar Batyruly. Related article author: Yestay Arnuruly
-(Estay-2020@bk.ru). Third-party source and license notices are retained in
-`frontend/licenses/` and `frontend/public/third-party-notices.txt`.
+**Barakhat Mukhtar Batyruly** — project development and thesis work.<br>
+[GitHub](https://github.com/XEQU4) · [Email](mailto:b.m.04.11reg@gmail.com) · [Telegram](https://t.me/xequ4w)
+
+**Yestay Arnuruly** — author of the related research article.<br>
+[Estay-2020@bk.ru](mailto:Estay-2020@bk.ru)
+
+For a bug report or a proposed change, [open an issue](https://github.com/XEQU4/iz2/issues)
+with the affected page, expected behaviour and steps to reproduce it. For private
+project enquiries, contact the developer by email.
+
+## License
+
+Original IZ2 code and documentation are licensed under [MIT](LICENSE).
+Copyright © 2026 Barakhat Mukhtar Batyruly.
+
+Bundled components, fonts and other third-party material retain their own terms.
+React Bits adaptations include the Commons Clause condition; they are not covered
+by IZ2's MIT grant. See [third-party notices](THIRD_PARTY_NOTICES.md) and the
+[full frontend notice bundle](frontend/public/third-party-notices.txt).
+Software licensing does not grant rights to collected source data.

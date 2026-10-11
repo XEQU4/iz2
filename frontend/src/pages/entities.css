@@ -14,14 +14,14 @@
   place-items: center;
   flex-shrink: 0;
   color: var(--cyan);
-  border: 1px solid rgba(70, 159, 255, 0.22);
+  border: 1px solid rgba(147, 147, 147, 0.22);
   border-radius: 24px;
   background: radial-gradient(
     circle at 35% 25%,
-    rgba(28, 147, 245, 0.18),
+    rgba(129, 129, 129, 0.18),
     transparent 70%
   );
-  box-shadow: inset 0 0 30px rgba(58, 160, 255, 0.04);
+  box-shadow: inset 0 0 30px rgba(145, 145, 145, 0.04);
   transform: rotate(-8deg);
 }
 .entity-head-mark svg {
@@ -56,8 +56,8 @@
   line-height: 1;
   padding: 6px 9px;
   color: var(--cyan);
-  background: rgba(49, 147, 253, 0.1);
-  border: 1px solid rgba(66, 166, 255, 0.2);
+  background: rgba(134, 134, 134, 0.1);
+  border: 1px solid rgba(151, 151, 151, 0.2);
   border-radius: 7px;
   font-variant-numeric: tabular-nums;
 }
@@ -75,7 +75,7 @@
   height: 5px;
   border-radius: 50%;
   background: var(--cyan);
-  box-shadow: 0 0 8px rgba(45, 213, 242, 0.3);
+  box-shadow: 0 0 8px rgba(179, 179, 179, 0.3);
 }
 .entity-toolbar {
   border-top: 1px solid var(--border);
@@ -83,7 +83,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  background: rgba(19, 44, 75, 0.1);
+  background: rgba(41, 41, 41, 0.1);
   align-items: center;
 }
 .entity-search {
@@ -99,7 +99,7 @@
 }
 .entity-search:focus-within {
   border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(63, 144, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(135, 135, 135, 0.08);
 }
 .entity-search > svg {
   width: 17px;
@@ -143,7 +143,7 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--muted);
-  background: rgba(12, 27, 47, 0.25);
+  background: rgba(25, 25, 25, 0.25);
   font-weight: 500;
   padding: 14px 28px;
   border-bottom: 1px solid var(--border);
@@ -158,7 +158,7 @@
   transition: background 0.18s ease;
 }
 .entity-table tbody tr:hover {
-  background: rgba(44, 121, 213, 0.06);
+  background: rgba(111, 111, 111, 0.06);
 }
 .entity-table tbody tr:last-child td {
   border-bottom: 0;
@@ -183,9 +183,9 @@
 .entity-company-symbol {
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(72, 151, 247, 0.2);
+  border: 1px solid rgba(141, 141, 141, 0.2);
   color: var(--blue);
-  background: rgba(40, 119, 203, 0.09);
+  background: rgba(108, 108, 108, 0.09);
   border-radius: 8px;
   display: grid;
   place-items: center;
@@ -216,14 +216,14 @@
   white-space: nowrap;
 }
 .entity-badge-blue {
-  color: #a5c0e6;
-  background: rgba(77, 143, 248, 0.09);
-  border-color: rgba(77, 143, 248, 0.22);
+  color: #bdbdbd;
+  background: rgba(137, 137, 137, 0.09);
+  border-color: rgba(137, 137, 137, 0.22);
 }
 .entity-badge-cyan {
-  color: #8dcad1;
-  background: rgba(41, 198, 214, 0.07);
-  border-color: rgba(41, 198, 214, 0.2);
+  color: #bebebe;
+  background: rgba(166, 166, 166, 0.07);
+  border-color: rgba(166, 166, 166, 0.2);
 }
 .entity-badge-amber {
   color: #edc585;
@@ -248,7 +248,7 @@
 .entity-row-open:hover {
   color: var(--cyan);
   border-color: var(--border);
-  background: rgba(36, 125, 219, 0.08);
+  background: rgba(113, 113, 113, 0.08);
 }
 .entity-row-open svg {
   width: 15px;
@@ -323,7 +323,7 @@
   border-radius: 14px;
   color: var(--blue);
   margin: 0 auto 18px;
-  background: rgba(34, 111, 207, 0.07);
+  background: rgba(102, 102, 102, 0.07);
 }
 .entity-state-icon svg {
   width: 22px;
@@ -358,8 +358,8 @@
   border: 1px solid var(--border);
   border-radius: 22px;
   background:
-    radial-gradient(ellipse at 100% 0, #283d6266, transparent 65%),
-    linear-gradient(135deg, #18202ed9, #0b1015e8);
+    radial-gradient(ellipse at 100% 0, #3b3b3b66, transparent 65%),
+    linear-gradient(135deg, #1f1f1fd9, #0f0f0fe8);
 }
 .entity-section-nav {
   display: flex;
@@ -376,7 +376,7 @@
   border-radius: 12px;
   text-decoration: none;
   color: var(--muted);
-  background: #121722b3;
+  background: #171717b3;
   transition:
     color 0.2s,
     border-color 0.2s;
@@ -418,7 +418,7 @@
 }
 .entity-fact-grid > div {
   padding-bottom: 16px;
-  border-bottom: 1px solid #343f5166;
+  border-bottom: 1px solid #3e3e3e66;
 }
 .entity-detail-panel .eyebrow {
   display: block;
@@ -441,7 +441,7 @@
   padding: 8px 12px;
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: #121722;
+  background: #171717;
   color: var(--text);
 }
 .entity-role-section .entity-section-head,
@@ -469,7 +469,7 @@
   gap: 12px;
 }
 .entity-match-counts > div {
-  background: #0e131ea8;
+  background: #131313a8;
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 16px;
@@ -527,7 +527,7 @@
   padding: 22px;
   border: 1px solid var(--border);
   border-radius: 16px;
-  background: linear-gradient(130deg, #1b263bb3, #0e131b);
+  background: linear-gradient(130deg, #252525b3, #131313);
   text-decoration: none;
   color: var(--text);
   transition:
@@ -536,7 +536,7 @@
 }
 .entity-group-card:hover {
   border-color: var(--blue);
-  background: #1e2c41;
+  background: #2b2b2b;
 }
 .entity-group-card h3 {
   font-size: 17px;
@@ -723,7 +723,7 @@
   color: var(--muted);
   line-height: 1.7;
   border-top: 1px solid var(--border);
-  background: rgba(22, 76, 123, 0.04);
+  background: rgba(68, 68, 68, 0.04);
 }
 .entity-history-note {
   display: flex;
@@ -732,10 +732,10 @@
   padding: 18px 20px;
   font-size: 12px;
   line-height: 1.8;
-  border: 1px solid rgba(76, 156, 255, 0.16);
+  border: 1px solid rgba(146, 146, 146, 0.16);
   border-radius: 12px;
   color: var(--muted);
-  background: rgba(22, 101, 192, 0.04);
+  background: rgba(91, 91, 91, 0.04);
   margin-bottom: 26px;
 }
 .entity-history-note svg {
@@ -748,8 +748,8 @@
 .entity-person-avatar {
   background: linear-gradient(
     145deg,
-    rgba(54, 133, 236, 0.16),
-    rgba(58, 176, 220, 0.06)
+    rgba(124, 124, 124, 0.16),
+    rgba(154, 154, 154, 0.06)
   );
   color: var(--cyan);
 }
@@ -800,7 +800,7 @@
   gap: 12px;
   border-top: 1px solid var(--border);
   padding: 0 28px 16px;
-  background: rgba(19, 44, 75, 0.1);
+  background: rgba(41, 41, 41, 0.1);
 }
 .entity-contract-filters label {
   display: flex;

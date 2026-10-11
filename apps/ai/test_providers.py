@@ -6,7 +6,8 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from django.test import SimpleTestCase, override_settings
-from .providers import generate, configuration, ProviderError
+from .grounding import render_grounded_narrative
+from .providers import generate, configuration, prepared_request, ProviderError
 
 
 class ProviderHTTPTests(SimpleTestCase):
@@ -57,10 +58,10 @@ class ProviderHTTPTests(SimpleTestCase):
             metrics={'review_priority': 2}, limitations=['Uncalibrated index.'])
 
     def valid_plan(self, variant=1):
-        return {'narrative': {'paragraphs': [{'text': '{{C1}} and {{C2}} share a recorded address. '
-                'This match alone does not establish affiliation.', 'finding_ids': ['known']}],
-                'checks': [{'text': 'Confirm whether the address is a shared office or a service provider.',
-                            'finding_ids': ['known']}]}, 'risk_estimate': None, 'risk_evidence': []}
+        return {'sections': [{'finding_id': 'known', 'variant': variant}],
+                'narrative': {'paragraphs': [{'finding_id': 'known', 'variant': 0}],
+                              'checks': [{'finding_id': 'known', 'variant': 0}]},
+                'risk_estimate': None, 'risk_evidence': []}
 
     def result(self, plan=None, **options):
         return {'done': True, 'done_reason': 'stop', 'message': {'content': json.dumps(plan or self.valid_plan())},
@@ -77,40 +78,69 @@ class ProviderHTTPTests(SimpleTestCase):
         self.assertFalse(request['body']['stream'])
         facts = json.loads(request['body']['messages'][1]['content'])
         self.assertTrue(any('unsuccessful' in limit for limit in facts['findings'][0]['limitations']))
-        self.assertEqual(plan['sections'][0]['variant'], 0)
-        self.assertIn('{{C1}}', plan['narrative']['paragraphs'][0]['text'])
+        self.assertEqual(plan['sections'][0]['variant'], 1)
+        self.assertIn('{{C1}}', render_grounded_narrative(self.analysis, plan)['paragraphs'][0]['text'])
         self.assertIn('narrative', request['body']['format']['required'])
-        self.assertNotIn('sections', request['body']['format']['properties'])
-        self.assertNotIn('variants', facts['findings'][0])
-        self.assertIn('recorded address', facts['findings'][0]['fact'])
+        self.assertIn('sections', request['body']['format']['properties'])
+        self.assertIn('variants', facts['findings'][0])
+        self.assertIn('recorded address', facts['findings'][0]['variants'][0])
+        self.assertEqual(set(request['body']['format']['properties']['narrative']['properties']['paragraphs']['items']['properties']),
+                         {'finding_id', 'variant'})
         self.assertEqual(usage['output_tokens'], 30)
         self.assertNotIn('Authorization', request['headers'])
 
+    def test_dense_mixed_catalogue_fits_default_budget_without_source_labels(self):
+        self.analysis.inputs['graph'] = {'nodes': [
+            {'kind': 'company', 'company_id': index, 'name': f'Synthetic private label {index}'}
+            for index in range(1, 21)], 'links': []}
+        codes = ['shared_director', 'shared_address', 'shared_phone', 'shared_email',
+                 'company_arrears', 'stored_contract_summary']
+        self.analysis.findings = [
+            {'id': f'f-{index}', 'code': code,
+             'company_ids': [1] if code == 'company_arrears' else list(range(1, 21)),
+             'contribution': 25 if index == 0 else 2, 'evidence': [], 'limitations': [], 'statements': []}
+            for index, code in enumerate(codes)]
+        self.analysis.inputs['company_checks'] = [{'company_id': 1, 'status': 'fresh',
+            'values': {'kgd_total_arrears': '123456789.01', 'kgd_reporting_dates': ['2026-10-10']}}]
+        self.analysis.metrics.update(company_count=20, stored_contract_count=2,
+                                     stored_contract_amount='987654321.00')
+        with override_settings(AI_MAX_INPUT_CHARS=8000, AI_MAX_FINDINGS=12):
+            config = configuration()
+            messages, schema, ids = prepared_request(self.analysis, config)
+        self.assertEqual(len(ids), 6)
+        self.assertLessEqual(sum(len(message['content']) for message in messages), config.input_chars)
+        self.assertNotIn('Synthetic private label', json.dumps(messages))
+        self.assertEqual(schema['properties']['sections']['maxItems'], 6)
+        self.assertEqual(self.requests, [])
+
     def test_invalid_and_truncated_outputs_are_rejected(self):
-        for value in ([], self.result(done=False), self.result(done_reason='length'),
-                      self.result({'sections': [{'finding_id': 'invented', 'variant': 0}],
-                                   'risk_estimate': None, 'risk_evidence': []})):
+        for value in ([], self.result(done=False), self.result(done_reason='length')):
             self.responses.append((200, 'application/json', value))
             with self.assertRaises(ProviderError):
                 generate(self.analysis, configuration())
+        invented = self.valid_plan()
+        invented['sections'][0]['finding_id'] = 'invented'
+        self.responses.extend([(200, 'application/json', self.result(invented))] * 2)
+        with self.assertRaisesRegex(ProviderError, 'output_evidence_invalid'):
+            generate(self.analysis, configuration())
 
-    def test_live_legacy_plan_without_model_prose_is_rejected(self):
-        self.responses.append((200, 'application/json', self.result({
+    def test_live_legacy_plan_without_narrative_choices_is_rejected(self):
+        self.responses.extend([(200, 'application/json', self.result({
             'sections': [{'finding_id': 'known', 'variant': 0}],
-            'risk_estimate': None, 'risk_evidence': []})))
+            'risk_estimate': None, 'risk_evidence': []}))] * 2)
         with self.assertRaisesRegex(ProviderError, 'output_schema_invalid'):
             generate(self.analysis, configuration())
 
-    def test_model_prose_with_invented_number_uses_a_safe_validation_code(self):
+    def test_model_prose_with_invented_number_is_outside_the_grammar(self):
         plan = self.valid_plan()
         plan['narrative']['paragraphs'][0]['text'] = 'The 99 companies have a matching recorded address.'
         self.responses.append((200, 'application/json', self.result(plan)))
         self.responses.append((200, 'application/json', self.result(plan)))
-        with self.assertRaisesRegex(ProviderError, 'output_narrative_number_unsupported'):
+        with self.assertRaisesRegex(ProviderError, 'output_schema_invalid'):
             generate(self.analysis, configuration())
         self.assertEqual(len(self.requests), 2)
 
-    def test_local_repair_rewrites_with_same_facts_and_sums_both_attempts(self):
+    def test_local_repair_selects_same_facts_and_sums_both_attempts(self):
         invalid = self.valid_plan()
         invalid['narrative']['paragraphs'][0]['text'] = 'These companies coordinated their bids.'
         self.responses.append((200, 'application/json', self.result(invalid)))
@@ -121,9 +151,10 @@ class ProviderHTTPTests(SimpleTestCase):
         first, second = [request['body'] for request in self.requests]
         self.assertEqual(first['format'], second['format'])
         self.assertEqual(first['messages'], second['messages'][:-1])
-        self.assertIn('output_claim_unsupported', second['messages'][-1]['content'])
+        self.assertIn('output_schema_invalid', second['messages'][-1]['content'])
         self.assertNotIn(invalid['narrative']['paragraphs'][0]['text'], second['messages'][-1]['content'])
-        self.assertIn('share a recorded address', plan['narrative']['paragraphs'][0]['text'])
+        self.assertEqual(plan['narrative']['paragraphs'][0], {'finding_id': 'known', 'variant': 0})
+        self.assertIn('same recorded address', render_grounded_narrative(self.analysis, plan)['paragraphs'][0]['text'])
 
     def test_remote_provider_never_retries_invalid_prose(self):
         invalid = self.valid_plan()
@@ -136,33 +167,32 @@ class ProviderHTTPTests(SimpleTestCase):
                 response = post.return_value.__enter__.return_value
                 response.status_code, response.headers = 200, {'Content-Type': 'application/json'}
                 response.iter_content.return_value = [json.dumps(payload).encode()]
-                with self.assertRaisesRegex(ProviderError, 'output_claim_unsupported'):
+                with self.assertRaisesRegex(ProviderError, 'output_schema_invalid'):
                     generate(self.analysis, configuration())
                 self.assertEqual(post.call_count, 1)
 
-    def test_non_contact_repair_uses_its_recorded_interpretation_without_service_explanation(self):
+    def test_non_contact_repair_keeps_its_specific_server_prepared_choices(self):
         self.analysis.findings[0]['evidence'] = []
         self.analysis.inputs['graph']['links'] = []
         self.analysis.inputs['company_checks'] = [{'company_id': 1, 'status': 'fresh',
             'values': {'kgd_total_arrears': '123.45', 'kgd_reporting_dates': ['2026-10-08']}}]
         self.analysis.metrics.update(stored_contract_count=2, stored_contract_amount='1000.00')
-        for code, phrase in [('shared_director', 'decision-making authority worth checking'),
-                             ('company_arrears', 'This dated result concerns a company.'),
-                             ('stored_contract_summary', 'Contract totals describe activity')]:
+        for code, phrase in [('shared_director', 'Tender decision-making authority needs separate evidence'),
+                             ('company_arrears', '123.45 KZT'),
+                             ('stored_contract_summary', '2 contracts totalling 1000.00 KZT')]:
             with self.subTest(code=code):
                 self.requests.clear()
                 self.analysis.findings[0]['code'] = code
+                self.analysis.findings[0]['company_ids'] = [1] if code == 'company_arrears' else [1, 2]
                 invalid = self.valid_plan()
                 invalid['narrative']['paragraphs'][0]['text'] = 'These companies coordinated their bids.'
                 valid = self.valid_plan()
-                valid['narrative']['paragraphs'][0]['text'] = '{{C1}} and {{C2}} have a saved record requiring further checking.'
-                valid['narrative']['checks'][0]['text'] = 'Obtain the relevant dated records to verify the finding.'
                 self.responses.extend([(200, 'application/json', self.result(invalid)),
                                        (200, 'application/json', self.result(valid))])
-                _, usage = generate(self.analysis, configuration())
+                plan, usage = generate(self.analysis, configuration())
                 correction = self.requests[1]['body']['messages'][-1]['content']
-                self.assertIn(phrase, correction)
-                self.assertNotIn('ordinary service explanation', correction)
+                self.assertIn('Do not write text', correction)
+                self.assertIn(phrase, render_grounded_narrative(self.analysis, plan)['paragraphs'][0]['text'])
                 self.assertEqual(usage['attempts'], 2)
 
     def test_http_and_content_type_failures_do_not_expose_response_body(self):

@@ -10,8 +10,8 @@ Source: https://github.com/DavidHDev/react-bits/blob/main/src/ts-default/TextAni
 
 GlitchText.tsx / GlitchText.css:
 Adapted clipped duplicate-text technique and clip keyframe percentages from
-React Bits Glitch Text. Blue/cyan palette; short episodes and hover/focus burst
-replace the original continuous animation.
+React Bits Glitch Text. A soft monochrome hover/focus echo replaces the original
+continuous animation.
 Reference: https://reactbits.dev/text-animations/glitch-text
 Source: https://github.com/DavidHDev/react-bits/blob/main/src/ts-default/TextAnimations/GlitchText/GlitchText.tsx
 Styles: https://github.com/DavidHDev/react-bits/blob/main/src/ts-default/TextAnimations/GlitchText/GlitchText.css

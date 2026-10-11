@@ -38,6 +38,11 @@ export function TechHeading({
   const { ref, active } = useDecorationActive<HTMLHeadingElement>(enabled);
   const [revealed, setRevealed] = useState(!canAnimate);
   const [selected, setSelected] = useState<GlyphSelection | null>(null);
+  // Keep measured outlines mounted: the previous glyph fades away while the next
+  // becomes active, without a timeout or a moving pointer target.
+  const [measurements, setMeasurements] = useState<
+    Record<number, GlyphSelection>
+  >({});
   useEffect(() => {
     if (!canAnimate) setRevealed(true);
     if (!active) setSelected(null);
@@ -84,6 +89,7 @@ export function TechHeading({
                   const glyph = index++;
                   const selection =
                     active && selected?.index === glyph ? selected : null;
+                  const measurement = measurements[glyph];
                   return (
                     <span
                       key={glyph}
@@ -92,7 +98,6 @@ export function TechHeading({
                       style={
                         {
                           "--tech-delay": `${Math.min(glyph * 23, 1150)}ms`,
-                          "--tech-scan-delay": `${glyph * 30}ms`,
                         } as CSSProperties
                       }
                       onPointerEnter={(event) => {
@@ -107,7 +112,7 @@ export function TechHeading({
                           event.currentTarget
                             .querySelector(".tech-heading__baseline")
                             ?.getBoundingClientRect().top ?? box.bottom;
-                        setSelected({
+                        const measured = {
                           index: glyph,
                           label,
                           width: box.width,
@@ -117,7 +122,12 @@ export function TechHeading({
                             heading.left - box.left,
                             Math.min(-3, heading.right - box.left - labelWidth),
                           ),
-                        });
+                        };
+                        setMeasurements((previous) => ({
+                          ...previous,
+                          [glyph]: measured,
+                        }));
+                        setSelected(measured);
                       }}
                       onPointerLeave={() =>
                         setSelected((previous) =>
@@ -137,28 +147,30 @@ export function TechHeading({
                         className="tech-heading__baseline"
                         aria-hidden="true"
                       />
+                      <svg
+                        className="tech-heading__outline"
+                        width={measurement?.width ?? "100%"}
+                        height={measurement?.height ?? "100%"}
+                        viewBox={
+                          measurement
+                            ? `0 0 ${measurement.width} ${measurement.height}`
+                            : undefined
+                        }
+                        aria-hidden="true"
+                        focusable="false"
+                      >
+                        <text x="0" y={measurement?.baseline ?? 0}>
+                          {character}
+                        </text>
+                      </svg>
                       {selection && (
-                        <>
-                          <svg
-                            className="tech-heading__outline"
-                            width={selection.width}
-                            height={selection.height}
-                            viewBox={`0 0 ${selection.width} ${selection.height}`}
-                            aria-hidden="true"
-                            focusable="false"
-                          >
-                            <text x="0" y={selection.baseline}>
-                              {character}
-                            </text>
-                          </svg>
-                          <span
-                            className="tech-heading__measure"
-                            style={{ left: selection.labelLeft }}
-                            aria-hidden="true"
-                          >
-                            {selection.label}
-                          </span>
-                        </>
+                        <span
+                          className="tech-heading__measure"
+                          style={{ left: selection.labelLeft }}
+                          aria-hidden="true"
+                        >
+                          {selection.label}
+                        </span>
                       )}
                     </span>
                   );

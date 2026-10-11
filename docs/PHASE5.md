@@ -334,6 +334,17 @@ demo without inference. Current user actions are supplied directly in chat.
 - [OpenRouter request limits](https://openrouter.ai/docs/api_reference/limits)
 
 
+## Current grounding policy, 10 October 2026
+
+The user explicitly replaced free-prose generation for new jobs with model
+selection of prepared statements. Prompt 5.4, readable document/template 5.3 and
+`prepared-claims-1` now enforce that policy; rules/analysis remain 5.0. Saved
+publication/reuse checks, readable fallback and immutable histories are covered
+by the 671-test PostgreSQL suite and nine real synthetic Qwen cases. The targeted
+unsupported-output corpus rejects 20/20. See AI_GROUNDING.md for the contract,
+evaluation scope and limits. The 8 October implementation below is historical;
+old saved prose remains readable without being rewritten or certified.
+
 ## User-authorised prose generation follow-up, 8 October 2026
 
 Prompt `evidence-presentation-5.3` replaces model selection of wording variants

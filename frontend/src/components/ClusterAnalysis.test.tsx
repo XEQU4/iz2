@@ -149,9 +149,7 @@ describe("saved explanation presentation", () => {
       document,
     });
     expect(screen.getByText("Saved template fallback")).toBeVisible();
-    expect(
-      screen.getByText(/Model generation did not produce an accepted answer/),
-    ).toBeVisible();
+    expect(screen.getByText(/No AI result was accepted/)).toBeVisible();
     expect(
       screen.queryByText("Saved model-assisted summary"),
     ).not.toBeInTheDocument();
@@ -171,7 +169,7 @@ describe("saved explanation presentation", () => {
       screen.getByRole("heading", { name: "Saved summary" }),
     ).toBeVisible();
     expect(
-      screen.queryByRole("heading", { name: "AI explanation" }),
+      screen.queryByRole("heading", { name: "AI-assisted explanation" }),
     ).not.toBeInTheDocument();
     expect(fetcher).not.toHaveBeenCalled();
   });
@@ -215,9 +213,16 @@ describe("saved explanation presentation", () => {
       document: { ...document, narrative },
     });
     expect(
-      screen.getByRole("heading", { name: "AI explanation" }),
+      screen.getByRole("heading", { name: "Saved AI explanation" }),
     ).toBeVisible();
     expect(screen.getByText(narrative.paragraphs[0].text)).toBeVisible();
+    expect(
+      screen.getByText(/This saved AI text uses an earlier generation method/),
+    ).toBeVisible();
+    expect(screen.getByText("Saved AI text · earlier method")).toBeVisible();
+    expect(
+      screen.queryByText("AI-selected prepared statements"),
+    ).not.toBeInTheDocument();
     expect(screen.getByText(narrative.checks[0].text)).toBeVisible();
     expect(
       screen.queryByText("Generic saved summary."),
@@ -244,6 +249,107 @@ describe("saved explanation presentation", () => {
     ).toBeVisible();
     expect(screen.queryByText("unknown-id")).not.toBeInTheDocument();
     expect(screen.getAllByText("ollama · qwen3:4b")[0]).toBeVisible();
+  });
+
+  it("labels the saved grounding policy without rewriting content or requesting generation in either language", () => {
+    const fetcher = vi.fn();
+    vi.stubGlobal("fetch", fetcher);
+    const grounded = {
+      ...document,
+      version: "readable-explanation-5.3",
+      grounding_policy: "prepared-claims-1",
+      narrative: {
+        paragraphs: [
+          {
+            text: "Two companies share the recorded director. Their bidding decisions need a separate check.",
+            finding_ids: ["f-director"],
+          },
+        ],
+        checks: [
+          {
+            text: "Confirm the director's recorded role and dates.",
+            finding_ids: ["f-director"],
+          },
+        ],
+      },
+    };
+    const original = structuredClone(grounded);
+    const { container } = show({
+      ...explanation,
+      provider: "ollama",
+      model: "synthetic-model",
+      document: grounded,
+    });
+    expect(
+      screen.getByRole("heading", { name: "AI-assisted explanation" }),
+    ).toBeVisible();
+    expect(screen.getByText("AI-selected prepared statements")).toBeVisible();
+    expect(
+      screen.getByText(/Their wording comes from saved facts and fixed rules/),
+    ).toBeVisible();
+    expect(
+      screen.queryByText(/uses an earlier generation method/),
+    ).not.toBeInTheDocument();
+    fireEvent.click(
+      screen.getAllByRole("link", {
+        name: "Read evidence for Shared director",
+      })[0],
+    );
+    act(() => setLanguage("ru"));
+    expect(
+      screen.getByRole("heading", { name: "Объяснение с участием ИИ" }),
+    ).toBeVisible();
+    expect(
+      screen.getByText("Подготовленные утверждения, выбранные ИИ"),
+    ).toBeVisible();
+    expect(
+      screen.getByText(/ИИ выбрал и упорядочил подготовленные утверждения/),
+    ).toBeVisible();
+    expect(
+      screen.getByText(grounded.narrative.paragraphs[0].text),
+    ).toBeVisible();
+    expect(screen.getByText(grounded.narrative.checks[0].text)).toBeVisible();
+    expect(container.querySelector(".explanation-saved-facts")).toHaveAttribute(
+      "open",
+    );
+    expect(grounded).toEqual(original);
+    expect(fetcher).not.toHaveBeenCalled();
+  });
+
+  it("does not infer grounding from a document version alone", () => {
+    show({
+      ...explanation,
+      provider: "ollama",
+      document: {
+        ...document,
+        version: "readable-explanation-5.3",
+        narrative: {
+          paragraphs: [{ text: "An earlier saved passage.", finding_ids: [] }],
+          checks: [],
+        },
+      },
+    });
+    expect(screen.getByText("An earlier saved passage.")).toBeVisible();
+    expect(screen.getByText("Saved AI text · earlier method")).toBeVisible();
+    expect(
+      screen.queryByText("AI-selected prepared statements"),
+    ).not.toBeInTheDocument();
+  });
+
+  it("keeps fallback provenance clear in Russian without calling it an accepted AI answer", () => {
+    act(() => setLanguage("ru"));
+    show({
+      ...explanation,
+      provider: "ollama",
+      status: "fallback",
+      document: { ...document, version: "readable-explanation-5.3" },
+    });
+    expect(screen.getByText("Сохранённый резервный шаблон")).toBeVisible();
+    expect(screen.getByText(/Принятый результат ИИ отсутствует/)).toBeVisible();
+    expect(screen.getByText("Generic saved summary.")).toBeVisible();
+    expect(
+      screen.queryByRole("heading", { name: "Объяснение с участием ИИ" }),
+    ).not.toBeInTheDocument();
   });
 
   it("renders model text and original source values as escaped text, never HTML", () => {

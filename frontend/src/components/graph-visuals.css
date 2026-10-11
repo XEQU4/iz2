@@ -1,7 +1,7 @@
 /* Graph accents describe selection only; positions and evidence stay unchanged. */
 .graph-workspace {
-  background: linear-gradient(135deg, #10203bdb, #080f1de8 58%, #101d32df);
-  border-color: #314f795e;
+  background: linear-gradient(135deg, #1f1f1fdb, #0f0f0fe8 58%, #1c1c1cdf);
+  border-color: #4c4c4c5e;
   box-shadow:
     0 24px 70px #00000026,
     inset 0 1px #ffffff06;
@@ -12,19 +12,19 @@
 }
 .graph-workspace .graph-canvas {
   border-radius: 22px;
-  border-color: #34598383;
+  border-color: #54545483;
   background:
-    radial-gradient(ellipse at 32% 30%, #153c6752, transparent 58%),
-    radial-gradient(ellipse at 85% 85%, #17345528, transparent 52%), #050c17;
+    radial-gradient(ellipse at 32% 30%, #37373752, transparent 58%),
+    radial-gradient(ellipse at 85% 85%, #30303028, transparent 52%), #0b0b0b;
   box-shadow:
     inset 0 0 110px #00000076,
     0 14px 36px #0000001c;
 }
 .graph-workspace .graph-canvas > svg {
   background-image:
-    linear-gradient(#5576a20b 1px, transparent 1px),
-    linear-gradient(90deg, #5576a20b 1px, transparent 1px),
-    radial-gradient(#86b6ec35 0.7px, transparent 0.7px);
+    linear-gradient(#7272720b 1px, transparent 1px),
+    linear-gradient(90deg, #7272720b 1px, transparent 1px),
+    radial-gradient(#b0b0b035 0.7px, transparent 0.7px);
   background-size:
     100px 100px,
     100px 100px,
@@ -36,7 +36,7 @@
   display: flex;
   justify-content: space-between;
   gap: 14px;
-  color: #91b7e2a8;
+  color: #b2b2b2a8;
   font-family: "IBM Plex Mono", monospace;
   font-size: 9px;
   letter-spacing: 0.1em;
@@ -51,14 +51,14 @@
 .graph-workspace .graph-caption-mark {
   width: 7px;
   height: 7px;
-  border: 1px solid #80b9ffbd;
+  border: 1px solid #b2b2b2bd;
   transform: rotate(45deg);
 }
 .graph-workspace .graph-map-corner {
   position: absolute;
   width: 24px;
   height: 24px;
-  border-color: #93c6ff94;
+  border-color: #bfbfbf94;
   pointer-events: none;
 }
 .graph-workspace .corner-top {
@@ -76,28 +76,28 @@
   border-bottom-right-radius: 10px;
 }
 .graph-workspace .graph-metrics span {
-  background: linear-gradient(135deg, #16325591, #071223bd);
-  border-color: #385b864f;
+  background: linear-gradient(135deg, #2f2f2f91, #111111bd);
+  border-color: #5757574f;
   border-radius: 12px;
   padding: 11px 13px;
 }
 .graph-workspace .graph-metrics strong {
-  color: #eaf4ff;
+  color: #f3f3f3;
   font-family: "Space Grotesk Variable", sans-serif;
 }
 .graph-workspace .graph-filters label {
-  background: #09172bba;
-  border-color: #3c5f8866;
+  background: #151515ba;
+  border-color: #5b5b5b66;
   transition:
     border-color 180ms,
     background-color 180ms;
 }
 .graph-workspace .graph-filters label:has(input:checked) {
-  border-color: color-mix(in srgb, var(--relationship-colour) 43%, #243a54);
-  background: color-mix(in srgb, var(--relationship-colour) 9%, #081426);
+  border-color: color-mix(in srgb, var(--relationship-colour) 43%, #373737);
+  background: color-mix(in srgb, var(--relationship-colour) 9%, #131313);
 }
 .graph-workspace .graph-filters label:has(input:focus-visible) {
-  outline: 2px solid #99c8ff;
+  outline: 2px solid #c2c2c2;
   outline-offset: 3px;
 }
 .graph-workspace .graph-legend > span {
@@ -197,11 +197,11 @@
 .graph-workspace .graph-node:focus-visible .node-shape {
   stroke: #e2f1ff;
   stroke-width: 2.6px;
-  filter: drop-shadow(0 0 10px #579eec6e);
+  filter: drop-shadow(0 0 10px #ffffff28);
 }
 .graph-workspace .graph-node.neighbour .node-shape {
   stroke-width: 1.9px;
-  filter: drop-shadow(0 0 7px #467eb644);
+  filter: drop-shadow(0 0 7px #ffffff18);
 }
 .graph-workspace .graph-node.selected .node-aura,
 .graph-workspace .graph-node:focus-visible .node-aura {
@@ -235,11 +235,11 @@
   animation: graph-edge-glint 4.4s linear infinite;
 }
 .graph-workspace .graph-edge-label rect {
-  fill: #061122;
+  fill: #101010;
   stroke-opacity: 0.58;
 }
 .graph-workspace .graph-edge-label.selected rect {
-  fill: #11263f;
+  fill: #232323;
   stroke-opacity: 0.92;
 }
 .graph-workspace .graph-edge-label text {
@@ -248,12 +248,12 @@
   font-size: 9px;
 }
 .graph-workspace .graph-inspector {
-  background: linear-gradient(150deg, #11233d, #08111f 65%);
-  border-color: #37557d70;
+  background: linear-gradient(150deg, #212121, #101010 65%);
+  border-color: #52525270;
   border-radius: 22px;
   padding: 24px 22px;
   scrollbar-width: thin;
-  scrollbar-color: #385577 #071223;
+  scrollbar-color: #515151 #111111;
 }
 .graph-workspace .graph-inspector h3 {
   font-size: 18px;
@@ -263,9 +263,9 @@
 .graph-workspace .graph-inspector-category {
   display: inline-flex;
   margin-top: 22px;
-  color: #8bbfff;
-  background: #214a7638;
-  border: 1px solid #537faf45;
+  color: #b9b9b9;
+  background: #44444438;
+  border: 1px solid #79797945;
   border-radius: 7px;
   padding: 5px 8px;
   font-family: "IBM Plex Mono", monospace;
@@ -275,25 +275,25 @@
 }
 .graph-workspace .graph-inspector-fact {
   padding: 13px 0;
-  border-top: 1px solid #46617c40;
+  border-top: 1px solid #5d5d5d40;
   display: grid;
   gap: 6px;
 }
 .graph-workspace .graph-inspector-fact > span {
-  color: #819cbc;
+  color: #999999;
   font-size: 10px;
 }
 .graph-workspace .graph-inspector-fact strong {
-  color: #d9e9fc;
+  color: #e7e7e7;
   font-size: 12px;
   line-height: 1.7;
   font-weight: 500;
 }
 .graph-workspace .graph-inspector-section {
-  color: #b9cde6;
+  color: #cbcbcb;
   font-size: 11px;
   font-weight: 600;
-  border-top: 1px solid #46617c40;
+  border-top: 1px solid #5d5d5d40;
   padding-top: 17px;
   margin: 22px 0 12px;
 }
@@ -302,8 +302,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  background: #0b192ab3;
-  border-color: #4165874d;
+  background: #171717b3;
+  border-color: #6060604d;
   padding: 11px 12px;
   min-height: 44px;
   border-radius: 10px;
@@ -313,7 +313,7 @@
   height: 15px;
   flex-shrink: 0;
   fill: none;
-  stroke: #8cb4e1;
+  stroke: #afafaf;
   stroke-width: 1.3;
 }
 .graph-workspace .graph-inspector-action:hover > svg {
@@ -324,10 +324,10 @@
   width: 108px;
   height: 108px;
   border-radius: 50%;
-  border: 1px solid #68acff36;
+  border: 1px solid #a4a4a436;
   display: grid;
   place-items: center;
-  background: radial-gradient(#3978c428, #0c1b30a3 67%);
+  background: radial-gradient(#70707028, #191919a3 67%);
   position: relative;
 }
 .graph-workspace .graph-inspector-emblem::before,
@@ -335,28 +335,28 @@
   content: "";
   position: absolute;
   inset: 8px;
-  border: 1px solid #7cb7ff3d;
+  border: 1px solid #b0b0b03d;
   border-radius: 50%;
   pointer-events: none;
 }
 .graph-workspace .graph-inspector-emblem::after {
   inset: -7px;
   border-style: dashed;
-  border-color: #6ca7ee30;
+  border-color: #a0a0a030;
 }
 .graph-workspace .graph-inspector-emblem > svg {
   width: 60px;
   height: 60px;
-  fill: #0e213b;
-  stroke: #8fc0ff;
+  fill: #1f1f1f;
+  stroke: #bababa;
   stroke-width: 1.3;
 }
 .graph-workspace .graph-inspector-emblem > svg circle {
-  fill: #224d7d;
+  fill: #474747;
 }
 .graph-workspace .graph-status {
-  border-color: #478dcc;
-  background: #11223b3d;
+  border-color: #838383;
+  background: #2020203d;
   padding: 10px 12px;
   border-radius: 0 8px 8px 0;
 }
@@ -414,9 +414,9 @@ html[data-motion="off"] .graph-workspace .graph-link-glint {
   margin: 14px 0 0;
   padding: 12px 14px;
   border-radius: 10px;
-  border: 1px solid #5985b748;
-  background: #102a454f;
-  color: #bbd8f7;
+  border: 1px solid #7f7f7f48;
+  background: #2626264f;
+  color: #d4d4d4;
   font-size: 12px;
   line-height: 1.7;
 }
@@ -428,7 +428,7 @@ html[data-motion="off"] .graph-workspace .graph-link-glint {
 .graph-workspace .graph-save-feedback[data-state="success"] {
   border-color: #56bbaa65;
   color: #bcebe1;
-  background: #143b383d;
+  background: #3232323d;
 }
 .graph-workspace .graph-save-feedback[data-state="error"] {
   border-color: #c2787869;

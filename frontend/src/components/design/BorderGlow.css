@@ -31,8 +31,8 @@
   inset: -1px;
   padding: 1px;
   mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+    linear-gradient(#ffffff 0 0) content-box,
+    linear-gradient(#ffffff 0 0);
   mask-composite: exclude;
 }
 
@@ -165,7 +165,7 @@
 }
 
 .iz2-border-glow:focus-visible {
-  outline: 2px solid #a9c9ff;
+  outline: 2px solid #c6c6c6;
   outline-offset: 4px;
 }
 

@@ -1,6 +1,6 @@
 .tech-heading {
-  --tech-final-color: #f0f5ff;
-  --tech-accent: #77cfff;
+  --tech-final-color: #eeeeee;
+  --tech-accent: #dedede;
   position: relative;
   min-width: 0;
   max-width: 100%;
@@ -14,7 +14,7 @@
 }
 
 .tech-heading__line--accent {
-  --tech-final-color: #88baff;
+  --tech-final-color: #dedede;
 }
 
 .tech-heading__word {
@@ -31,20 +31,16 @@
   -webkit-text-fill-color: currentColor;
   -webkit-text-stroke: 0 transparent;
   vertical-align: baseline;
+  transition:
+    color 360ms ease,
+    text-shadow 360ms ease;
   animation-play-state: paused;
 }
 
 .tech-heading[data-enabled="true"][data-revealed="false"] .tech-heading__glyph {
   color: transparent;
-  -webkit-text-stroke: 0.45px #88c9ffb3;
   animation: iz2-tech-reveal 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   animation-delay: var(--tech-delay, 0ms);
-  animation-play-state: paused;
-}
-
-.tech-heading[data-enabled="true"][data-revealed="true"] .tech-heading__glyph {
-  animation: iz2-tech-scan 11s linear infinite;
-  animation-delay: var(--tech-scan-delay, 0ms);
   animation-play-state: paused;
 }
 
@@ -52,7 +48,7 @@
   animation-play-state: running;
 }
 
-/* Offscreen or hidden headings remain readable while decoration is inactive. */
+/* Reveal once; settled headings stay still and readable. */
 .tech-heading[data-enabled][data-active="false"] .tech-heading__glyph {
   animation: none;
   color: var(--tech-final-color);
@@ -62,11 +58,9 @@
   text-shadow: none;
 }
 
-/* Selection outranks both reveal and scan, including their running keyframes. */
 .tech-heading[data-enabled="true"][data-active="true"]
   .tech-heading__glyph[data-selected="true"] {
   color: transparent;
-  -webkit-text-fill-color: transparent;
   -webkit-text-stroke: 0 transparent;
   text-shadow: none;
   transform: none;
@@ -90,6 +84,8 @@
   width: 100%;
   height: 100%;
   overflow: visible;
+  opacity: 0;
+  transition: opacity 380ms ease;
   user-select: none;
   pointer-events: none;
 }
@@ -98,8 +94,8 @@
   font: inherit;
   letter-spacing: inherit;
   fill: none;
-  stroke: color-mix(in srgb, var(--tech-accent) 55%, #fff);
-  stroke-width: 0.65;
+  stroke: #eeeeeecc;
+  stroke-width: 0.55;
   stroke-dasharray: 2 1.5;
   stroke-linecap: round;
   paint-order: stroke;
@@ -107,18 +103,27 @@
   -webkit-text-stroke: 0 transparent;
 }
 
-.tech-heading__glyph[data-selected="true"]::after {
+.tech-heading__glyph::after {
   content: "";
   position: absolute;
   inset: 2px -4px 1px;
-  border: 1px dashed #bddbfff0;
+  border: 1px dashed #d8d8d878;
   background:
-    linear-gradient(#eef7ff, #eef7ff) top left / 4px 4px no-repeat,
-    linear-gradient(#eef7ff, #eef7ff) top right / 4px 4px no-repeat,
-    linear-gradient(#eef7ff, #eef7ff) bottom left / 4px 4px no-repeat,
-    linear-gradient(#eef7ff, #eef7ff) bottom right / 4px 4px no-repeat;
-  box-shadow: 0 0 10px #52bfff20;
+    linear-gradient(#dedede, #dedede) top left / 3px 3px no-repeat,
+    linear-gradient(#dedede, #dedede) top right / 3px 3px no-repeat,
+    linear-gradient(#dedede, #dedede) bottom left / 3px 3px no-repeat,
+    linear-gradient(#dedede, #dedede) bottom right / 3px 3px no-repeat;
+  opacity: 0;
+  transition: opacity 380ms ease;
   pointer-events: none;
+}
+
+.tech-heading[data-active="true"]
+  .tech-heading__glyph[data-selected="true"]::after,
+.tech-heading[data-active="true"]
+  .tech-heading__glyph[data-selected="true"]
+  .tech-heading__outline {
+  opacity: 1;
 }
 
 .tech-heading__measure {
@@ -129,9 +134,9 @@
   width: max-content;
   padding: 3px 5px;
   border-radius: 3px;
-  background: #0b1c34;
-  border: 1px solid #62c9ff55;
-  color: #b8eaff;
+  background: #1a1a1a;
+  border: 1px solid #ffffff25;
+  color: #d2d2d2;
   font-family: "IBM Plex Mono", monospace;
   font-size: 8px;
   font-weight: 500;
@@ -147,43 +152,19 @@
 @keyframes iz2-tech-reveal {
   0% {
     color: transparent;
-    -webkit-text-stroke: 0.45px #88c9ffb3;
-    opacity: 0.65;
-    transform: translateY(3px);
+    opacity: 0;
+    transform: translateY(2px);
   }
-  40% {
-    color: var(--tech-accent);
-    -webkit-text-stroke: 0.5px #98e3ff;
-    opacity: 1;
-    text-shadow: 0 0 15px #70ccff88;
+  45% {
+    color: #b4b4b4;
+    opacity: 0.72;
+    text-shadow: 0 0 10px #ffffff12;
   }
   100% {
     color: var(--tech-final-color);
-    -webkit-text-stroke: 0 transparent;
     opacity: 1;
     transform: translateY(0);
     text-shadow: none;
-  }
-}
-
-@keyframes iz2-tech-scan {
-  0%,
-  85%,
-  93%,
-  100% {
-    color: var(--tech-final-color);
-    -webkit-text-stroke: 0 transparent;
-    text-shadow: none;
-  }
-  87% {
-    color: transparent;
-    -webkit-text-stroke: 0.5px #92ddff;
-    text-shadow: 0 0 9px #5ebdff44;
-  }
-  89% {
-    color: #c1eaff;
-    -webkit-text-stroke: 0 transparent;
-    text-shadow: 0 0 16px #4ab7ff70;
   }
 }
 
@@ -195,9 +176,16 @@
   text-shadow: none;
 }
 
+.tech-heading[data-active="false"] .tech-heading__outline,
+.tech-heading[data-active="false"] .tech-heading__glyph::after {
+  transition: none;
+  opacity: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tech-heading[data-enabled][data-active] .tech-heading__glyph[data-selected] {
     animation: none;
+    transition: none;
     color: var(--tech-final-color);
     -webkit-text-fill-color: currentColor;
     -webkit-text-stroke: 0;
@@ -206,14 +194,7 @@
   }
   .tech-heading__outline,
   .tech-heading__measure,
-  .tech-heading__glyph[data-selected="true"]::after {
+  .tech-heading__glyph::after {
     display: none;
-  }
-  .tech-heading .tech-heading__glyph {
-    animation: none;
-    color: var(--tech-final-color);
-    -webkit-text-stroke: 0;
-    transform: none;
-    text-shadow: none;
   }
 }

@@ -69,7 +69,7 @@
   <div class="col-lg-8"><div class="card mb-4"><div class="card-body"><h3 class="h5">Review summary</h3>
     {% if explanation_stale and object.ai_explanation or analysis_stale %}<p class="small text-warning">Data has changed or the explanation version is unconfirmed. The saved explanation needs updating.</p>{% endif %}
     {% if explanation_document %}{% include 'ai/explanation_document.html' %}{% else %}<p class="mb-0" style="white-space: pre-line">{{ ai_explanation_html }}</p>{% endif %}
-    {% if saved_explanation.status == 'fallback' %}<p class="small text-muted mt-3 mb-0">AI was unavailable. This saved summary uses the evidence-based template.</p>{% endif %}
+    {% if saved_explanation.status == 'fallback' %}<p class="small text-muted mt-3 mb-0">No AI result was accepted. This explanation uses the saved factual summary. Remaining gaps are listed under Data coverage and missing checks.</p>{% endif %}
     {% if not saved_explanation %}<p class="small text-muted mt-3 mb-0">Saved text can predate this graph. Compare its claims with the evidence in the selected version.</p>{% endif %}
     <a href="{% url 'ai:data' object.uuid %}{% if snapshot %}?version={{ snapshot.version }}{% endif %}" class="btn btn-sm btn-outline-light mt-3">Saved analysis and evidence</a>
     {% if request.user.is_staff and snapshot.state == 'active' and not graph_options.historical %}

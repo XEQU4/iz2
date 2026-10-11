@@ -1,4 +1,4 @@
-// React Bits Border Glow edge/conic technique, adapted for native IZ2 elements.
+﻿// React Bits Border Glow edge/conic technique, adapted for native IZ2 elements.
 // Copyright (c) 2026 David Haz. MIT + Commons Clause; see licenses/react-bits.txt.
 import {
   useCallback,
@@ -14,7 +14,7 @@ import {
 import { useDecorationActive } from "../motion/useDecorationActive";
 import "./BorderGlow.css";
 
-const DEFAULT_COLORS = ["#78aaff", "#daeaff", "#3e6ee8"] as const;
+const DEFAULT_COLORS = ["#a6a6a2", "#eeeeea", "#737370"] as const;
 const GRADIENT_POSITIONS = [
   "80% 55%",
   "69% 34%",
@@ -41,15 +41,15 @@ export interface BorderGlowOptions {
 function glowStyle({
   edgeSensitivity = 30,
   glowRadius = 28,
-  glowIntensity = 1,
+  glowIntensity = 0.5,
   coneSpread = 25,
-  fillOpacity = 0.16,
+  fillOpacity = 0.07,
   borderRadius,
-  glowColor = "214 90 84",
+  glowColor = "0 0 86",
   colors = DEFAULT_COLORS,
 }: BorderGlowOptions): CSSProperties {
   const match = glowColor.match(/([\d.]+)\s+([\d.]+)%?\s+([\d.]+)%?/);
-  const [h, s, l] = match ? match.slice(1, 4).map(Number) : [214, 90, 84];
+  const [h, s, l] = match ? match.slice(1, 4).map(Number) : [0, 0, 86];
   const intensity = Math.max(0, Math.min(glowIntensity, 2));
   const variables: Record<string, string | number> = {
     "--border-glow-sensitivity": Math.max(0, Math.min(edgeSensitivity, 75)),

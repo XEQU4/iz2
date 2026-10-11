@@ -1,7 +1,7 @@
 """Readability, preserved history, source uncertainty and HTML escaping."""
 from unittest.mock import patch
 
-from django.test import TestCase
+from django.test import SimpleTestCase, TestCase
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
@@ -14,6 +14,25 @@ from .models import AnalysisSnapshot, AnalysisState, Explanation
 from .presentation import build_document, document_text, wording_variants
 from .services import prepare_analysis, template_for
 from .tests import AnalysisFixtures
+
+
+class RoleWordingBoundaryTests(SimpleTestCase):
+    def test_saved_role_period_uses_start_inclusive_end_exclusive_dates(self):
+        from .test_grounding import synthetic_analysis, closed_plan
+        for start, end, applicable in (
+            ('2026-10-10', '2026-10-11', True),
+            ('2026-10-09', '2026-10-10', False),
+            ('2026-10-11', '2026-10-12', False),
+            ('2026-10-10', '2026-10-10', False),
+            ('invalid', '2026-10-11', False),
+        ):
+            with self.subTest(start=start, end=end):
+                analysis = synthetic_analysis('shared_director', role_dates=True)
+                analysis.inputs['graph']['links'][0].update(valid_from=start, valid_until=end)
+                for plan in (None, closed_plan(['saved-finding'])):
+                    text = document_text(build_document(analysis, plan))
+                    self.assertEqual('Recorded role dates cover' in text, applicable)
+                    self.assertEqual('do not confirm simultaneous roles' in text, not applicable)
 
 
 class PresentationTests(AnalysisFixtures, TestCase):
@@ -125,7 +144,7 @@ class PresentationTests(AnalysisFixtures, TestCase):
             analyse_cluster_task.run(job.pk)
         current = AnalysisState.objects.get(cluster=cluster).explanation
         self.assertNotEqual(current.pk, old.pk)
-        self.assertEqual(current.prompt_version, 'explanation-template-5.2')
+        self.assertEqual(current.prompt_version, 'explanation-template-5.3')
         self.assertEqual(AnalysisSnapshot.objects.count(), 1)
         self.assertEqual(Explanation.objects.get(pk=old.pk).text, old.text)
         self.assertEqual(self.request(cluster, use_model=False).pk, job.pk)
@@ -171,20 +190,18 @@ class PresentationTests(AnalysisFixtures, TestCase):
         plan = {
             'sections': [{'finding_id': finding['id'], 'variant': 0}],
             'narrative': {
-                'paragraphs': [
-                    {'text': '{{C1}} and {{C2}} share a recorded address.', 'finding_ids': [finding['id']]},
-                    {'text': 'An office service could explain this match.', 'finding_ids': [finding['id']]},
-                ],
-                'checks': [{'text': 'Confirm who uses the recorded office.', 'finding_ids': [finding['id']]}],
+                'paragraphs': [{'finding_id': finding['id'], 'variant': 0}],
+                'checks': [{'finding_id': finding['id'], 'variant': 0}],
             },
             'risk_estimate': None, 'risk_evidence': [],
         }
         from .services import explanation_content, publish_explanation
         explanation = Explanation.objects.create(
             analysis=analysis, reuse_key='synthetic-narrative', provider='ollama', model='synthetic-test',
-            prompt_version='evidence-presentation-5.2', **explanation_content(analysis, plan))
+            prompt_version='evidence-presentation-5.4', status='ready', **explanation_content(analysis, plan))
         self.assertTrue(publish_explanation(analysis, explanation))
-        self.assertIn('An office service could explain this match.', explanation.text)
+        self.assertIn('The match could come from a shared office or registration service', explanation.text)
+        self.assertEqual(explanation.presentation['document']['grounding_policy'], 'prepared-claims-1')
         self.assertNotIn('{{C1}}', explanation.text)
         self.assertIn('Synthetic shared office', explanation.text)
         companies[0].name = 'Changed after model generation'
@@ -193,7 +210,7 @@ class PresentationTests(AnalysisFixtures, TestCase):
             response = self.client.get(f'/api/v1/clusters/{cluster.uuid}/analysis/').json()
             page = self.client.get(reverse('graph:cluster_detail', args=[cluster.uuid]))
         self.assertEqual(response['explanation']['document'], explanation.presentation['document'])
-        self.assertContains(page, 'An office service could explain this match.')
+        self.assertContains(page, 'The match could come from a shared office or registration service')
         self.assertContains(page, '&lt;img src=x onerror=alert(1)&gt;')
         self.assertNotContains(page, '<img src=x onerror=alert(1)>')
         self.assertNotContains(page, companies[0].name)

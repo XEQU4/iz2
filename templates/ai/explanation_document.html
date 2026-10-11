@@ -1,5 +1,10 @@
 <div class="explanation-document">
   {% if explanation_document.narrative %}
+    {% if explanation_document.grounding_policy == 'prepared-claims-1' %}
+      <p class="small text-muted">AI selected and ordered prepared statements. Their wording comes from saved facts and fixed rules.</p>
+    {% else %}
+      <p class="small text-muted">This saved AI text uses an earlier generation method. It has not been rechecked under the current prepared-statement policy.</p>
+    {% endif %}
     {% for paragraph in explanation_document.narrative.paragraphs %}<p class="explanation-summary">{{ paragraph.text }}</p>{% endfor %}
   {% else %}<p class="explanation-summary">{{ explanation_document.summary }}</p>{% endif %}
   <h4 class="h6 mt-4">What connects these companies</h4>

@@ -148,6 +148,7 @@ export function SavedExplanation({
   const narrative = document?.narrative?.paragraphs.length
     ? document.narrative
     : null;
+  const preparedClaims = document?.grounding_policy === "prepared-claims-1";
   function evidenceLinks(ids: string[]) {
     if (!document) return null;
     const findings = Array.from(new Set(ids))
@@ -193,12 +194,23 @@ export function SavedExplanation({
           </span>
           <h2>
             {narrative
-              ? translate("AI explanation")
+              ? preparedClaims
+                ? translate("AI-assisted explanation")
+                : translate("Saved AI explanation")
               : translate("Saved summary")}
           </h2>
         </div>
         <Badge tone="blue">{explanation.language.toUpperCase()}</Badge>
       </header>
+      {narrative && (
+        <p className="explanation-language-note">
+          {translate(
+            preparedClaims
+              ? "AI selected and ordered prepared statements. Their wording comes from saved facts and fixed rules."
+              : "This saved AI text uses an earlier generation method. It has not been rechecked under the current prepared-statement policy.",
+          )}
+        </p>
+      )}
       {language === "ru" &&
         explanation.language.toLowerCase().startsWith("en") && (
           <p className="explanation-language-note">
@@ -278,7 +290,9 @@ export function SavedExplanation({
           {explanation.status === "fallback"
             ? translate("Saved template fallback")
             : narrative
-              ? translate("AI-written from saved facts")
+              ? preparedClaims
+                ? translate("AI-selected prepared statements")
+                : translate("Saved AI text · earlier method")
               : explanation.provider === "template"
                 ? translate("Prepared from saved facts")
                 : translate("Saved model-assisted summary")}
@@ -293,7 +307,7 @@ export function SavedExplanation({
           <p className="explanation-fallback-note">
             {" "}
             {translate(
-              "Model generation did not produce an accepted answer. This explanation uses the saved template.",
+              "No AI result was accepted. This explanation uses the saved factual summary. Remaining gaps are listed under Data coverage and missing checks.",
             )}{" "}
           </p>
         )}
@@ -316,6 +330,12 @@ export function SavedExplanation({
             <dt>{translate("Prompt version")}</dt>
             <dd>{explanation.prompt_version}</dd>
           </div>
+          {document?.grounding_policy && (
+            <div>
+              <dt>{translate("Wording policy")}</dt>
+              <dd>{document.grounding_policy}</dd>
+            </div>
+          )}
           <div>
             <dt>{translate("Saved")}</dt>
             <dd>{formatDateTime(explanation.created_at)}</dd>

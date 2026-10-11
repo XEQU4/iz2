@@ -39,15 +39,15 @@
 }
 .cluster-detail-page .cluster-review-status-note {
   font-size: 10px;
-  color: #9ca9bb;
+  color: #a8a8a8;
   margin-left: auto;
 }
 .cluster-detail-page .cluster-review-layout .cluster-analysis-summary,
 .cluster-detail-page .cluster-review-layout .cluster-explanation {
   padding: 27px;
-  border: 1px solid #38485e;
+  border: 1px solid #464646;
   border-radius: 22px;
-  background: linear-gradient(135deg, #1b2332cc, #0d121aeb);
+  background: linear-gradient(135deg, #222222cc, #121212eb);
   min-width: 0;
 }
 .cluster-detail-page .cluster-review-card-heading {
@@ -67,7 +67,7 @@
 .cluster-detail-page .cluster-review-card-heading .eyebrow {
   font-size: 8px;
   letter-spacing: 0.13em;
-  color: #a2b8d9;
+  color: #b6b6b6;
 }
 .cluster-detail-page .cluster-review-card-heading h2 {
   margin: 8px 0 0;
@@ -75,7 +75,7 @@
     600 23px/1.15 "Space Grotesk Variable",
     sans-serif;
   letter-spacing: -0.035em;
-  color: #ebf0fa;
+  color: #f0f0f0;
 }
 .cluster-detail-page .cluster-review-card-icon {
   display: grid;
@@ -83,10 +83,10 @@
   flex: 0 0 42px;
   width: 42px;
   height: 42px;
-  border: 1px solid #475d7c;
+  border: 1px solid #5b5b5b;
   border-radius: 12px;
-  color: #bcd2ed;
-  background: linear-gradient(140deg, #2a405d, #141c2a);
+  color: #cfcfcf;
+  background: linear-gradient(140deg, #3d3d3d, #1b1b1b);
 }
 .cluster-detail-page .cluster-review-card-icon svg {
   width: 20px;
@@ -96,7 +96,7 @@
   margin: 0 0 23px;
   font-size: 12px;
   line-height: 1.8;
-  color: #a9b6c9;
+  color: #b5b5b5;
 }
 .cluster-detail-page .priority-score {
   display: flex;
@@ -110,29 +110,29 @@
     600 50px/1 "Space Grotesk Variable",
     sans-serif;
   letter-spacing: -0.055em;
-  color: #ebf0fa;
+  color: #f0f0f0;
 }
 .cluster-detail-page .priority-score > strong > span {
-  color: #99aac0;
+  color: #a8a8a8;
   font-size: 19px;
   letter-spacing: -0.02em;
   margin-left: 5px;
 }
 .cluster-detail-page .priority-score > small {
   font-size: 10px;
-  color: #9ca9bc;
+  color: #a8a8a8;
 }
 .cluster-detail-page .cluster-review-layout .priority-track {
   height: 5px;
   border-radius: 5px;
-  background: #253348;
+  background: #323232;
   overflow: hidden;
   margin: 0 0 18px;
 }
 .cluster-detail-page .cluster-review-layout .priority-track > span {
   height: 100%;
   display: block;
-  background: linear-gradient(90deg, #4c69a6, #b2caeb);
+  background: linear-gradient(90deg, #676767, #c7c7c7);
   border-radius: inherit;
 }
 .cluster-detail-page .priority-interpretation {
@@ -141,7 +141,7 @@
   gap: 9px;
   margin: 0;
   font-size: 10px;
-  color: #9daabd;
+  color: #a9a9a9;
   line-height: 1.8;
 }
 .cluster-detail-page .priority-interpretation > svg {
@@ -149,17 +149,17 @@
   width: 14px;
   height: 14px;
   margin-top: 2px;
-  color: #abbeda;
+  color: #bcbcbc;
 }
 .cluster-detail-page .priority-contributions {
-  border-top: 1px solid #344154;
+  border-top: 1px solid #404040;
   margin-top: 23px;
   padding-top: 21px;
 }
 .cluster-detail-page .priority-contributions h3 {
   margin: 0 0 14px;
   font-size: 12px;
-  color: #dce5f2;
+  color: #e4e4e4;
 }
 .cluster-detail-page .priority-contributions ul {
   list-style: none;
@@ -172,8 +172,8 @@
   align-items: baseline;
   gap: 12px;
   padding: 9px 0;
-  border-bottom: 1px solid #303d4d11;
-  color: #aebbcd;
+  border-bottom: 1px solid #3b3b3b11;
+  color: #bababa;
   font-size: 11px;
   line-height: 1.6;
 }
@@ -181,25 +181,25 @@
   min-width: 0;
 }
 .cluster-detail-page .priority-contributions li > strong {
-  color: #d3e0f3;
+  color: #dfdfdf;
   white-space: nowrap;
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
   font-weight: 400;
 }
 .cluster-detail-page .priority-contributions li small {
-  color: #8e9caf;
+  color: #9a9a9a;
   font:
     9px "Manrope Variable",
     sans-serif;
 }
 .cluster-detail-page .priority-contributions > p {
-  color: #9da9b9;
+  color: #a8a8a8;
   font-size: 11px;
   line-height: 1.8;
 }
 .cluster-detail-page .cluster-review-layout .analysis-metrics {
-  border-top: 1px solid #344154;
+  border-top: 1px solid #404040;
   margin: 22px 0 0;
   padding-top: 6px;
 }
@@ -210,27 +210,27 @@
   gap: 11px;
   margin: 0;
   padding: 15px 0;
-  border-bottom: 1px solid #2d3744;
+  border-bottom: 1px solid #363636;
 }
 .cluster-detail-page .analysis-metrics dt {
-  color: #cdd6e3;
+  color: #d5d5d5;
   font-size: 11px;
 }
 .cluster-detail-page .analysis-metrics dt > small {
   display: block;
   margin-top: 6px;
   font-size: 9px;
-  color: #8d9bae;
+  color: #999999;
   line-height: 1.7;
 }
 .cluster-detail-page .analysis-metrics dd {
-  color: #e0e9f7;
+  color: #e8e8e8;
   font-size: 12px;
   padding-top: 0;
 }
 .cluster-detail-page .analysis-metrics dd > small {
   font-size: 9px;
-  color: #97a7bc;
+  color: #a5a5a5;
   margin-left: 2px;
 }
 .cluster-detail-page .priority-evidence-date {
@@ -238,12 +238,12 @@
   justify-content: space-between;
   gap: 12px;
   font-size: 10px;
-  color: #9aa7ba;
+  color: #a6a6a6;
   margin: 17px 0 25px;
 }
 .cluster-detail-page .priority-evidence-date > strong {
   font-weight: 400;
-  color: #d3deed;
+  color: #dddddd;
 }
 .cluster-detail-page .priority-unavailable {
   display: flex;
@@ -251,17 +251,17 @@
   align-items: start;
   gap: 12px;
   padding: 17px 0;
-  color: #b5c5da;
+  color: #c3c3c3;
 }
 .cluster-detail-page .priority-unavailable > p {
-  color: #9ba9bc;
+  color: #a7a7a7;
   font-size: 11px;
   line-height: 1.8;
   margin: 0;
 }
 .cluster-detail-page .priority-companies {
   padding-top: 17px;
-  border-top: 1px solid #344154;
+  border-top: 1px solid #404040;
 }
 .cluster-detail-page .priority-companies > summary {
   display: flex;
@@ -272,9 +272,9 @@
 }
 .cluster-detail-page .priority-companies > summary > strong {
   margin-left: auto;
-  color: #a6bbdb;
-  border: 1px solid #415167;
-  background: #131b29;
+  color: #b9b9b9;
+  border: 1px solid #4f4f4f;
+  background: #1a1a1a;
   border-radius: 6px;
   padding: 2px 8px;
   font-size: 10px;
@@ -289,14 +289,14 @@
   font-size: 11px;
   padding: 10px 0;
   margin: 0;
-  border-bottom: 1px solid #2b3848;
+  border-bottom: 1px solid #363636;
   line-height: 1.6;
 }
 .cluster-detail-page .analysis-company-list a {
   display: flex;
   gap: 9px;
   align-items: center;
-  color: #bacbe6;
+  color: #c9c9c9;
 }
 .cluster-detail-page .analysis-company-list a > svg {
   margin-left: auto;
@@ -307,10 +307,10 @@
 .cluster-detail-page .cluster-review-layout .cluster-technical {
   margin-top: 21px;
   padding-top: 16px;
-  border-top: 1px solid #344154;
+  border-top: 1px solid #404040;
 }
 .cluster-detail-page .cluster-review-layout .cluster-technical > summary {
-  color: #9babbf;
+  color: #a9a9a9;
   font-size: 11px;
 }
 .cluster-detail-page .cluster-review-layout .cluster-technical .field {
@@ -334,7 +334,7 @@
   .cluster-explanation
   > .explanation-summary {
   margin: 24px 0 28px;
-  color: #e8eef8;
+  color: #ededed;
   font-size: 15px;
   line-height: 1.9;
 }
@@ -347,13 +347,13 @@
 .cluster-detail-page .explanation-narrative > section > p {
   font-size: 15px;
   line-height: 1.95;
-  color: #dde5f1;
+  color: #e4e4e4;
   margin: 0 0 13px;
 }
 .cluster-detail-page .explanation-narrative > section:first-child > p {
   font-size: 17px;
   line-height: 1.85;
-  color: #ebf0fa;
+  color: #f0f0f0;
 }
 .cluster-detail-page .explanation-references {
   display: flex;
@@ -365,11 +365,11 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border: 1px solid #415167;
-  background: #121a28;
+  border: 1px solid #4f4f4f;
+  background: #191919;
   padding: 6px 9px;
   border-radius: 7px;
-  color: #b7cae7;
+  color: #c8c8c8;
   font-size: 10px;
   line-height: 1.5;
 }
@@ -378,33 +378,33 @@
   height: 12px;
 }
 .cluster-detail-page .explanation-references > a:hover {
-  background: #1e2b3e;
-  color: #e8f0f9;
-  border-color: #6e84a3;
+  background: #2a2a2a;
+  color: #efefef;
+  border-color: #828282;
 }
 .cluster-detail-page .explanation-references > a:focus-visible {
-  outline: 2px solid #b2c9e9;
+  outline: 2px solid #c6c6c6;
   outline-offset: 4px;
 }
 .cluster-detail-page .explanation-next-checks {
   margin: 30px 0;
   padding: 23px 24px;
-  border: 1px solid #405066;
+  border: 1px solid #4e4e4e;
   border-radius: 15px;
-  background: linear-gradient(125deg, #24344b44, #141a2abb);
+  background: linear-gradient(125deg, #32323244, #1a1a1abb);
 }
 .cluster-detail-page .explanation-next-checks h3 {
   display: flex;
   gap: 9px;
   align-items: center;
   margin: 0 0 20px;
-  color: #e0e8f6;
+  color: #e7e7e7;
   font-size: 14px;
 }
 .cluster-detail-page .explanation-next-checks h3 > svg {
   width: 16px;
   height: 16px;
-  color: #a6c1e7;
+  color: #bebebe;
 }
 .cluster-detail-page .explanation-next-checks ol {
   margin: 0;
@@ -412,7 +412,7 @@
 }
 .cluster-detail-page .explanation-next-checks li {
   padding: 0 0 15px 6px;
-  color: #c1cee0;
+  color: #cdcdcd;
   font-size: 12px;
   line-height: 1.9;
 }
@@ -420,7 +420,7 @@
   padding-bottom: 0;
 }
 .cluster-detail-page .explanation-next-checks li::marker {
-  color: #9eb9e3;
+  color: #b6b6b6;
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
 }
@@ -431,7 +431,7 @@
 }
 .cluster-detail-page .explanation-saved-facts,
 .cluster-detail-page .explanation-coverage {
-  border-top: 1px solid #384558;
+  border-top: 1px solid #444444;
   padding: 18px 0;
 }
 .cluster-detail-page .explanation-saved-facts > summary,
@@ -439,7 +439,7 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  color: #c6d3e5;
+  color: #d2d2d2;
   font-size: 12px;
   min-height: 28px;
 }
@@ -448,11 +448,11 @@
   flex-shrink: 0;
   width: 15px;
   height: 15px;
-  color: #a1b6d5;
+  color: #b4b4b4;
 }
 .cluster-detail-page .explanation-saved-facts > summary > small {
   margin-left: auto;
-  color: #8e9caf;
+  color: #9a9a9a;
   font-size: 10px;
   white-space: nowrap;
 }
@@ -461,7 +461,7 @@
 }
 .cluster-detail-page .explanation-facts-body .explanation-finding {
   padding: 22px 0;
-  border-top: 1px solid #323f52;
+  border-top: 1px solid #3e3e3e;
   scroll-margin-top: 100px;
 }
 .cluster-detail-page .explanation-facts-body .explanation-finding:first-child {
@@ -477,21 +477,21 @@
   margin: 12px 0;
 }
 .cluster-detail-page .explanation-fact-context {
-  color: #9cacc1;
+  color: #aaaaaa;
 }
 .cluster-detail-page .explanation-fact-details {
   list-style: none;
   padding: 10px 13px;
   margin: 12px 0;
-  border: 1px solid #37475d;
+  border: 1px solid #454545;
   border-radius: 9px;
-  background: #0f141f;
+  background: #141414;
 }
 .cluster-detail-page .explanation-fact-details li {
   font:
     10px/1.9 "IBM Plex Mono",
     monospace;
-  color: #c2d0e3;
+  color: #cecece;
   overflow-wrap: anywhere;
 }
 .cluster-detail-page .explanation-companies a {
@@ -500,9 +500,9 @@
   gap: 6px;
   padding: 7px 9px;
   font-size: 10px;
-  border-color: #37475d;
-  color: #b5c8e5;
-  background: #101823;
+  border-color: #454545;
+  color: #c6c6c6;
+  background: #171717;
 }
 .cluster-detail-page .explanation-companies svg {
   width: 12px;
@@ -513,20 +513,20 @@
 }
 .cluster-detail-page .explanation-finding-limits > summary {
   font-size: 11px;
-  color: #9ba9bc;
+  color: #a7a7a7;
 }
 .cluster-detail-page .explanation-coverage ul {
   padding-left: 19px;
   margin: 19px 0 6px;
 }
 .cluster-detail-page .explanation-coverage li {
-  color: #a6b3c6;
+  color: #b2b2b2;
   font-size: 12px;
   line-height: 1.9;
   margin-bottom: 9px;
 }
 .cluster-detail-page .explanation-conclusion {
-  color: #91a1b7;
+  color: #9f9f9f;
   font-size: 11px;
   line-height: 1.9;
   margin: 16px 0 0;
@@ -536,10 +536,10 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 10px 18px;
-  border-top: 1px solid #344154;
+  border-top: 1px solid #404040;
   padding-top: 21px;
   margin-top: 20px;
-  color: #9babbf;
+  color: #a9a9a9;
   font-size: 10px;
   line-height: 1.8;
 }
@@ -551,22 +551,22 @@
 .cluster-detail-page .explanation-source > span:first-child > svg {
   width: 13px;
   height: 13px;
-  color: #a2bbd8;
+  color: #b8b8b8;
 }
 .cluster-detail-page .explanation-model-name {
-  color: #b6c7de;
+  color: #c5c5c5;
   font-family: "IBM Plex Mono", monospace;
   font-size: 9px;
 }
 .cluster-detail-page .explanation-source > .explanation-fallback-note {
   width: 100%;
   margin: 0;
-  color: #aebaca;
+  color: #b9b9b9;
   font-size: 11px;
   line-height: 1.8;
 }
 .cluster-detail-page .cluster-explanation-empty > p {
-  color: #a6b3c6;
+  color: #b2b2b2;
   font-size: 12px;
   line-height: 1.9;
 }
@@ -633,7 +633,7 @@
 }
 .cluster-detail-page .explanation-disclosure-arrow {
   margin-left: auto;
-  color: #9fb1c8;
+  color: #afafaf;
 }
 .cluster-detail-page details[open] > summary > .explanation-disclosure-arrow {
   transform: rotate(180deg);

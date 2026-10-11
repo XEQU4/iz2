@@ -34,7 +34,7 @@
   position: absolute;
   display: block;
   border-radius: 50%;
-  box-shadow: 0 0 4px #9abaff45;
+  box-shadow: 0 0 4px #b8b8b845;
   opacity: calc(var(--particle-opacity) * 0.6);
   animation: iz2-particle-twinkle var(--particle-duration) ease-in-out
     var(--particle-delay) infinite;
@@ -57,16 +57,52 @@
 /* The small moon occupies the outer gutter, behind every content surface. */
 .iz2-moon {
   position: absolute;
-  width: 46px;
-  height: 46px;
-  top: 106px;
+  width: 64px;
+  height: 64px;
+  top: 100px;
   right: 1px;
-  opacity: 0.72;
-  transform: rotate(-18deg);
-  filter: drop-shadow(0 0 9px #91b9ee22);
+  opacity: 0.64;
+  transform: rotate(-16deg);
+  filter: drop-shadow(0 0 7px #efefdf14);
+  animation: iz2-moon-libration 32s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+.iz2-moon__halo {
+  transform-origin: 50px 50px;
+  animation: iz2-moon-halo 18s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+.iz2-particles[data-active="true"] :is(.iz2-moon, .iz2-moon__halo) {
+  animation-play-state: running;
+}
+
+@keyframes iz2-moon-libration {
+  from {
+    transform: translateY(0) rotate(-16deg);
+  }
+  to {
+    transform: translateY(3px) rotate(-12deg);
+  }
+}
+
+@keyframes iz2-moon-halo {
+  from {
+    opacity: 0.5;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 0.85;
+    transform: scale(1.04);
+  }
 }
 
 :root[data-motion="off"] .iz2-particles-fallback > i {
+  animation: none;
+}
+
+:root[data-motion="off"] :is(.iz2-moon, .iz2-moon__halo) {
   animation: none;
 }
 
@@ -78,6 +114,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .iz2-particles-fallback > i {
+    animation: none;
+  }
+  .iz2-moon,
+  .iz2-moon__halo {
     animation: none;
   }
 }

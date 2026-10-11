@@ -2,9 +2,9 @@
   position: relative;
   flex-shrink: 0;
   width: 100%;
-  border-top: 1px solid #2e3c51;
-  background: linear-gradient(180deg, #0c111ceb, #080a0ff5);
-  color: #a4afbf;
+  border-top: 1px solid #3b3b3b;
+  background: linear-gradient(180deg, #111111eb, #0a0a0af5);
+  color: #aeaeae;
 }
 .workspace-footer-inner {
   max-width: 1560px;
@@ -39,7 +39,7 @@
 }
 .footer-project-brand small {
   display: block;
-  color: #9cacc4;
+  color: #aaaaaa;
   font:
     7px/1.7 "IBM Plex Mono",
     monospace;
@@ -47,7 +47,7 @@
   margin-top: 5px;
 }
 .footer-project-intro > p {
-  color: #a7b2c3;
+  color: #b1b1b1;
   font-size: 12px;
   line-height: 1.9;
   margin-top: 20px;
@@ -58,7 +58,7 @@
   align-items: center;
   gap: 7px;
   margin-top: 14px;
-  color: #8d9bb2;
+  color: #9a9a9a;
   font-size: 11px;
   line-height: 1.7;
 }
@@ -66,7 +66,7 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #9bb3e1;
+  background: #b1b1b1;
   flex-shrink: 0;
 }
 .footer-about-link {
@@ -75,12 +75,12 @@
   gap: 9px;
   margin-top: 16px;
   min-height: 36px;
-  color: #cbd6ec;
+  color: #d5d5d5;
   font-size: 11px;
 }
 .workspace-footer-full h2 {
   margin: 5px 0 18px;
-  color: #e0e8f4;
+  color: #e7e7e7;
   font-size: 13px;
   font-weight: 500;
   line-height: 1.6;
@@ -97,7 +97,7 @@
   display: inline-flex;
   align-items: center;
   min-height: 36px;
-  color: #aab5ca;
+  color: #b4b4b4;
   font-size: 12px;
   line-height: 1.7;
 }
@@ -107,7 +107,7 @@
   align-items: center;
   gap: 7px;
   font-size: 11px;
-  color: #bfcde5;
+  color: #cccccc;
   line-height: 1.8;
   min-height: 34px;
 }
@@ -125,11 +125,11 @@
     9px/1.7 "IBM Plex Mono",
     monospace;
   letter-spacing: 0.04em;
-  color: #8593ab;
+  color: #929292;
 }
 .footer-project-credits dd {
   margin: 4px 0 0;
-  color: #b2bed1;
+  color: #bdbdbd;
   font-size: 11px;
   line-height: 1.8;
 }
@@ -137,12 +137,12 @@
   margin-top: 12px;
 }
 .footer-article-contact {
-  border-top: 1px solid #38465b;
+  border-top: 1px solid #454545;
   padding-top: 12px;
 }
 .footer-contact-person {
   display: block;
-  color: #98a6be;
+  color: #a5a5a5;
   font-size: 10px;
   line-height: 1.8;
   overflow-wrap: anywhere;
@@ -152,16 +152,16 @@
 }
 .footer-contact-panel {
   align-self: start;
-  border: 1px solid #3d4d64;
+  border: 1px solid #4b4b4b;
   border-radius: 14px;
-  background: linear-gradient(145deg, #1b263b80, #0c1119c7);
+  background: linear-gradient(145deg, #25252580, #111111c7);
   padding: 20px;
 }
 .footer-contact-panel h2 {
   margin: 0 0 10px;
 }
 .footer-contact-panel > p {
-  color: #98a6be;
+  color: #a5a5a5;
   font-size: 11px;
   line-height: 1.9;
 }
@@ -169,7 +169,7 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  color: #d2def3;
+  color: #dddddd;
   font-size: 11px;
   line-height: 1.8;
   padding: 17px 0;
@@ -187,7 +187,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 4px 20px;
-  border-top: 1px solid #38465b;
+  border-top: 1px solid #454545;
   padding-top: 10px;
 }
 .footer-contact-links > a {
@@ -195,7 +195,7 @@
   align-items: center;
   gap: 6px;
   min-height: 34px;
-  color: #bccce6;
+  color: #cacaca;
   font-size: 11px;
 }
 .workspace-footer-full a svg:not(.footer-project-brand > svg) {
@@ -211,7 +211,7 @@
   align-items: start;
   gap: 40px;
   margin-top: 34px;
-  border-top: 1px solid #293446;
+  border-top: 1px solid #333333;
   padding-top: 24px;
 }
 .workspace-footer-resources h2 {
@@ -231,11 +231,11 @@
   font:
     10px/1.8 "IBM Plex Mono",
     monospace;
-  color: #abbbd4;
+  color: #b9b9b9;
 }
 .footer-source-section p {
   margin-top: 8px;
-  color: #7c8ba1;
+  color: #898989;
   font-size: 10px;
   line-height: 1.8;
 }
@@ -245,24 +245,24 @@
   gap: 7px;
 }
 .footer-stack-section li {
-  border: 1px solid #354055;
+  border: 1px solid #3f3f3f;
   border-radius: 5px;
   padding: 5px 8px;
-  color: #9facc0;
+  color: #ababab;
   font:
     9px/1.6 "IBM Plex Mono",
     monospace;
-  background: #0f1522;
+  background: #151515;
 }
 .workspace-footer-bottom {
   display: flex;
   justify-content: space-between;
   gap: 14px 28px;
   flex-wrap: wrap;
-  border-top: 1px solid #272f3e;
+  border-top: 1px solid #2e2e2e;
   padding-top: 18px;
   margin-top: 24px;
-  color: #8190a5;
+  color: #8e8e8e;
   font-size: 10px;
   line-height: 1.9;
 }
@@ -270,7 +270,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #9fafc8;
+  color: #adadad;
 }
 @media (max-width: 1280px) {
   .workspace-footer-top {

@@ -1,4 +1,8 @@
-"""Grounding, privacy and bounded prose checks using synthetic saved inputs."""
+"""Historical lexical guards and current closed-plan request regressions.
+
+The retained lexical checks describe legacy prose limitations; they are not the
+publication boundary. Closed-plan regressions live in test_grounding.py.
+"""
 from copy import deepcopy
 import json
 from types import SimpleNamespace
@@ -9,6 +13,7 @@ from .narrative import (company_tokens, finding_context, validate_narrative,
                         normalize_inline_citations, normalize_company_aliases,
                         NarrativeValidationError)
 from .providers import configuration, prepared_request, validate_plan, ProviderError
+from .grounding import selection_context
 
 
 class NarrativeTests(SimpleTestCase):
@@ -40,7 +45,8 @@ class NarrativeTests(SimpleTestCase):
             self.assertNotIn(node['name'], request)
             self.assertNotIn(node['bin'], request)
         self.assertNotIn('Synthetic confidential office', request)
-        self.assertEqual(json.loads(messages[1]['content'])['findings'][0]['companies'], ['C1', 'C2'])
+        choices = json.loads(messages[1]['content'])['findings'][0]['paragraph_variants']
+        self.assertTrue(all('{{C1}}' in text and '{{C2}}' in text for text in choices))
         self.assertNotIn('review_priority', json.loads(messages[1]['content'])['metrics'])
 
     def test_grounded_specific_prose_is_accepted(self):
@@ -326,15 +332,20 @@ class NarrativeTests(SimpleTestCase):
             with self.assertRaises(NarrativeValidationError):
                 self.validate(value)
 
-    def test_live_validation_requires_prose_but_legacy_unit_plans_remain_valid(self):
+    def test_live_validation_requires_closed_choices_but_legacy_sections_remain_valid(self):
         legacy = {'sections': [{'finding_id': 'address', 'variant': 0}],
                   'risk_estimate': None, 'risk_evidence': []}
         validate_plan(legacy, ['address'])
         with self.assertRaises(ProviderError):
             validate_plan(legacy, ['address'], context=self.context, require_narrative=True)
-        current = {**legacy, 'narrative': self.value}
-        self.assertEqual(validate_plan(current, ['address'], context=self.context,
+        context = [selection_context(self.analysis, self.analysis.findings[0])]
+        current = {**legacy, 'narrative': {key: [{'finding_id': 'address', 'variant': 0}]
+                                         for key in ('paragraphs', 'checks')}}
+        self.assertEqual(validate_plan(current, ['address'], context=context,
                                        require_narrative=True), current)
+        with self.assertRaises(ProviderError):
+            validate_plan({**legacy, 'narrative': self.value}, ['address'], context=context,
+                          require_narrative=True)
 
     def test_model_selection_excludes_unknown_checks_and_is_bounded(self):
         self.analysis.findings += [
@@ -344,7 +355,7 @@ class NarrativeTests(SimpleTestCase):
             _, schema, ids = prepared_request(self.analysis, configuration())
         self.assertEqual(ids, ['address'])
         item = schema['properties']['narrative']['properties']['paragraphs']['items']
-        self.assertEqual(item['properties']['finding_ids']['items']['enum'], ['address'])
+        self.assertEqual(item['properties']['finding_id']['enum'], ['address'])
 
     def test_no_meaningful_facts_fails_before_any_inference(self):
         self.analysis.findings = [{'id': 'unknown', 'code': 'company_check_unknown'}]

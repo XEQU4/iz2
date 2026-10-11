@@ -99,10 +99,14 @@ result. Jobs use deduplication, exact version binding and latest-request fencing
 late output cannot replace a newer requested result. Personal GraphViewState is
 separate from analytical hashes and uses optimistic revision checks.
 
-The optional Qwen model writes short English, evidence-cited prose from prepared
-facts; aliases are expanded from frozen labels. Schema/reference/number and
-contradiction guards plus a bounded local repair reject some invalid output.
-They are not semantic proof: AUD-002 remains open. Failure keeps a saved template.
+The optional Qwen model selects and orders prepared English statements using a
+closed finding-ID/variant grammar. It cannot supply publishable prose. The server
+renders exact company scope, amounts, dates and uncertainty from frozen evidence,
+then rechecks the saved document/text at publication and reuse boundaries. One
+bounded local repair is allowed; failure saves a readable template. Prompt 5.4
+and document/template 5.3 supersede free-prose generation for new jobs. Old immutable
+texts remain readable with their original provenance; GET never regenerates them.
+See AI_GROUNDING.md for the targeted tests and remaining evidence-quality limits.
 The model never decides identity, edges or public review scores. Experimental
 estimates remain separate. Paid providers require explicit opt-in.
 

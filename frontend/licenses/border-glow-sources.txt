@@ -9,7 +9,7 @@ Typed source: https://github.com/DavidHDev/react-bits/blob/main/src/ts-default/C
 Styles: https://github.com/DavidHDev/react-bits/blob/main/src/ts-default/Components/BorderGlow/BorderGlow.css
 
 Adaptations:
-- Blue/white palette and restrained fill on existing IZ2 cards.
+- Graphite surfaces and soft white highlights on existing IZ2 cards.
 - Hook retains native links, sections, focus behaviour and tab order.
 - One pending animation frame per pointer movement; no idle animation loop.
 - Cancellation/reset on pointer leave/cancel, disabled motion, hidden document,

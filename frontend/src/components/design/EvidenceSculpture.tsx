@@ -33,9 +33,9 @@ export function EvidenceSculpture({ enabled }: { enabled: boolean }) {
             y2="270"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stopColor="#bbefff" stopOpacity=".9" />
-            <stop offset=".42" stopColor="#4184ff" stopOpacity=".7" />
-            <stop offset="1" stopColor="#2c35c7" stopOpacity=".85" />
+            <stop stopColor="#e5e5e5" stopOpacity=".9" />
+            <stop offset=".42" stopColor="#7f7f7f" stopOpacity=".7" />
+            <stop offset="1" stopColor="#3e3e3e" stopOpacity=".85" />
           </linearGradient>
           <linearGradient
             id={id + "-left"}
@@ -45,8 +45,8 @@ export function EvidenceSculpture({ enabled }: { enabled: boolean }) {
             y2="325"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stopColor="#137ff6" stopOpacity=".85" />
-            <stop offset="1" stopColor="#101b4f" stopOpacity=".98" />
+            <stop stopColor="#717171" stopOpacity=".85" />
+            <stop offset="1" stopColor="#1c1c1c" stopOpacity=".98" />
           </linearGradient>
           <linearGradient
             id={id + "-right"}
@@ -56,8 +56,8 @@ export function EvidenceSculpture({ enabled }: { enabled: boolean }) {
             y2="265"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stopColor="#2f47d8" stopOpacity=".92" />
-            <stop offset="1" stopColor="#15164c" stopOpacity=".96" />
+            <stop stopColor="#4c4c4c" stopOpacity=".92" />
+            <stop offset="1" stopColor="#1a1a1a" stopOpacity=".96" />
           </linearGradient>
           <linearGradient
             id={id + "-edge"}
@@ -67,9 +67,9 @@ export function EvidenceSculpture({ enabled }: { enabled: boolean }) {
             y2="300"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stopColor="#c8f5ff" />
-            <stop offset=".5" stopColor="#60d4ff" />
-            <stop offset="1" stopColor="#7a7bff" />
+            <stop stopColor="#ececec" />
+            <stop offset=".5" stopColor="#bebebe" />
+            <stop offset="1" stopColor="#848484" />
           </linearGradient>
           <filter
             id={id + "-glow"}
@@ -83,26 +83,26 @@ export function EvidenceSculpture({ enabled }: { enabled: boolean }) {
         </defs>
         <g
           className="sculpture-connectors"
-          stroke="#4b9be8"
+          stroke="#909090"
           strokeOpacity=".55"
           strokeWidth="1.2"
         >
           <path d="M85 135L182 181M383 166L475 98M287 287L429 339" />
-          <circle cx="85" cy="135" r="4" fill="#a8e6ff" />
-          <circle cx="475" cy="98" r="4" fill="#b2c4ff" />
-          <circle cx="429" cy="339" r="4" fill="#9dccff" />
+          <circle cx="85" cy="135" r="4" fill="#dbdbdb" />
+          <circle cx="475" cy="98" r="4" fill="#c4c4c4" />
+          <circle cx="429" cy="339" r="4" fill="#c6c6c6" />
         </g>
         <g className="sculpture-platform">
           <path
             d="M149 274L280 201L411 274L280 347Z"
-            fill="#0c214e"
-            stroke="#3873bd"
+            fill="#202020"
+            stroke="#6c6c6c"
             strokeOpacity=".5"
           />
           <path
             d="M149 274V286L280 359L411 286V274L280 347Z"
-            fill="#0a1631"
-            stroke="#275290"
+            fill="#151515"
+            stroke="#4d4d4d"
             strokeOpacity=".6"
           />
         </g>
@@ -134,28 +134,28 @@ export function EvidenceSculpture({ enabled }: { enabled: boolean }) {
           ))}
           <path
             d="M190 161L280 111L370 161L280 211Z"
-            stroke="#b5edff"
+            stroke="#e2e2e2"
             strokeOpacity=".65"
           />
           <path
             d="M224 161L280 130L336 161L280 192Z"
-            fill="#97d8ff"
+            fill="#cdcdcd"
             fillOpacity=".18"
-            stroke="#e4f8ff"
+            stroke="#f4f4f4"
             strokeOpacity=".8"
           />
           <path
             d="M162 162L280 96L398 162"
-            stroke="#7bdfff"
+            stroke="#cccccc"
             strokeWidth="4"
             filter={"url(#" + id + "-glow)"}
           />
           <path
             d="M259 158L278 148L293 156L274 166ZM275 168L294 158L309 166L290 176Z"
-            fill="#effaff"
+            fill="#f8f8f8"
           />
         </g>
-        <g fill="#b7dcff">
+        <g fill="#d7d7d7">
           <circle cx="132" cy="245" r="2" />
           <circle cx="426" cy="202" r="2" />
           <circle cx="231" cy="63" r="1.5" />

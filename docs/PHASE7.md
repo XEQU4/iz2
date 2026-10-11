@@ -767,3 +767,65 @@ was installed. The next agreed task, after the user-operated commit/push, is
 Docker configuration for a Linux server without a selected hosting provider.
 Other final-audit findings and public deployment approval remain separate.
 
+## Prepared-statement AI provenance, 10 October 2026
+
+The authorised AUD-002 change uses explicit saved `prepared-claims-1` metadata
+to label new AI-assisted explanations. EN/RU describes model selection of prepared
+statements; historical prose retains an earlier-method label. Rejected/unavailable
+model output has an explicit factual-template fallback. Language switching never
+rewrites saved text. Backend/API/template details are in AI_GROUNDING.md.
+
+All 144 React tests, build, formatting, strict OpenAPI and collectstatic passed.
+Eighteen Chromium scenarios at 1440/390 px covered the four real saved synthetic
+Qwen cases, evidence links and both languages; legacy/fallback variants used
+browser-only API mocks. No overflow, application exceptions, failed responses or
+non-GET requests occurred after collectstatic. A prior stale collected manifest
+was resolved by the documented collectstatic step. Viewport screenshots were
+inspected; sticky header placement was correct. Report/screenshots are in ignored
+artifacts/ai-grounding/. Working data and stored texts stayed unchanged.
+
+## Graphite visual refinement, 11 October 2026
+
+The user explicitly chose a calm black/white direction, superseding the earlier
+blue presentation. The website and English-only API reference now use near-black
+backgrounds, subtly separated graphite cards, off-white typography and restrained
+white highlights. Shared controls, directories, profile/dialogs, footer, logo and
+favicon follow the same palette. Graph node/relationship colours, meaningful
+status colours and language flags retain their meaning; the graph canvas and
+selection glow are neutral. No blanket grayscale filter is applied.
+
+Headings have a finite grey-to-white reveal and thin glyph outlines that crossfade
+over 380 ms. Continuous logo glitch, button blur and search scans are removed;
+intentional hover/focus has a brief, subtle response. The background uses white
+twinkling particles and an original textured crescent with slow libration. The
+moon hides on narrow screens. Manual pause, reduced motion and visibility gating
+remain in force. Inline UK/RU flags replace the language letters while preserving
+accessible names, keyboard controls and the saved EN/RU preference.
+
+Browser inspection also found missing initial heading styles: Django had emitted
+only entry CSS, while Vite extracted some CSS into static imports. The manifest
+loader now walks bounded static dependencies, emits deduplicated dependency CSS
+before entry CSS, handles cycles, rejects invalid paths and leaves dynamic imports
+to Vite. Original Vite URLs remain unchanged to preserve one React context.
+
+Validation: all 146 React tests, 10 frontend integration tests and two strict
+Swagger tests passed, plus TypeScript/Vite build, formatting and normal
+collectstatic. An isolated synthetic SQLite/Chromium preview covered overview,
+directories, company/person/group details, About, sign-up, real synthetic sign-in
+and profile. Representative routes had no horizontal page overflow at
+320/390/768/1440/1920 px. A two-company graph retained selection/evidence and
+relationship filtering; a 100-company graph rendered 101 nodes and mobile Fit.
+Language keyboard switching/persistence, manual pause and reduced motion passed.
+API stayed English with the website set to Russian; filtering and native Execute
+returned HTTP 200 with one synthetic record. Expanded API layouts passed the same
+five widths. Desktop/mobile screenshots were inspected. No browser errors,
+warnings or failed HTTP responses were recorded; the only non-GET request was
+the intentional synthetic login. These are bounded checks, not a performance
+benchmark or physical-touch/Firefox/Safari certification.
+
+The owned preview/browser were stopped. Private logs/screenshots and the check
+report are under ignored artifacts/graphite-ui/. Environment, learning files and
+dependency manifests match their pre-task hashes. No working domain data,
+parsers, saved explanations, collector processes or Git operations changed.
+User visual acceptance remains pending; no next phase or deployment is started.
+

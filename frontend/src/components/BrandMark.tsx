@@ -12,11 +12,11 @@ export function BrandMark() {
       <path
         className="brand-connection"
         d="M8 6V10M32 30V34M8 30L17 30"
-        stroke="#5797f0"
+        stroke="#aeb1b3"
         strokeWidth="1.5"
       />
-      <circle cx="8" cy="6" r="2" fill="#5797f0" />
-      <circle cx="32" cy="34" r="2" fill="#5797f0" />
+      <circle cx="8" cy="6" r="2" fill="#dededb" />
+      <circle cx="32" cy="34" r="2" fill="#dededb" />
     </svg>
   );
 }

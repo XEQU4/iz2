@@ -23,6 +23,17 @@ release gates are recorded in [DEPLOYMENT_CHECK.md](DEPLOYMENT_CHECK.md). The
 historical audit below remains unchanged; AUD-002/AUD-010 and other findings are
 not closed by packaging work.
 
+**AI grounding follow-up, 10 October 2026:** the user selected constrained
+prepared statements for new explanations. AUD-002's reproduced novel-prose
+publication path is now closed for new jobs by a finding-ID/variant grammar,
+server rendering and saved-output integrity checks. All 20 targeted unsupported
+outputs are rejected (the previous validator accepted 16); nine real synthetic
+Qwen cases passed, alongside 671 PostgreSQL and 144 React tests. Readable fallback,
+history, score and reuse checks passed. See [AI_GROUNDING.md](AI_GROUNDING.md).
+Old saved prose remains immutable and is not retroactively certified; source
+quality, independent usefulness evaluation and other release gates remain open.
+The original findings below retain their audit-time wording.
+
 ## 1. Executive summary
 
 IZ2 is a substantial working prototype, not merely a visual mock-up. Collection services, source observations, exact-identifier person matching, versioned relationship graphs, deterministic review rules, saved model explanations, accounts and personal graph layouts are implemented. Fresh backend/frontend tests passed, an isolated Linux image built and ran, actual browser flows worked, and a fresh PostgreSQL backup restored with matching table contents.

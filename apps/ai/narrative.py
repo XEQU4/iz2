@@ -1,4 +1,9 @@
-"""Bounded prose over saved facts; these checks are not a semantic proof."""
+"""Legacy prose diagnostics and fact aliases, never the publication safety gate.
+
+Current generation/publication uses the closed selector grammar in grounding.py.
+The old diagnostics remain for regression evidence; passing them does not permit
+new model prose to enter a saved public explanation.
+"""
 import re
 from decimal import Decimal, InvalidOperation
 

@@ -8,7 +8,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px 16px;
-  color: var(--text, #e7efff);
+  color: var(--text, #eeeeee);
   font-size: 13px;
   font-weight: 600;
 }
@@ -17,18 +17,18 @@
   display: inline-flex;
   align-items: baseline;
   gap: 7px;
-  border: 1px solid #497cb43b;
+  border: 1px solid #7575753b;
   padding: 4px 9px;
   border-radius: 6px;
-  background: #20569a1a;
+  background: #4f4f4f1a;
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
   font-weight: 400;
-  color: #a3b7d3;
+  color: #b5b5b5;
 }
 
 .iz2-evidence-meter-count strong {
-  color: #d8eeff;
+  color: #ebebeb;
   font-size: 14px;
   font-weight: 600;
 }
@@ -37,32 +37,32 @@
   height: 7px;
   margin-top: 12px;
   overflow: hidden;
-  border: 1px solid #244368;
+  border: 1px solid #3f3f3f;
   border-radius: 3px;
   background:
     repeating-linear-gradient(
       90deg,
-      #53759a17 0,
-      #53759a17 1px,
+      #70707017 0,
+      #70707017 1px,
       transparent 1px,
       transparent 10%
     ),
-    #091424;
+    #131313;
 }
 
 .iz2-evidence-meter-fill {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #367cfc, #75d5ff);
-  box-shadow: 0 0 15px #66bbff50;
+  background: linear-gradient(90deg, #767676, #c4c4c4);
+  box-shadow: 0 0 15px #aeaeae50;
   transition: width 420ms ease;
 }
 
 .iz2-evidence-meter-description,
 .iz2-evidence-meter-empty {
   margin-top: 9px;
-  color: #9cadc8;
+  color: #ababab;
   font-size: 11px;
   line-height: 1.6;
 }

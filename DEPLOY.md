@@ -7,8 +7,9 @@ access and Caddy HTTPS. Dockerfile builds the shared application image.
 No Node installation is needed on the server.
 
 This is deployment preparation, not public-release approval. Remaining gates
-are in docs/FINAL_AUDIT.md. In particular, review model prose while AUD-002 is
-open. EN/RU changes the workspace; source records, saved explanations and the
+are in docs/FINAL_AUDIT.md. New AI jobs use the constrained prepared-statement
+policy in docs/AI_GROUNDING.md; old saved prose is not retroactively certified.
+EN/RU changes the workspace; source records, saved explanations and the
 standalone English API reference keep their language.
 
 ## New installation

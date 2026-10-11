@@ -9,7 +9,7 @@ https://github.com/DavidHDev/react-bits/blob/main/src/content/Backgrounds/Partic
 https://github.com/DavidHDev/react-bits/blob/main/LICENSE.md
 
 Adapted in frontend/src/components/effects/Particles.tsx and Particles.css.
-IZ2 changes: deterministic viewport-wide distribution, smaller soft white/blue
+IZ2 changes: deterministic viewport-wide distribution, smaller soft white/grey
 points, capped DPR/drawing frequency, global passive pointer input, shared motion
 and visibility gating, static fallback, context-loss and GPU cleanup.
 

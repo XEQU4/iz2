@@ -9,9 +9,11 @@ from apps.graph.evidence import digest
 from apps.graph.models import RiskCluster
 from apps.ingestion.leases import RunLease, IngestionBusy
 from .models import AnalysisJob, AnalysisState, AnalysisTarget, Explanation
+from .grounding import GroundingValidationError
 from .providers import configuration, reuse_key, generate, ProviderError, PROMPT_VERSION
 from .services import (collect_inputs, input_hash, prepare_analysis, explanation_content,
-                       template_for, publish_explanation)
+                       template_for, publish_explanation, validate_saved_explanation,
+                       TEMPLATE_VERSION)
 
 
 def generation_options(config):
@@ -46,12 +48,22 @@ def request_analysis(user, cluster_id, *, use_model=True, retry_model=False, que
     if job:
         set_target(cluster, job)
         return job, False
-    completed = AnalysisJob.objects.filter(dedup_key=key, status__in=['succeeded', 'fallback']).order_by('-pk').first()
+    completed = AnalysisJob.objects.filter(dedup_key=key, status__in=['succeeded', 'fallback']).select_related(
+        'analysis', 'explanation').order_by('-pk').first()
     already_current = completed and AnalysisState.objects.filter(cluster=cluster,
         analysis_id=completed.analysis_id, explanation_id=completed.explanation_id).exists()
     if already_current and (completed.status == 'succeeded' or not retry_model):
-        set_target(cluster, completed)
-        return completed, False
+        try:
+            validate_saved_explanation(completed.analysis, completed.explanation,
+                expected_prompt=TEMPLATE_VERSION if config.provider == 'template' and
+                    completed.status != 'fallback' else PROMPT_VERSION)
+        except GroundingValidationError:
+            # Preserve the old immutable rows; an explicit fresh job will publish
+            # a safe result rather than claiming the malformed cache is complete.
+            pass
+        else:
+            set_target(cluster, completed)
+            return completed, False
     job = AnalysisJob.objects.create(requested_by=user, graph_snapshot=graph,
         input_hash=signature, dedup_key=key, as_of=as_of, options=generation_options(config))
     set_target(cluster, job)
@@ -127,7 +139,9 @@ def analyse_cluster_task(self, pk):
                     'prompt_version': PROMPT_VERSION, 'status': 'ready',
                     **explanation_content(analysis, plan), 'usage': usage,
                     'experimental_score': plan['risk_estimate'], 'experimental_evidence': plan['risk_evidence']})[0]
-    except ProviderError as error:
+        validate_saved_explanation(analysis, explanation,
+            expected_prompt=TEMPLATE_VERSION if job.options['provider'] == 'template' else PROMPT_VERSION)
+    except (ProviderError, GroundingValidationError) as error:
         explanation = Explanation.objects.create(analysis=analysis,
             reuse_key=digest({'fallback_job': str(job.uuid)}), provider=job.options['provider'],
             model=job.options['model'], prompt_version=PROMPT_VERSION, status='fallback',

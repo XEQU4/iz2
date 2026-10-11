@@ -12,9 +12,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 84% 6%, #285fff38, transparent 45%),
-    radial-gradient(ellipse at 74% 68%, #174ced48, transparent 46%),
-    radial-gradient(ellipse at 40% 104%, #102a7b30, transparent 42%);
+    radial-gradient(ellipse at 84% 6%, #5f5f5f38, transparent 45%),
+    radial-gradient(ellipse at 74% 68%, #4c4c4c48, transparent 46%),
+    radial-gradient(ellipse at 40% 104%, #2a2a2a30, transparent 42%);
 }
 
 .aurora-atmosphere__veil {
@@ -22,33 +22,33 @@
   inset: -38% -22%;
   background-image: repeating-linear-gradient(
     104deg,
-    #2148ce00 0%,
-    #216fff18 9%,
-    #286dff65 13%,
-    #9ebcff3a 16%,
-    #244fcf35 20%,
-    #1630712a 24%,
-    #2450cc00 30%
+    #49494900 0%,
+    #69696918 9%,
+    #69696965 13%,
+    #bababa3a 16%,
+    #4f4f4f35 20%,
+    #2f2f2f2a 24%,
+    #50505000 30%
   );
   background-size: 190% 100%;
   mask-image: radial-gradient(
     ellipse at 74% 32%,
     black 8%,
-    #0009 35%,
+    #00000099 35%,
     transparent 68%
   );
   filter: blur(14px);
   transform: translate3d(-3%, 0, 0) rotate(-8deg);
-  opacity: 0.74;
+  opacity: 0.28;
   animation: iz2-aurora-far 34s ease-in-out infinite alternate;
   animation-play-state: paused;
 }
 
 .aurora-atmosphere__veil--near {
   background-size: 135% 100%;
-  mask-image: radial-gradient(ellipse at 83% 80%, #0008, transparent 63%);
+  mask-image: radial-gradient(ellipse at 83% 80%, #00000088, transparent 63%);
   filter: blur(8px);
-  opacity: 0.35;
+  opacity: 0.18;
   animation-name: iz2-aurora-near;
   animation-duration: 27s;
   animation-delay: -12s;
@@ -64,9 +64,9 @@
   width: 2px;
   height: 2px;
   border-radius: 50%;
-  background: #b5eaff;
-  box-shadow: 0 0 8px #74caff70;
-  opacity: 0.35;
+  background: #e0e0e0;
+  box-shadow: 0 0 8px #bcbcbc70;
+  opacity: 0.18;
   animation: iz2-aurora-dust var(--dust-duration, 17s) ease-in-out infinite
     alternate;
   animation-delay: var(--dust-delay, 0s);

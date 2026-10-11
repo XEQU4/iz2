@@ -1,9 +1,12 @@
 """Readable, evidence-bound documents saved alongside immutable explanation text."""
 from collections import Counter
+from datetime import date
+from decimal import Decimal, InvalidOperation
 import re
 
 
-DOCUMENT_VERSION = 'readable-explanation-5.2'
+DOCUMENT_VERSION = 'readable-explanation-5.3'
+GROUNDING_POLICY = 'prepared-claims-1'
 TITLES = {
     'shared_director': 'Shared director', 'shared_owner': 'Shared owner',
     'mixed_person_roles': 'Ownership and management connection',
@@ -22,14 +25,21 @@ def wording_variants(analysis, finding):
         role = code.removeprefix('shared_')
         edge_ids = {item['id'] for item in finding['evidence'] if item['kind'] == 'graph_edge'}
         edges = [edge for edge in analysis.inputs['graph']['links'] if edge['id'] in edge_ids]
-        period = (f"Recorded role dates cover {analysis.inputs['graph_as_of']}." if edges and
-                  all(edge['valid_from'] and edge['valid_until'] for edge in edges) else
-                  'The role dates are incomplete, so simultaneous roles still need confirmation.')
+        period = 'The role dates are incomplete, so simultaneous roles still need confirmation.'
+        if edges and all(edge.get('valid_from') and edge.get('valid_until') for edge in edges):
+            try:
+                as_of = date.fromisoformat(analysis.inputs['graph_as_of'])
+                applicable = all(date.fromisoformat(edge['valid_from']) <= as_of <
+                                 date.fromisoformat(edge['valid_until']) for edge in edges)
+            except (TypeError, ValueError):
+                applicable = False
+            period = (f"Recorded role dates cover {analysis.inputs['graph_as_of']}." if applicable else
+                      'The recorded periods do not confirm simultaneous roles on the evidence date.')
         return [f'{count} companies list the same {role}, matched by a verified identifier. {period}',
                 f'A person matched by a verified identifier is listed as {role} of {count} companies. {period}']
     if code == 'mixed_person_roles':
-        return [f'One person, matched by a verified identifier, holds ownership and management roles across {count} companies. Role dates need checking in the evidence.',
-                f'{count} companies have an ownership and management connection through the same verified person. Check the recorded role dates.']
+        return [f'Saved records list one person, matched by a verified identifier, in ownership and management roles across {count} companies. Role dates need checking in the evidence.',
+                f'{count} companies have recorded ownership and management roles linked to the same verified person. Check the recorded role dates.']
     if code in {'shared_address', 'shared_phone', 'shared_email'}:
         label = {'shared_address': 'address', 'shared_phone': 'phone number', 'shared_email': 'email address'}[code]
         return [f'{count} companies have the same recorded {label}.',
@@ -49,8 +59,121 @@ def wording_variants(analysis, finding):
     return finding['statements']
 
 
+def grounded_wording(analysis, finding):
+    """A closed wording catalogue: model choices cannot introduce factual prose."""
+    code = finding.get('code')
+    if code not in TITLES:
+        raise ValueError('grounding_finding_unsupported')
+    nodes = sorted((node for node in analysis.inputs['graph']['nodes']
+                    if node['kind'] == 'company'), key=lambda node: node['company_id'])
+    aliases = {node['company_id']: '{{C' + str(index) + '}}'
+               for index, node in enumerate(nodes, 1)}
+    ids = finding.get('company_ids', [])
+    if not ids or len(set(ids)) != len(ids) or any(pk not in aliases for pk in ids):
+        raise ValueError('grounding_company_scope_invalid')
+    names = [aliases[pk] for pk in ids]
+    subject = (names[0] if len(names) == 1 else ' and '.join(names) if len(names) == 2
+               else ', '.join(names[:-1]) + ' and ' + names[-1] if len(names) == 3
+               else f'The {len(names)} companies')
+    object_subject = subject[0].lower() + subject[1:] if len(names) > 3 else subject
+    if code.startswith('shared_') or code == 'mixed_person_roles':
+        if len(ids) < 2:
+            raise ValueError('grounding_company_scope_invalid')
+    if code in {'shared_address', 'shared_phone', 'shared_email'}:
+        label, ordinary, action = {
+            'shared_address': ('address', 'a shared office or registration service',
+                               'whether the address is a shared office or registration service'),
+            'shared_phone': ('phone number', 'a shared administrator or service provider',
+                             'who maintains the phone number and whether it belongs to a shared service'),
+            'shared_email': ('email address', 'a shared administrator or service provider',
+                             'who maintains the email address and whether it belongs to a shared service'),
+        }[code]
+        paragraphs = [
+            f'{subject} have the same recorded {label}. The match could come from {ordinary}; it does not establish common control.',
+            f'A matching {label} connects the saved records for {object_subject}. This is a weak signal because {ordinary} could explain it.',
+        ]
+        checks = [f'Check {action} before treating the contact match as evidence of a closer company relationship.',
+                  f'Find out {action}. Then obtain tender participation records to assess whether the companies competed.']
+    elif code in {'shared_director', 'shared_owner', 'mixed_person_roles'}:
+        if code == 'mixed_person_roles':
+            fact = f'Saved records for {object_subject} list the same verified person in ownership and management roles.'
+            alternative = f'The ownership and management records for {object_subject} refer to a person matched by a verified identifier.'
+            period = 'The dates and scope of those roles still need checking.'
+        else:
+            role = code.removeprefix('shared_')
+            fact = f'Saved records for {object_subject} list the same {role}, matched by a verified identifier.'
+            alternative = f'A person matched by a verified identifier is listed as {role} in the saved records for {object_subject}.'
+            period = wording_variants(analysis, finding)[0].split('. ', 1)[1]
+        paragraphs = [f'{fact} {period} Tender decision-making authority needs separate evidence.',
+                      f'{alternative} {period} This makes the scope of company control worth reviewing.']
+        checks = ["Check the recorded role dates and whether this person had authority over tender decisions; then compare the firms' tender participation.",
+                  'Obtain records of the role periods and bidding responsibilities. Check whether these companies participated in the same lots.']
+    elif code in {'company_arrears', 'company_zero_arrears'}:
+        if len(ids) != 1:
+            raise ValueError('grounding_company_scope_invalid')
+        saved = next((item for item in analysis.inputs['company_checks'] if item['company_id'] == ids[0]), None)
+        if not saved or not saved.get('values'):
+            raise ValueError('grounding_company_check_missing')
+        values = saved['values']
+        try:
+            amount = Decimal(str(values['kgd_total_arrears']))
+            reporting = [date.fromisoformat(value).isoformat() for value in values['kgd_reporting_dates']]
+            if not amount.is_finite() or amount < 0 or (code == 'company_zero_arrears') != (amount == 0):
+                raise ValueError
+        except (KeyError, TypeError, ValueError, InvalidOperation):
+            raise ValueError('grounding_company_check_invalid') from None
+        dates = ', '.join(reporting) or 'not supplied'
+        money = format(amount, 'f')
+        fact = f'The saved KGD result for {subject} reports {money} KZT in aggregate company arrears. Reporting dates: {dates}.'
+        alternative = f'KGD recorded aggregate company arrears of {money} KZT for {subject}. Reporting dates: {dates}.'
+        if saved['status'] in {'stale', 'undated'} or not reporting:
+            qualification = 'This older or undated result does not establish the present balance.'
+        elif saved['status'] == 'retained_fresh' or saved.get('latest_status', 'success') != 'success':
+            qualification = 'The latest attempt was unsuccessful; this earlier result is retained.'
+        else:
+            qualification = 'This is a dated company result, not a finding about a person.'
+        if code == 'company_zero_arrears':
+            qualification += ' Zero does not establish overall reliability.'
+        paragraphs = [f'{fact} {qualification}', f'{alternative} {qualification}']
+        checks = [f'Obtain a newer dated arrears result for {subject} if a present-balance assessment is needed. Keep checks about people separate.',
+                  f'Check the reporting dates and any later KGD result for {subject}; do not assign company arrears to a director or owner.']
+    else:
+        if set(ids) != set(aliases):
+            raise ValueError('grounding_company_scope_invalid')
+        paragraphs = [f'For {object_subject}, {wording_variants(analysis, finding)[0][0].lower() + wording_variants(analysis, finding)[0][1:]}',
+                      f'For {object_subject}, {wording_variants(analysis, finding)[1][0].lower() + wording_variants(analysis, finding)[1][1:]}']
+        checks = ['Obtain the lot participants, bids and outcomes before assessing whether these companies competed and how their bids compare.',
+                  'Compare dated tender participation and bid records. Contract totals alone cannot establish coordinated bidding.']
+    return {'paragraphs': paragraphs, 'checks': checks}
+
+
 def build_document(analysis, plan=None):
-    plan = plan or {}
+    from .grounding import GroundingValidationError
+    plan = {} if plan is None else plan
+    if not isinstance(plan, dict) or set(plan) - {'sections', 'narrative', 'risk_estimate', 'risk_evidence'}:
+        raise GroundingValidationError('output_schema_invalid')
+    # Recheck at the persistence boundary, even if a caller bypassed the provider.
+    grounded = None
+    if 'narrative' in plan:
+        from .grounding import render_grounded_narrative
+        grounded = render_grounded_narrative(analysis, plan)
+    else:
+        # Existing safe section-only callers may choose prepared fact variants.
+        # Negative indexes, bools, duplicate IDs and unknown fields are not choices.
+        sections = plan.get('sections', [])
+        if not isinstance(sections, list):
+            raise GroundingValidationError('output_schema_invalid')
+        by_id = {item['id']: item for item in analysis.findings}
+        seen = set()
+        for item in sections:
+            if not isinstance(item, dict) or set(item) != {'finding_id', 'variant'}:
+                raise GroundingValidationError('output_schema_invalid')
+            identifier, variant = item['finding_id'], item['variant']
+            if not isinstance(identifier, str) or identifier not in by_id or identifier in seen:
+                raise GroundingValidationError('output_evidence_invalid')
+            if type(variant) is not int or not 0 <= variant < len(wording_variants(analysis, by_id[identifier])):
+                raise GroundingValidationError('output_variant_invalid')
+            seen.add(identifier)
     choices = {item['finding_id']: item['variant'] for item in plan.get('sections', [])}
     order = {item['finding_id']: index for index, item in enumerate(plan.get('sections', []))}
     findings = [item for item in analysis.findings if item['code'] != 'company_check_unknown']
@@ -59,10 +182,18 @@ def build_document(analysis, plan=None):
     companies = {node['company_id']: node for node in analysis.inputs['graph']['nodes'] if node['kind'] == 'company'}
     codes = {item['code'] for item in findings}
     roles = codes & {'shared_owner', 'shared_director', 'mixed_person_roles'}
-    summary = ('Some companies in this group are connected through the same verified person. '
-               'This makes ownership or management worth checking when assessing whether they bid independently.'
-               if roles else 'The companies are grouped by matching contact details. These matches are weak signals: '
-               'they can also come from a shared office or service provider.')
+    if roles:
+        summary = ('Saved role records connect some companies through the same verified person. '
+                   'Check the role dates and bidding responsibilities when assessing whether they bid independently.')
+    elif codes & {'shared_address', 'shared_phone', 'shared_email'}:
+        summary = ('The companies are grouped by matching contact details. These matches are weak signals: '
+                   'they can also come from a shared office or service provider.')
+    elif codes & {'company_arrears', 'company_zero_arrears'}:
+        summary = 'Saved KGD results describe dated company checks. Read each amount with its company, reporting dates and latest check status.'
+    elif 'stored_contract_summary' in codes:
+        summary = 'The saved contracts describe procurement activity. They do not establish which companies competed against each other.'
+    else:
+        summary = 'The saved analysis has no supported connection or company-check finding to explain. Missing evidence remains unknown.'
     if 'company_arrears' in codes:
         summary += ' A saved company-arrears result also needs attention; its reporting date matters.'
     meanings = {
@@ -94,11 +225,11 @@ def build_document(analysis, plan=None):
                       'notes': finding['limitations'], 'details': details})
     checks = []
     if roles:
-        checks.append('Confirm the recorded ownership or management roles, their dates and the authority to make tender decisions.')
+        checks.append('Check the recorded role dates and whether the person had authority to make tender decisions.')
     if codes & {'shared_address', 'shared_phone', 'shared_email'}:
         checks.append('Check whether the shared contact belongs to the companies themselves or to an office or service provider.')
     checks.append('Obtain lot participants, bids and outcomes; then check whether these companies competed in the same tenders and how their bids compare.')
-    checks.append('Review dated company checks and separately verified person-history records. Do not assign company arrears to an owner.')
+    checks.append('Obtain dated company checks; verify any person-history information separately. Do not assign company arrears to an owner.')
     metrics = analysis.metrics
     statuses = Counter(item['status'] for item in analysis.inputs['company_checks'])
     coverage = [f"Fresh successful KGD arrears checks: {metrics['fresh_arrears_checks']} of {metrics['company_count']} companies."]
@@ -124,7 +255,7 @@ def build_document(analysis, plan=None):
             'score': {'value': metrics['review_priority'], 'items': score_items,
                       'meaning': 'Points prioritise manual review; they are not a percentage chance of wrongdoing.'},
             'conclusion': 'The saved evidence identifies connections and follow-up questions. It does not establish collusion or a violation.'}
-    if plan.get('narrative'):
+    if grounded is not None:
         from .narrative import company_tokens
         tokens = company_tokens(analysis)
 
@@ -134,7 +265,8 @@ def build_document(analysis, plan=None):
 
         document['narrative'] = {key: [
             {'text': expand(item['text']), 'finding_ids': list(item['finding_ids'])}
-            for item in plan['narrative'][key]] for key in ('paragraphs', 'checks')}
+            for item in grounded[key]] for key in ('paragraphs', 'checks')}
+        document['grounding_policy'] = GROUNDING_POLICY
         document['summary'] = document['narrative']['paragraphs'][0]['text']
         document['checks'] = [item['text'] for item in document['narrative']['checks']]
     return document
