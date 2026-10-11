@@ -85,6 +85,6 @@ Template mode needs no model download. The database starts empty; collection and
 
 ## License and author
 
-Original code and documentation: [MIT](LICENSE), © 2026 [Barakhat Mukhtar Batyruly](mailto:b.m.04.11reg@gmail.com).
+Original code and documentation: [MIT](LICENSE), © 2026 [XEQU4](mailto:b.m.04.11reg@gmail.com).
 
 Third-party components and fonts retain their own terms, including **MIT + Commons Clause** for React Bits adaptations. See [third-party notices](THIRD_PARTY_NOTICES.md). Software licensing does not grant rights to external source data.
