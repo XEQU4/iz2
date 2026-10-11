@@ -1,4 +1,4 @@
-﻿# Phase 4: graph state and interaction
+# Phase 4: graph state and interaction
 
 Status: complete for the authorised Phase 4 scope; the user accepted the revised
 graph prototype on 6 October 2026 and deferred further design/motion work to Phase 7.

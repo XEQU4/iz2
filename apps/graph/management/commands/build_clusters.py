@@ -15,7 +15,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("--as-of", type=date.fromisoformat,
-                            help="Consider director roles on this ISO date; default is today")
+                            help="Filter currently observed roles by this ISO date; not a historical reconstruction. Default: today")
         parser.add_argument('--company-id', type=int, action='append',
                             help='Limit publication to affected components; repeat for multiple companies')
 

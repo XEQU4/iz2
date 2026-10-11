@@ -4,7 +4,13 @@ Analysis date: **5 October 2026**, Asia/Qyzylorda.
 
 This document is for an assistant preparing an article without repository access. It describes implementation/data at the analysis checkpoint, then proposes a research topic and protocol. **The article experiment has not been performed; no experimental results are claimed.**
 
-**Historical scope:** this assessment was prepared after Phases 0-1, before Phase 2. Its paths, database state, test counts, and implementation claims describe that checkpoint. The English translation preserves this record rather than presenting it as a new audit. For subsequent implementation, see [docs/PHASE2.md](docs/PHASE2.md) and the current [roadmap](docs/ROADMAP.md).
+**Historical scope:** this assessment was prepared after Phases 0-1, before Phase 2. Its paths, database state, test counts, and implementation claims describe that checkpoint. The English translation preserves this record rather than presenting it as a new audit. For subsequent implementation, see the [Phase 2 record](docs/archive/2026-10-11/PHASE2.md) and the current [roadmap](docs/ROADMAP.md).
+
+**Current navigation, 11 October 2026:** this research checkpoint is intentionally
+preserved. The current [architecture](docs/ARCHITECTURE.md),
+[repeat audit](docs/FINAL_AUDIT.md) and [roadmap](docs/ROADMAP.md) describe later
+implementation separately. Neither later software changes nor passing regressions
+constitute results of the experiment proposed below.
 
 Basis: source/configuration reads, Phase 0-1 documents/local reports, repeated offline tests, and aggregate SELECT queries in source PostgreSQL REPEATABLE READ/read-only transactions. No company/person rows, contacts, credentials, or secrets are included. Preparing the original assessment changed neither application code nor source database.
 

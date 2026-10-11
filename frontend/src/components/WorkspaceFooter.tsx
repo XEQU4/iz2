@@ -36,10 +36,7 @@ export function WorkspaceFooter() {
               aria-label={t("IZ2 overview")}
             >
               <BrandMark />
-              <span>
-                {t("IZ2")}
-                <small>{t("EVIDENCE, CONNECTED")}</small>
-              </span>
+              <small>{t("EVIDENCE, CONNECTED")}</small>
             </Link>
             <p>
               {t(

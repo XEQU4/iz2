@@ -191,25 +191,6 @@ kbd,
   font-weight: 700;
   letter-spacing: -0.09em;
 }
-.brand-symbol {
-  display: grid;
-  place-items: center;
-  border: 1px solid #9898986b;
-  background: linear-gradient(145deg, #5b5b5b33, #212121);
-  border-radius: 11px;
-  width: 39px;
-  height: 43px;
-  box-shadow: inset 0 0 17px #86868612;
-}
-.brand-symbol svg {
-  width: 24px;
-  height: 24px;
-  color: #b2b2b2;
-  transform: rotate(-8deg);
-}
-.brand-two {
-  color: #bdbdbd;
-}
 .brand-caption {
   position: absolute;
   bottom: -13px;
@@ -1816,15 +1797,6 @@ details[open] summary {
   }
   .mobile-brand .brand {
     font-size: 24px;
-  }
-  .mobile-brand .brand-symbol {
-    width: 27px;
-    height: 29px;
-    border-radius: 8px;
-  }
-  .mobile-brand .brand-symbol svg {
-    width: 17px;
-    height: 17px;
   }
   .mobile-brand .brand-caption {
     display: none;

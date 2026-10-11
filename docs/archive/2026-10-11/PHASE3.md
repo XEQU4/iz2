@@ -59,7 +59,7 @@ According to the [official taxpayer service page](https://portal.kgd.gov.kz/kk/p
 
 Once issued, configure private `.env` (local Python) or `.env.docker` (Compose):
 
-Use [.env.example](../.env.example) for the complete supported configuration. Preserve the existing `SECRET_KEY`, database connection/password and any already configured optional API keys. Do not replace the local database credentials with Compose example credentials. Put the first, explicitly identified portal token in `KGD_PORTAL_TOKEN`, and the accepted second ISNA token in the JSON map under the verified company's BIN. The map is a local scope restriction; it does not prove that the credential is company-specific or entitled to other companies. Keep this JSON on one line, use double quotes inside it, and enclose the whole value in single quotes in the dotenv file. For example, replacing both placeholders privately:
+Use [.env.example](../../../.env.example) for the complete supported configuration. Preserve the existing `SECRET_KEY`, database connection/password and any already configured optional API keys. Do not replace the local database credentials with Compose example credentials. Put the first, explicitly identified portal token in `KGD_PORTAL_TOKEN`, and the accepted second ISNA token in the JSON map under the verified company's BIN. The map is a local scope restriction; it does not prove that the credential is company-specific or entitled to other companies. Keep this JSON on one line, use double quotes inside it, and enclose the whole value in single quotes in the dotenv file. For example, replacing both placeholders privately:
 
 ```dotenv
 ENABLE_KGD_CHECKS=false

@@ -41,7 +41,7 @@ files or certify every transitive dependency.
 IZ2's original code and documentation are available under the [MIT licence](LICENSE).
 Third-party components and assets retain their respective terms described above;
 the project's MIT licence does not replace those terms. The project author's
-contact is in the [README](README.md#authors-and-contact).
+contact is in the [README](README.md).
 
 Procurement records and other collected source data are separate from software
 licensing. Their availability through an integration does not grant redistribution

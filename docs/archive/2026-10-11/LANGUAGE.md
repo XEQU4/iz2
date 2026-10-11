@@ -4,7 +4,7 @@ Date: 5 October 2026. Language maintenance after Phase 2; no additional developm
 
 ## User instruction
 
-Use English for all project deliverables, including earlier phase records. Develop the English website first; add Russian website localisation later. This overrides the previous instruction to write technical documents in Russian. The persistent rule is in [AGENTS.md](../AGENTS.md), with later localisation recorded in [ROADMAP.md](ROADMAP.md).
+Use English for all project deliverables, including earlier phase records. Develop the English website first; add Russian website localisation later. This overrides the previous instruction to write technical documents in Russian. The persistent rule is in [AGENTS.md](AGENTS-before.md), with later localisation recorded in [ROADMAP.md](ROADMAP.md).
 
 ## Changed behaviour
 

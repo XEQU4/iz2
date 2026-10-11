@@ -1,4 +1,4 @@
-﻿# Phase 5: analysis and explanations
+# Phase 5: analysis and explanations
 
 Status: complete on 7 October 2026 for the implemented services: 238 PostgreSQL
 tests and five real local-model synthetic cases passed. Phase 5 was authorised
@@ -148,7 +148,7 @@ results. Synthetic cases test mechanics, not real-world prediction quality.
 ## Configuration and operation
 
 Existing `.env` was preserved. Add the desired settings manually from
-[.env.example](../.env.example), then restart web and worker. Defaults are:
+[.env.example](../../../.env.example), then restart web and worker. Defaults are:
 
 ```dotenv
 AI_PROVIDER=template

@@ -4,11 +4,11 @@ Date: 5 October 2026. Complete. Offline SQLite/PostgreSQL 17.6 checks; working d
 
 ## Implemented behaviour
 
-Three adapters in [apps/ingestion/parsers](../apps/ingestion/parsers) handle registry contracts, participant cards, Adata. Old `services/*_parser.py`/`services/enricher.py` removed. Parsers obtain/normalise data without ORM. [SourceProviders](../apps/ingestion/providers.py) returns `SourceResult`; complete `ContractPage` results become versioned observations.
+Three adapters in [apps/ingestion/parsers](../../../apps/ingestion/parsers) handle registry contracts, participant cards, Adata. Old `services/*_parser.py`/`services/enricher.py` removed. Parsers obtain/normalise data without ORM. [SourceProviders](../../../apps/ingestion/providers.py) returns `SourceResult`; complete `ContractPage` results become versioned observations.
 
-[HttpTransport](../apps/ingestion/transport.py) shares one session across run adapters; per-host pacing/timeouts/up to two temporary retries/bounded Retry-After. HTTPS/two current hosts only; redirects disabled. Successful-response cache: 32 entries/60 seconds. Post-receipt response limit: 4 MiB, not streaming memory protection. Challenges/malformed HTML/HTTP failures are not empty pages.
+[HttpTransport](../../../apps/ingestion/transport.py) shares one session across run adapters; per-host pacing/timeouts/up to two temporary retries/bounded Retry-After. HTTPS/two current hosts only; redirects disabled. Successful-response cache: 32 entries/60 seconds. Post-receipt response limit: 4 MiB, not streaming memory protection. Challenges/malformed HTML/HTTP failures are not empty pages.
 
-[run_pipeline](../apps/ingestion/services.py) manages persistence/enrichment/current-cluster rebuild. CLI/[Celery](../apps/core/tasks.py) call it; commands do not call each other. No LLM/paid generation; existing explanations retained.
+[run_pipeline](../../../apps/ingestion/services.py) manages persistence/enrichment/current-cluster rebuild. CLI/[Celery](../../../apps/core/tasks.py) call it; commands do not call each other. No LLM/paid generation; existing explanations retained.
 
 | Mechanism | Behaviour |
 | --- | --- |

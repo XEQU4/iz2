@@ -14,7 +14,8 @@ standalone English API reference keep their language.
 
 ## New installation
 
-Requirements: Linux Docker Engine, Compose 2.24.4+ and Python 3 for host helpers.
+Requirements: Linux Docker Engine, Compose 2.24.4+ and Python 3.13+ for host helpers
+(Python 3.13 was used in the verified startup and transfer rehearsals).
 Run commands from the repository root. Windows can use Docker Desktop in Linux
 mode and .venv\Scripts\python.exe instead of python3.
 
@@ -23,16 +24,16 @@ native data, run only environment preparation and configuration validation,
 then continue with the transfer section before the first `up`.
 
 ```sh
-python3 scripts/prepare_deploy.py --project iz2 --output .env.docker --ai cpu
+python3 scripts/prepare_deploy.py --project iz2 --output .env.docker --ai template
 docker compose --env-file .env.docker config --quiet
 docker compose --env-file .env.docker up --build -d --wait
 docker compose --env-file .env.docker ps -a
 ```
 
 The helper generates secrets locally, uses mode 0600 on Linux, refuses overwrites
-and preserves native .env. With --ai cpu it enables local Ollama/Qwen and saves
-COMPOSE_PROFILES=local-ai. Use --ai template to omit the model, or --ai gpu for
-an NVIDIA host with the NVIDIA Container Toolkit. Select one AI mode only.
+and preserves native .env. Template mode omits the model and needs no weights.
+Use --ai cpu to enable local Ollama/Qwen (COMPOSE_PROFILES=local-ai), or --ai gpu
+for an NVIDIA host with the NVIDIA Container Toolkit. Select one AI mode only.
 Collection, automatic model jobs and paid generation remain off.
 Generated Docker environments use a 180-second AI timeout and 2048 output tokens
 for local CPU inference; native defaults remain 90 seconds and 1024 tokens.
@@ -99,12 +100,8 @@ JSON path for `restore --manifest`. Native `--deployment-manifest` instead outpu
 the `.deployment.json` shown above. Never use down --volumes on data you need.
 
 The same .env.docker selects optional services for startup and recovery. No extra
-Compose files or profile flags are needed:
-
-```sh
-python3 scripts/deploy_database.py --env-file .env.docker --project iz2 backup --output-dir artifacts/backups
-```
-
+Compose files or profile flags are needed. Use the stop → backup → start sequence
+above for each backup; the helper refuses active writers.
 Its metadata container uses `--no-deps`; inspection does not start migrations,
 application processes, collection or model jobs.
 
@@ -137,7 +134,8 @@ Collection uses independent bounded contract/profile/KGD stages, due times,
 retries, host cooldowns and database leases. Meaningful evidence changes update
 saved graph/analysis/template versions. GET never collects or regenerates.
 Automatic model jobs additionally require ENABLE_BACKGROUND_AI=true; leave it
-false until prose publication is ready. Explicit staff model jobs remain
+false until the operator has reviewed current source coverage and the
+prepared-statement publication policy. Explicit staff model jobs remain
 available. Generated environments disable paid providers.
 
 On an NVIDIA host, generate with --ai gpu instead of --ai cpu. The helper selects
@@ -151,6 +149,44 @@ AI_MODEL=qwen3:4b. Preserve any https profile in the comma-separated list.
 Measure actual memory and latency:
 a six-GiB model cap is a limit, not a hardware recommendation. Keep model revision
 metadata aligned with deployed weights.
+
+## Native Windows collector
+
+Native development setup is in [DEVELOPMENT.md](docs/DEVELOPMENT.md#native-development).
+The helper controls its own worker, AI worker and beat using ignored PID/log
+markers. PostgreSQL and Redis must already be running. Sources and credentials
+must be configured privately and authorised before collection.
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/background.ps1 -Action Status
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/background.ps1 -Action Start
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/background.ps1 -Action Status
+```
+
+Start explicitly opts into collection and local model jobs. Unlike Compose's
+independent ingestion service, this native helper first starts the owned local
+model server and fails if model startup fails. Making that optional is an open
+operational task. Do not run both native and Docker collectors against a shared
+database without a deliberate queue/ownership plan.
+
+Stop the owned collectors when needed:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/background.ps1 -Action Stop
+```
+
+To also stop the helper-owned model server:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local_ai.ps1 -Stop
+```
+
+The processes survive closing the terminal, but cannot collect while the laptop
+sleeps or is off. No Windows startup task is installed. Native stdout/stderr logs
+still need rollover/retention; inspect disk usage. Status reports process/source
+state, not proof of complete coverage. Current stage counters have a known
+under-counting issue; compare attempts, last success and backlog as described in
+[the audit](docs/FINAL_AUDIT.md).
 
 ## Domain and HTTPS
 

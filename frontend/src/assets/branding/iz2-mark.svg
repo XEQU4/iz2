@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="mark-title mark-desc">
+<title id="mark-title">IZ2</title>
+<desc id="mark-desc">Silver IZ2 lettering, a lunar eclipse, one orbit and sparse connected stars on a graphite square.</desc>
+<defs>
+  <radialGradient id="mark-bg" cx="68%" cy="24%" r="85%"><stop stop-color="#17191c"/><stop offset=".62" stop-color="#0b0c0f"/><stop offset="1" stop-color="#07080a"/></radialGradient>
+  <radialGradient id="mark-moon" cx="81%" cy="18%" r="92%"><stop stop-color="#343639"/><stop offset=".38" stop-color="#222428"/><stop offset=".78" stop-color="#111318"/><stop offset="1" stop-color="#0d0f12"/></radialGradient>
+  <linearGradient id="mark-rim" x1="96" y1="96" x2="400" y2="402" gradientUnits="userSpaceOnUse"><stop stop-color="#71757b"/><stop offset=".48" stop-color="#f3eee4"/><stop offset="1" stop-color="#464b52"/></linearGradient>
+  <linearGradient id="mark-silver" x1="0" y1="175" x2="0" y2="344" gradientUnits="userSpaceOnUse"><stop stop-color="#f4f0e6"/><stop offset=".30" stop-color="#e2ded5"/><stop offset=".73" stop-color="#c9c7c2"/><stop offset="1" stop-color="#eee9df"/></linearGradient>
+</defs>
+<rect width="512" height="512" fill="url(#mark-bg)"/><g fill="none" stroke="#6b727a" stroke-width="1.3" opacity=".60"><path d="M24 79L55 66L71 32L89 45"/><path d="M449 36L456 70L484 85L498 58"/><path d="M426 453L455 427L492 444L487 479L455 427"/></g>
+<g fill="#d5d8dc"><circle cx="24" cy="79" r="2"/><circle cx="55" cy="66" r="2.5"/><circle cx="71" cy="32" r="1.8"/><circle cx="89" cy="45" r="1.4"/><circle cx="449" cy="36" r="2.1"/><circle cx="456" cy="70" r="1.8"/><circle cx="484" cy="85" r="2.2"/><circle cx="498" cy="58" r="1.5"/><circle cx="426" cy="453" r="1.6"/><circle cx="455" cy="427" r="2.2"/><circle cx="492" cy="444" r="1.9"/><circle cx="487" cy="479" r="1.5"/></g>
+<g fill="#9aa1ac" opacity=".50"><circle cx="120" cy="24" r="1"/><circle cx="401" cy="30" r="1"/><circle cx="21" cy="194" r="1.1"/><circle cx="492" cy="267" r=".9"/><circle cx="45" cy="437" r="1"/><circle cx="114" cy="471" r="1.2"/><circle cx="330" cy="485" r=".8"/></g><circle cx="256" cy="242" r="185" fill="url(#mark-moon)" stroke="#626970" stroke-width="2"/>
+<path d="M181 73A185 185 0 0 1 427 313" fill="none" stroke="url(#mark-rim)" stroke-width="7" stroke-linecap="round"/>
+<path d="M103 346A185 185 0 0 0 389 370" fill="none" stroke="#464c53" stroke-width="2" opacity=".75"/><ellipse cx="256" cy="261" rx="224" ry="82" transform="rotate(-18 256 261)" fill="none" stroke="#c5c0b6" stroke-width="2.7"/>
+<circle cx="49.6" cy="328.1" r="4.5" fill="#eee9df"/>
+<circle cx="462.4" cy="193.9" r="4.5" fill="#eee9df"/><g transform="" fill="url(#mark-silver)" stroke="#08090b" stroke-width="3" stroke-linejoin="round" paint-order="stroke fill"><path d="M67 181H139L121 199V322L139 340H67L85 322V199Z"/><path d="M157 181H289L188 313H250Q272 313 284 291L277 340H145L247 207H188Q169 207 156 228Z"/><path d="M307 226C315 194 337 177 366 177C399 177 430 199 430 230C430 256 411 278 391 299L374 317H427V340H297L381 252C397 235 403 224 394 214C389 207 381 204 371 204C345 204 324 211 307 226Z"/></g>
+</svg>

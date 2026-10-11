@@ -1,95 +1,89 @@
-# Constrained AI explanation follow-up
+# AI explanation contract
 
-Date: 10 October 2026. Scope: AUD-002 and the user's selected publication policy.
-New explanations publish only prepared, evidence-bound statements selected by
-the model. This closes the reproduced arbitrary-prose path for new jobs; it does
-not certify old saved explanations, source accuracy or bidding-risk predictions.
+Current reference, reviewed 11 October 2026. IZ2 uses a language model to select
+and order prepared statements about saved evidence. It does not let the model
+create identities, relationships, financial findings or the public review score.
+Template-only operation remains the default.
 
-## Implemented contract
+## Selection and rendering
 
-Prompt `evidence-presentation-5.4` supplies a bounded catalogue for nine supported
-finding types. The response contains only finding IDs, wording variant indexes,
-ordering, and an optional separate blinded estimate. Paragraphs and follow-up
-checks have no free-text field. The primary finding must lead the explanation;
-every selected paragraph must have a corresponding check. Selected fact sections
-cannot omit an offered finding. The model sees aliases rather than source names,
-BINs, IINs or original contact values.
+The provider receives a bounded catalogue of wording choices for supported
+findings: shared address, phone, email, director, owner, mixed person roles,
+company arrears, dated zero arrears and stored contract totals. Company aliases
+replace source names, BINs, IINs and original contact values before inference.
 
-`grounding.py` validates the closed grammar and rebuilds wording from frozen
-analysis. `presentation.py` binds amounts/dates to the exact company, retains
-stale/undated/failed-attempt qualifiers, distinguishes possible ordinary contact
-explanations from facts, and never treats company debt as a person's liability.
-Role periods use the graph's start-inclusive/end-exclusive dates. Unknown role
-periods do not become simultaneous management or authority over tender decisions.
-Contract totals describe volume, not losses or bidding coordination.
+The response contains finding IDs, integer variant indexes and ordering.
+Paragraphs and follow-up checks have no free-text field. Every offered finding
+must appear once in the fact sections. The highest-priority offered finding
+leads the narrative, and each selected paragraph has a corresponding check.
+Input limits can reduce the offered catalogue; they do not remove facts from the
+saved analysis. An optional blinded model estimate is stored separately and
+never replaces the deterministic public review score.
 
-Documents use `readable-explanation-5.3`, templates use
-`explanation-template-5.3`, and model-selected narratives carry
-`grounding_policy: prepared-claims-1`. Rules/analysis hashes remain 5.0. New
-publication and cached-result reuse compare the exact re-rendered document/text
-with the saved selection; malformed cached rows remain immutable and a fresh
-explicit job falls back safely. Safe internal section-only selection remains
-supported without claiming narrative provenance.
+[grounding.py](../apps/ai/grounding.py) validates the closed response grammar.
+[presentation.py](../apps/ai/presentation.py) renders wording from frozen facts,
+keeping amounts and dates attached to their company. It retains stale, undated
+and failed-attempt qualifiers, treats ordinary explanations for shared contacts
+as possibilities, and keeps company debt separate from personal liability.
+Role periods are start-inclusive and end-exclusive. Unknown dates establish
+neither simultaneous roles nor authority over tender decisions. Contract totals
+describe recorded activity, not losses or coordinated bidding.
 
-Local Ollama may make one bounded repair, within the original timeout. Rejected
-output is not echoed into repair prompts or public error messages. Hosted
-providers do not retry. Provider/grammar failures save a readable fact template,
-with explicit fallback provenance. The template states the connection, its
-meaning, credited points, next checks and missing coverage. GET reads saved text;
-it never creates explanations or calls a model. No migration is needed.
+| Component | Current version |
+| --- | --- |
+| Provider prompt | `evidence-presentation-5.4` |
+| Saved document | `readable-explanation-5.3` |
+| Template | `explanation-template-5.3` |
+| Grounding policy | `prepared-claims-1` |
+| Public review rules | `review-rules-5.0` |
 
-EN/RU interface labels distinguish prepared-statement selection, templates,
-fallback and older prose generation. Saved explanatory text remains English.
+## Publication, reuse and fallback
 
-## Targeted evaluation
+[services.py](../apps/ai/services.py) re-renders current-format selections and
+compares both saved text and document before publication or reuse.
+[jobs.py](../apps/ai/jobs.py) deduplicates requests and fences publication against
+the latest requested job, current graph/input hash and provider configuration.
+Malformed cached results remain immutable; a fresh explicit job can publish a
+safe fallback. Internal section-only selections remain supported without
+claiming model-narrative provenance.
 
-The same 20 synthetic unsupported-output cases were used before and after the
-change. The old validator accepted 16/20; the new provider and document boundaries
-reject 20/20. Job tests also submit all 20 poisoned completions and verify saved
-fallback, safe errors, repeat-request reuse, unchanged graph/score and retained
-immutable history. Cases include indirect accusations, benign invention,
-non-English/confusable text, wrong company/amount, zero-to-debt reversal,
-unsupported tender authority and checks that presuppose wrongdoing.
+A provider or grammar failure saves a labelled fact template covering the
+connection, its meaning, credited points, follow-up checks and missing evidence.
+Local Ollama may make one repair attempt using the remaining configured budget;
+hosted providers do not retry. Rejected output is not echoed into the repair
+prompt or public errors. This budget is not yet a strict wall-clock deadline.
 
-Positive controls cover all nine finding types and both wording variants.
-Additional tests cover strict index types, unknown/duplicate IDs, exact company
-scope, dated/stale/retained/zero checks, incomplete and boundary role dates,
-contract-only summaries, dense groups and altered saved documents/caches.
-The old regex validator remains a historical diagnostic, outside publication.
+GET reads saved explanations and never starts generation. Older prose remains
+readable under its original method and is not retroactively certified by the
+current grammar. EN/RU translates interface labels, not immutable saved English
+explanations. The legacy regex diagnostics remain outside the publication gate.
 
-Real local Qwen3:4b passed four full synthetic jobs and five additional difficult
-catalogue cases: **9/9 accepted, all on the first attempt**, approximately
-4.8-8.3 seconds each on this laptop. Full jobs checked saved API/HTML reads,
-deduplication and unchanged public scores. Difficult cases covered mixed
-director/contact scope, mixed undated roles, stale/retained/zero finance,
-contract-only records and 20 companies with six findings. The latter request
-fit the default 8,000-character budget. Output review found no unsupported
-assertion in these nine cases; financial follow-ups can still be repetitive and
-large exact amounts remain long. This is a targeted regression sample, not a
-held-out truthfulness, readability or prediction benchmark.
+## Limits and verification
 
-Private reports and synthetic scripts are under ignored `artifacts/ai-grounding/`;
-the four-job report is `artifacts/local-ai/grounding-20261010.json`.
-Run `scripts/check_local_ai.py` with a separate `--report-name` to avoid replacing
-the user's last demo. Working data, source collection and paid inference are
-outside this evaluation. Existing histories are preserved, not regenerated.
+Prepared wording prevents unsupported provider prose from entering new current-
+format explanations. It cannot establish that a source is accurate, resolve a
+mistaken identity, supply missing bids or prove coordinated behaviour. No
+independent prediction or reader-usefulness benchmark has established a benefit
+from model selection over the template.
 
-## Regression and integrity checks
+Two operational gaps remain: streaming reads can exceed the configured total
+timeout, and provenance records `AI_MODEL_REVISION` as configured rather than
+resolving the actual model digest. Replacing weights behind an unchanged tag
+therefore is not automatically reflected in the reuse key. Failed attempts also
+lack complete timing/token accounting. See AUD-012 and AUD-015 in the
+[current audit](FINAL_AUDIT.md).
 
-- Full isolated PostgreSQL suite: 671 tests, zero failures/errors/skips; its
-  temporary database was removed. Ten final publication/date tests also passed
-  after the last cache-integrity refinement.
-- React: 144 tests, TypeScript/Vite production build and formatting passed.
-  OpenAPI validation, migration drift and normal strict collectstatic passed.
-- Chromium: 18 scenarios at 1440/390 px covered all four saved Qwen cases,
-  EN/RU, evidence disclosure and grounded/legacy/fallback provenance. Historical
-  and fallback API variants were mocked only in the browser. No overflow,
-  application JavaScript errors, failed responses or non-GET requests occurred
-  after collectstatic. Language switching preserved disclosure without API calls.
-  Actual desktop/mobile viewport captures were inspected; the browser was closed.
-- The verified native recovery manifest matched the pre-change database. Final
-  fingerprints matched all 51 tables, schema and 49 sequences. Environment,
-  learning and dependency files were unchanged. No working regeneration ran.
-- Real inference used a separate owned local server and synthetic data only.
-  The server was stopped after evaluation; model cache was retained. Native
-  collector workers/beat were already stopped and were not restarted.
+Tracked regression tests cover the closed grammar, unsupported claims, exact
+company/date/amount binding, fallback, altered caches, stale publication and
+legacy provenance: [grounding tests](../apps/ai/test_grounding.py),
+[publication tests](../apps/ai/test_publication_grounding.py),
+[job tests](../apps/ai/tests.py) and
+[API provenance tests](../apps/api/test_document_provenance.py).
+The [current audit](FINAL_AUDIT.md) records the checks rerun against this revision.
+
+The [10 October evaluation record](archive/2026-10-11/AI_GROUNDING.md#targeted-evaluation)
+contains the historical 20-case adversarial comparison and nine real synthetic
+Qwen runs. Those results describe that dated sample, not a current full-system
+pass or a population accuracy estimate. Model probes require explicit inference
+authorisation; use a separate report name to preserve earlier results. Runtime
+setup and deployment choices belong in [DEPLOY.md](../DEPLOY.md).

@@ -145,18 +145,6 @@ body {
 .app-shell .hero-rich {
   background: linear-gradient(120deg, #202224, #18191b 48%, #202123);
 }
-.app-shell .brand-symbol {
-  background: linear-gradient(145deg, #2a2c2e, #17181a);
-  border-color: #4b4d50;
-  border-radius: 13px;
-  box-shadow:
-    inset 0 1px #ffffff14,
-    0 6px 18px #0003;
-}
-.app-shell .brand-wordmark {
-  font-weight: 600;
-  letter-spacing: -0.065em;
-}
 .app-shell .brand-caption {
   letter-spacing: 0.2em;
   color: #b0b0b0;
@@ -225,10 +213,6 @@ body {
       border-color 0.24s ease,
       box-shadow 0.24s ease;
   }
-  html[data-motion="on"] .brand:hover .brand-symbol svg {
-    transform: translateY(-1px);
-    transition: transform 0.25s ease;
-  }
 }
 @keyframes surface-enter {
   from {
@@ -249,4 +233,33 @@ html[data-motion="off"]
   .app-shell :is(.button, .icon-button, .nav-link, input, select) {
     transition: none;
   }
+}
+
+/* Original transparent artwork keeps its square proportions without a frame. */
+.brand {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+.brand-artwork {
+  display: block;
+  object-fit: contain;
+  flex-shrink: 0;
+  width: 92px;
+  height: 92px;
+}
+.brand-artwork--compact {
+  width: 44px;
+  height: 44px;
+}
+.brand-caption {
+  position: static;
+  font-size: 7px;
+  padding-left: 8px;
+}
+.mobile-brand .brand {
+  padding: 0;
+}
+.mobile-brand .brand-caption {
+  display: none;
 }

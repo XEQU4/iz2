@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="256" viewBox="0 0 640 256" role="img" aria-labelledby="wide-title wide-desc">
+<title id="wide-title">IZ2</title>
+<desc id="wide-desc">Horizontal noir and cosmos IZ2 logo with a lunar eclipse, one orbit and restrained constellations.</desc>
+<defs>
+  <radialGradient id="wide-bg" cx="68%" cy="24%" r="85%"><stop stop-color="#17191c"/><stop offset=".62" stop-color="#0b0c0f"/><stop offset="1" stop-color="#07080a"/></radialGradient>
+  <radialGradient id="wide-moon" cx="81%" cy="18%" r="92%"><stop stop-color="#343639"/><stop offset=".38" stop-color="#222428"/><stop offset=".78" stop-color="#111318"/><stop offset="1" stop-color="#0d0f12"/></radialGradient>
+  <linearGradient id="wide-rim" x1="96" y1="96" x2="400" y2="402" gradientUnits="userSpaceOnUse"><stop stop-color="#71757b"/><stop offset=".48" stop-color="#f3eee4"/><stop offset="1" stop-color="#464b52"/></linearGradient>
+  <linearGradient id="wide-silver" x1="0" y1="175" x2="0" y2="344" gradientUnits="userSpaceOnUse"><stop stop-color="#f4f0e6"/><stop offset=".30" stop-color="#e2ded5"/><stop offset=".73" stop-color="#c9c7c2"/><stop offset="1" stop-color="#eee9df"/></linearGradient>
+</defs>
+<rect width="640" height="256" rx="18" fill="url(#wide-bg)"/><g transform="translate(148 -17) scale(.60)"><circle cx="256" cy="242" r="185" fill="url(#wide-moon)" stroke="#626970" stroke-width="2"/>
+<path d="M181 73A185 185 0 0 1 427 313" fill="none" stroke="url(#wide-rim)" stroke-width="7" stroke-linecap="round"/>
+<path d="M103 346A185 185 0 0 0 389 370" fill="none" stroke="#464c53" stroke-width="2" opacity=".75"/></g><ellipse cx="318" cy="128" rx="273" ry="74" transform="rotate(-8 318 128)" fill="none" stroke="#c5c0b6" stroke-width="2.1"/><circle cx="47.7" cy="166" r="3.4" fill="#eee9df"/><circle cx="588.3" cy="90" r="3.4" fill="#eee9df"/><g transform="translate(19 -81) scale(1.2 .80)" fill="url(#wide-silver)" stroke="#08090b" stroke-width="3" stroke-linejoin="round" paint-order="stroke fill"><path d="M67 181H139L121 199V322L139 340H67L85 322V199Z"/><path d="M157 181H289L188 313H250Q272 313 284 291L277 340H145L247 207H188Q169 207 156 228Z"/><path d="M307 226C315 194 337 177 366 177C399 177 430 199 430 230C430 256 411 278 391 299L374 317H427V340H297L381 252C397 235 403 224 394 214C389 207 381 204 371 204C345 204 324 211 307 226Z"/></g><g fill="none" stroke="#5a626e" stroke-width="1.1" opacity=".65"><path d="M25 38L48 23L70 44"/><path d="M560 223L589 207L616 228"/></g>
+<g fill="#b1b7c0" opacity=".70"><circle cx="25" cy="38" r="1.5"/><circle cx="48" cy="23" r="1.9"/><circle cx="70" cy="44" r="1.4"/><circle cx="560" cy="223" r="1.4"/><circle cx="589" cy="207" r="1.9"/><circle cx="616" cy="228" r="1.4"/></g>
+</svg>

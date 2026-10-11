@@ -108,20 +108,6 @@ body.api-docs-page .api-docs-brand {
   min-width: 0;
   color: var(--api-docs-text);
 }
-body.api-docs-page .api-docs-brand-mark {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 44px;
-  flex-shrink: 0;
-  border: 1px solid var(--api-docs-border);
-  border-radius: 9px;
-  background: var(--api-docs-panel);
-}
-body.api-docs-page .api-docs-brand-mark svg {
-  width: 30px;
-  height: 30px;
-}
 body.api-docs-page .api-docs-brand-copy {
   display: flex;
   flex-direction: column;
@@ -1528,3 +1514,7 @@ body.api-docs-page .swagger-ui .opblock-tag > a {
     width: 60%;
   }
 }
+
+body.api-docs-page .api-docs-brand-mark { display: block; width: 72px; height: 72px; object-fit: contain; flex-shrink: 0; }
+body.api-docs-page .api-docs-brand { flex-direction: column; align-items: flex-start; gap: 2px; }
+body.api-docs-page .api-docs-brand-copy { padding-left: 8px; }

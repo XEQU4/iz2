@@ -32,7 +32,7 @@ if not ALLOWED_HOSTS or (not DEBUG and "*" in ALLOWED_HOSTS):
     raise ImproperlyConfigured("ALLOWED_HOSTS must contain explicit hosts in production.")
 CSRF_TRUSTED_ORIGINS = env_list("CSRF_TRUSTED_ORIGINS")
 
-# English is the project baseline; Russian website localisation is planned later.
+# English is the default; the React workspace owns its EN/RU interface choice.
 LANGUAGE_CODE = "en-us"
 
 # Kazakhstan civil dates govern legal periods and source-reporting freshness.

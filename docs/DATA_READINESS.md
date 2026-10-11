@@ -1,66 +1,121 @@
-﻿# Directory readiness and collection follow-up, 9 October 2026
+# Data readiness and directory visibility
 
-The user requested source-backed default listings and a final bounded parser review
-before a separate visual-design pass, whole-project audit and deployment work.
-Those subsequent tasks have not started.
+This document describes the current selection and collection rules. The latest
+bounded catalogue counts and unresolved defects belong in
+[FINAL_AUDIT.md](FINAL_AUDIT.md), not in a second changing status table. The
+[9 October checkpoint](archive/2026-10-11/DATA_READINESS.md) preserves the original
+implementation checks and their limits.
 
-## Visibility rules
+## What appears in directories
 
-- Companies defaults to Source-checked profiles. The optional API profile_status
-  filter uses a selected name fact whose accepted registry/Adata observation matches
-  the exact supplier, company subject key, BIN and displayed name. Filtering happens
-  before pagination. Contract-only and legacy-only records are pending. This is
-  basic profile provenance, not complete checks or proof of good standing.
-- Pending and all records remain explicit list choices. Direct links, contract
-  participants, saved graph history and unfiltered API compatibility are preserved.
-  Successful evidence remains readable after a later temporary source failure.
-- People defaults to verified identities with an observed current role. Unverified
-  identities and source history remain selectable; name comparison includes both.
-  Current adapters still do not establish ownership.
-- Company directorships defaults to current records. Historical person URLs retain
-  their role history, and empty ownership remains hidden. For company 567 this
-  changes the default from three source/history rows to the one current role.
-- Refresh reads committed data and reevaluates filters; GET never starts collection
-  or generation. A newly accepted profile appears on a later list reload, subject
-  to the active search/order/page. No stored publication flags can become stale.
+| Surface | Default selection | What it establishes |
+| --- | --- | --- |
+| Companies | Source-checked profiles | The displayed name and BIN match accepted registry or Adata profile evidence for that exact company. |
+| People | Verified identities with an observed current role | An identifier-confirmed saved identity has a role marked current in the observations. This is not proof of the legal appointment period. |
+| Company directorships | Current observed records | Current and historical episodes are presented separately; identity evidence and legal dates remain separate properties. |
+| Overview counts | Shared directory scopes | Totals describe the corresponding default listings, rather than every legacy row in the database. |
 
-## Collection review and fixes
+Company checking requires a selected name fact with a successful supported-source
+observation, the same supplier, the exact `company:<BIN>` subject, and matching
+normalised BIN and displayed name. This is a provenance rule, not a completeness,
+freshness or good-standing certificate. A profile can pass it while other fields
+or KGD checks are missing.
 
-Successful observations from an older parser version are now eligible immediately
-for bounded refresh; failures still respect their retry delay. Half-batch fairness,
-source due times, host cooldowns, request budgets and independent source stages stay
-in force. Profile due/backlog and KGD eligibility queries require the exact company
-subject. Registration-type selection also verifies the returned BIN. Unrelated
-contract/wrong-subject observations cannot suppress company collection or establish
-KGD legal type. No parser schema/version, migration or source integration was added.
+Pending/all-company and unverified/historical-person choices remain available.
+Filtering precedes pagination. Direct links, contract participants and saved graph
+history remain readable. The API's optional `profile_status`, `is_verified` and
+`has_current_role` filters do not silently restrict compatibility clients that omit
+them. Visibility filters are not access control.
 
-Reviewed existing safeguards remain: exact identity/Decimal parsing, bounded
-transport, challenge/denial stop, no redirect bypass, chronological source facts,
-contract checkpoints/repair, source-specific caches, retained successful KGD results,
-batch graph refresh and separate deduplicated local-AI jobs. Tests exercise them;
-this does not prove every external response variant or complete national coverage.
+A page reload reads committed data and applies the active filters again. A newly
+accepted profile can appear then, subject to its search, ordering and page. GET
+never collects a source, rebuilds a graph or generates an explanation. A later
+failed source request does not erase the last accepted evidence.
 
-## Verification and operations
+## Names, roles and provenance
 
-Owned collectors were stopped; independent restore of all 51 tables passed:
-artifacts/readiness/recovery/database_20261009T112032Z_d986d012.json.
-568 isolated PostgreSQL tests passed without skips. 113 React tests passed with two
-workers; an earlier concurrent run hit an unrelated Profile timing failure, with
-no Profile implementation change. Build, formatting, OpenAPI and collectstatic
-passed. Read-only working verification kept all 51 tables equal to the backup:
-813 companies = 250 checked + 563 pending; 19 verified current people; company 567
-has three total director records and one current. These are bounded audit counts.
+The same name can belong to different people or to several source-scoped historical
+records. Exact verified identifiers permit identity reuse; names alone create
+matching candidates. They do not merge people or connect companies in the graph.
+A directory row is a saved identity, not a guarantee of a unique physical person.
 
-Chromium verified default current-role selection, explicit three-row history and
-reload, pending-profile filter/reload, and Companies/People at 320/768/1440/1920px.
-No horizontal overflow or application error was observed; the reported-company
-screenshot was inspected. Owned preview/browser stopped. Native worker, AI-worker
-and beat were restarted after checks; existing source cooldowns were not reset.
-Source collection may change the above counts normally. No saved domain cleanup,
-manual AI regeneration, Git operation or user-server restart was performed.
+Source retrieval time, observed current status and legal start/end dates are
+separate. Unknown legal dates stay unknown; supplied intervals use an exclusive
+end date. Current graph construction filters currently observed roles by the chosen
+date. It does not reconstruct all historical appointments. Legacy observation dates
+record migration provenance, not a new external check.
 
-Source 302/502/timeouts, ambiguous registry cards, missing legal role dates,
-unconfirmed ownership and company-specific KGD debt entitlement remain explicit
-limitations. Basic source checking must not be renamed full verification. The UI
-filter is presentation, not an access-control boundary. Private evidence/reports
-are under artifacts/readiness/.
+Current adapters collect directorship evidence. Founder markup or a director name
+does not establish current ownership; empty ownership presentation is hidden.
+Court, bankruptcy and restricted-participant integrations are not implemented.
+Company arrears are never assigned to a director or owner.
+
+The open corrected-name projection issue is tracked as AUD-006: newer verified
+source evidence can coexist with an older People display name. That requires a
+source-aware name/alias policy, not name-based deduplication.
+
+## Collection and freshness
+
+Parsers fetch and normalise; ingestion services own persistence and orchestration.
+The collector has independent bounded contract, company-profile, KGD-registration
+and KGD-debt stages. It rotates stages, limits HTTP attempts, reserves capacity for
+previously attempted companies, observes source-specific due times and stops a
+host on challenges, denial or repeated transport failures. Successful observations
+from older parser versions become eligible for refresh; failed attempts still
+respect their retry delay.
+
+Contracts use separate head, archive-history and repair streams. Unfinished page
+slices and retry rows preserve progress across restarts. Registry HTML pagination
+can change between requests, so repeated reconciliation is necessary and does not
+prove national completeness. Discovery pauses when the profile-attempt backlog
+reaches its configured high-water limit. An attempted profile is not necessarily
+a successfully checked one.
+
+Accepted changes feed saved graph/analysis/template versions through the collection
+service. Repeated unchanged evidence does not create new graph versions. Optional
+model jobs are separate and deduplicated. New Docker environments leave collection
+and automatic model jobs disabled; enabling them is an explicit operational step
+in [DEPLOY.md](../DEPLOY.md#collection-and-qwen).
+
+Open audit items remain relevant to operations: the older manual contract-import
+path cannot repair some quarantined rows (AUD-005); an expired worker can alter a
+replacement run's status (AUD-007); profile/KGD stage record counters under-report
+work (AUD-008). These limits are not resolved by the newer crawler's passing fixture
+tests. Use source/run outcomes alongside stage counters until those fixes pass
+independent recovery tests.
+
+## KGD states
+
+| State | Meaning |
+| --- | --- |
+| Registration success | The source returned the requested identifier and supported subject type. It says nothing about arrears. |
+| Debt success with zero amounts | The separate debt service returned a complete, validated zero result for that company and its reporting dates. |
+| Debt success with positive amounts | Saved company-level arrears for the returned dates; not a finding about a person or coordinated bidding. |
+| Not checked | No usable check was requested/saved, or prerequisites were not met. The result is unknown. |
+| Unavailable or invalid | A source/response problem prevented a confirmed result. This does not mean absence of debt. |
+| Retained success after failure | The earlier result remains visible with its original date and the later failed-attempt status. |
+
+Registration and debt have separate clocks and retained successes. Debt requests
+require a configured credential for the exact company and supported legal-entity
+scope. Entrepreneur registration is supported where explicitly confirmed; current
+entrepreneur debt scope remains unverified. A registration token does not authorise
+every company's debt check. Fresh retrieval alone also does not establish that the
+source's underlying record is complete or current.
+
+## How to assess readiness
+
+`audit_data_quality` reads saved coverage, identity/role consistency, provenance and
+safe configuration counts. `ingestion_status` reads saved stage outcomes, backlog,
+retry counts and due times. Neither command contacts sources or starts collection.
+Actual procedures and commands belong in [DEPLOY.md](../DEPLOY.md).
+
+Before relying on unattended collection, check source-specific attempted,
+accepted and fresh denominators; explain unsupported/missing fields; and rehearse
+bounded head/history/repair interruption and restart. Source permission and KGD
+entitlement need separate confirmation. A completed synthetic cycle, a healthy
+worker or a hidden pending row is not evidence of complete coverage.
+
+A reviewed, frozen subset can support a local demonstration with these limits
+visible. Pilot/public readiness also requires the remaining
+[audit acceptance criteria](FINAL_AUDIT.md) and publication policy. Preserve
+original observations, history and failed attempts while improving coverage.

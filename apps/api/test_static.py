@@ -6,6 +6,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 from unittest.mock import patch
 
+from django.conf import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.management import call_command
 from django.test import Client, SimpleTestCase, override_settings
@@ -90,12 +91,14 @@ class SwaggerManifestTests(SimpleTestCase):
             "drf_spectacular_sidecar/swagger-ui-dist/swagger-ui-standalone-preset.js",
             "css/api-docs.css",
             "js/api-docs.js",
-            "images/iz2.svg",
+            "images/iz2-favicon.svg",
         }
         expected_urls = {"/static/" + manifest["paths"][path] for path in expected_paths}
         self.assertEqual(set(assets.urls), expected_urls)
         self.assertEqual(len(assets.urls), len(expected_urls))
         self.assertTemplateUsed(response, "api/docs.html")
+        self.assertContains(response, "/static/" + manifest["paths"]["images/iz2-logo.png"])
+        self.assertNotContains(response, "images/iz2.svg")
         self.assertTemplateUsed(response, "drf_spectacular/swagger_ui.js")
         bootstrap = "\n".join(assets.inline_scripts)
         self.assertEqual(bootstrap.count("const ui = SwaggerUIBundle("), 1)
@@ -133,3 +136,19 @@ class SwaggerManifestTests(SimpleTestCase):
         schema = client.get("/api/v1/schema/", HTTP_ACCEPT="application/vnd.oai.openapi+json")
         self.assertEqual(schema.status_code, 200)
         self.assertIn("/api/v1/companies/", json.loads(schema.content)["paths"])
+
+
+class BrandingAssetTests(SimpleTestCase):
+    def test_original_png_and_runtime_copies_are_identical(self):
+        import struct
+
+        root = Path(settings.BASE_DIR)
+        content = (root / "frontend/src/assets/branding/iz2-logo.png").read_bytes()
+        self.assertEqual(content[:8], b"\x89PNG\r\n\x1a\n")
+        self.assertEqual(struct.unpack(">IIBB", content[16:26]), (1254, 1254, 8, 6))
+        for name in ("static/images/iz2-logo.png", "docs/assets/iz2-logo.png"):
+            with self.subTest(asset=name):
+                self.assertEqual(content, (root / name).read_bytes())
+        favicon = (root / "frontend/src/assets/branding/iz2-favicon.svg").read_bytes()
+        self.assertEqual(favicon, (root / "frontend/public/favicon.svg").read_bytes())
+        self.assertEqual(favicon, (root / "static/images/iz2-favicon.svg").read_bytes())

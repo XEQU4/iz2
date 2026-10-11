@@ -14,6 +14,7 @@
           rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
+    <link rel="icon" href="{% static 'images/iz2-favicon.svg' %}" type="image/svg+xml">
     {% block extra_styles %}{% endblock %}
 </head>
 
@@ -24,10 +25,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
         <a class="navbar-brand fw-bold text-info d-flex align-items-center gap-2"
-           href="{% url 'dashboard:index' %}">
-            <span class="navbar-brand glitch-text" data-text="IZ2">
-                <i class="bi bi-shield-check"></i> IZ2
-            </span>
+           href="{% url 'dashboard:index' %}" aria-label="IZ2 overview">
+            <img class="legacy-brand-artwork" src="{% static 'images/iz2-logo.png' %}" alt="" width="1254" height="1254">
         </a>
 
         <button class="navbar-toggler"
@@ -75,9 +74,9 @@
     <div class="container">
         <div class="row gy-4">
             <div class="col-md-3">
-                <h6>
-                    <i class="bi bi-shield-check"></i> IZ2
-                </h6>
+                <a href="{% url 'dashboard:index' %}" aria-label="IZ2 overview">
+                    <img class="legacy-brand-artwork" src="{% static 'images/iz2-logo.png' %}" alt="" width="1254" height="1254">
+                </a>
 
                 <p class="mb-0">
                     An evidence-based workspace for reviewing company relationships

@@ -356,3 +356,5 @@ body::after {
     z-index: -2;
     pointer-events: none;
 }
+
+.legacy-brand-artwork { display: block; width: 64px; height: 64px; object-fit: contain; }

@@ -1,7 +1,8 @@
 ﻿# IZ2 architecture
 
-Current implementation, reviewed 10 October 2026. Historical measurements and
-phase decisions remain in PHASE1–7; release findings are in FINAL_AUDIT.md.
+Current implementation, reviewed 11 October 2026. Historical measurements and
+phase decisions are [archived](archive/2026-10-11/README.md); release findings are
+in [FINAL_AUDIT.md](FINAL_AUDIT.md).
 Current startup and recovery commands are in [DEPLOY.md](../DEPLOY.md).
 
 IZ2 is a modular Django application with a React/TypeScript workspace. PostgreSQL
@@ -62,7 +63,9 @@ flowchart LR
 ```
 
 Parsers fetch and normalise; ingestion services persist and orchestrate stages.
-Views and commands do not implement an independent pipeline. Money uses Decimal.
+Views and commands delegate to services. Two service paths still exist for manual
+contract import and durable head/history/repair crawling; their rejected-row
+recovery diverges (AUD-005). Money uses Decimal.
 Success, confirmed absence, source failure and not checked remain distinct.
 
 Collection has independent bounded contract/profile/KGD stages, durable due
@@ -88,7 +91,9 @@ debt, and company debt is not assigned to a director or owner.
 
 RiskCluster has a stable UUID; GraphSnapshot and ClusterLineage preserve
 membership/evidence history through changes, splits and merges. Feature indexes
-avoid production all-pairs comparison. Repeat collection without meaningful
+avoid production all-pairs comparison, but rebuild inputs still traverse the
+catalogue and common contacts can broaden the impact boundary (AUD-013).
+Repeat collection without meaningful
 changes does not recreate snapshots or explanations. Compatibility graph helpers
 remain for existing routes and tests.
 
@@ -103,7 +108,9 @@ The optional Qwen model selects and orders prepared English statements using a
 closed finding-ID/variant grammar. It cannot supply publishable prose. The server
 renders exact company scope, amounts, dates and uncertainty from frozen evidence,
 then rechecks the saved document/text at publication and reuse boundaries. One
-bounded local repair is allowed; failure saves a readable template. Prompt 5.4
+local repair is allowed within the configured provider budget; streaming transport
+does not yet enforce a strict wall-clock deadline (AUD-012).
+Failure saves a readable template. Prompt 5.4
 and document/template 5.3 supersede free-prose generation for new jobs. Old immutable
 texts remain readable with their original provenance; GET never regenerates them.
 See AI_GROUNDING.md for the targeted tests and remaining evidence-quality limits.
@@ -141,7 +148,9 @@ One `docker-compose.yml` runs PostgreSQL 17, Redis, a migration gate, web,
 ingestion worker, AI worker and beat. Optional profiles add CPU Ollama
 (`local-ai`), NVIDIA Ollama (`local-ai-gpu`) and Caddy (`https`). Environment
 preparation writes the profile selection and matching settings together. The
-CPU/GPU profiles are alternatives. `Dockerfile` builds the shared image using a
+CPU/GPU profiles are alternatives. The native Windows collection launcher still
+requires its local model to start; Compose ingestion is independent of it.
+`Dockerfile` builds the shared image using a
 Node stage for React and a Python runtime; Node is absent from the runtime.
 
 The legacy default project/volume names remain compatible. Persistent database,
@@ -153,11 +162,14 @@ redirect, allowed-origin and single-peer trust configuration before starting.
 
 Backups/restores require quiet writers and an empty restore target. Checksums,
 row/schema/sequence manifests are compared; tools do not erase existing data.
-Native-to-Linux transfer, HTTP/HTTPS account/view persistence, outage handling
-and a synthetic CPU Qwen task were verified on isolated projects. NVIDIA
+Native-to-Linux transfer, HTTP/HTTPS account/view persistence and a synthetic CPU
+Qwen task have dated evidence in the [10 October deployment record](archive/2026-10-11/DEPLOYMENT_CHECK.md).
+The repeat audit verified fresh empty startup and Redis recovery, but reproduced
+transient HTTP 500 after a PostgreSQL restart; see AUD-021. NVIDIA
 execution, real-domain certificate issuance, server load and off-host backup
 operations still require target-host verification. Current cleanup checks are
-recorded in [REPOSITORY_AUDIT.md](REPOSITORY_AUDIT.md).
+recorded in [FINAL_AUDIT.md](FINAL_AUDIT.md); the [previous repository audit](archive/2026-10-11/REPOSITORY_AUDIT.md)
+remains a separate dated record.
 
 The user performs Git operations. Public release still depends on unresolved
 audit findings and publication policy; packaging is not release approval.

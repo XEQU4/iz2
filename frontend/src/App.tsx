@@ -31,7 +31,6 @@ import { LoginDialog, useSession } from "./components/Session";
 import { useMotionPreferences } from "./components/MotionPreferences";
 import { PageState } from "./components/ui";
 import { FocusFrame } from "./components/motion/FocusFrame";
-import { GlitchText } from "./components/motion/GlitchText";
 import Particles from "./components/effects/Particles";
 import WorkspaceFooter from "./components/WorkspaceFooter";
 import Home from "./pages/Home";
@@ -66,14 +65,11 @@ const navigation = [
   { path: "/contracts", name: "Contracts", icon: FileTextIcon },
   { path: "/about", name: "About Us", icon: InfoCircledIcon },
 ];
-function Brand() {
+function Brand({ compact = false }: { compact?: boolean }) {
   useI18n();
   return (
     <Link to="/" className="brand" aria-label={t("IZ2 overview")}>
-      <span className="brand-symbol">
-        <BrandMark />
-      </span>
-      <GlitchText text={t("IZ2")} className="brand-wordmark" period={18} />
+      <BrandMark compact={compact} />
       <span className="brand-caption">{t("INTELLIGENCE")}</span>
     </Link>
   );
@@ -206,7 +202,7 @@ function Layout() {
       <div className="workspace">
         <header className="topbar">
           <div className="mobile-brand">
-            <Brand />
+            <Brand compact />
           </div>
           <Dialog.Root open={mobile} onOpenChange={setMobile}>
             <Dialog.Trigger

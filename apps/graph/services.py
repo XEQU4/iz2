@@ -306,7 +306,6 @@ def rebuild_clusters(as_of=None, supplier_ids=None, publication_guard=None):
     memberships = {cluster.pk: frozenset(s.pk for s in cluster.suppliers.all()) for cluster in existing}
     suppliers = load_graph_suppliers()
     index = EvidenceIndex(suppliers, as_of)
-    director_map = build_director_map(suppliers, as_of)
     weights = get_risk_weights()
     states = {state.supplier_id: state for state in GraphInputState.objects.all()}
     company_edges = defaultdict(list)

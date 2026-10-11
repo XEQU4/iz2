@@ -27,16 +27,6 @@
   gap: 11px;
   color: #fff;
 }
-.footer-project-brand > svg {
-  width: 38px;
-  height: 40px;
-}
-.footer-project-brand > span {
-  font:
-    700 33px/1 "Space Grotesk Variable",
-    sans-serif;
-  letter-spacing: -0.05em;
-}
 .footer-project-brand small {
   display: block;
   color: #aaaaaa;
@@ -309,9 +299,6 @@
   .footer-contact-links {
     gap: 10px 22px;
   }
-  .footer-project-brand > span {
-    font-size: 30px;
-  }
   .workspace-footer-full h2 {
     font-size: 12px;
   }
@@ -351,4 +338,19 @@
   .workspace-footer-bottom {
     gap: 10px;
   }
+}
+
+.footer-project-brand {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+.footer-project-brand .brand-artwork {
+  width: 104px;
+  height: 104px;
+  object-fit: contain;
+  display: block;
+}
+.footer-project-brand small {
+  padding-left: 8px;
 }
