@@ -47,3 +47,7 @@ celerybeat.pid
 # Removed standalone experiment; keep it ignored if accidentally recreated.
 /next-app/
 /.playwright-mcp/
+
+# Local promotional screenshots and delivery archive
+/output/poster/
+/output/IZ2_Poster_Assets.zip

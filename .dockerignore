@@ -61,3 +61,7 @@ frontend/*.tsbuildinfo
 # Removed standalone experiment; never include a recreated copy in images.
 /next-app/
 /.playwright-mcp/
+
+# Local promotional assets are not application resources.
+/output/poster/
+/output/IZ2_Poster_Assets.zip
